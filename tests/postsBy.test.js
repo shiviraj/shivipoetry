@@ -1,6 +1,6 @@
 const request = require('supertest');
-const {app} = require('../src/router');
-const {postOne, setupDatabase, cleanupDatabase} = require('./fixtures/db');
+const { app } = require('../src/router');
+const { postOne, setupDatabase, cleanupDatabase } = require('./fixtures/db');
 
 describe('Static page', () => {
   test('Should serve the static page by author', async () => {
@@ -38,7 +38,7 @@ describe('serveSelector posts', () => {
   test('Should serve the posts by author', async () => {
     const res = await request(app)
       .post('/posts/author/Shivi')
-      .send({pageNo: 1})
+      .send({ pageNo: 1 })
       .expect(200);
     expect(res.body.posts.length).toBe(2);
   });
@@ -46,14 +46,14 @@ describe('serveSelector posts', () => {
   test('Should not serve the posts by author if not exists', async () => {
     const res = await request(app)
       .post('/posts/author/notExists')
-      .send({pageNo: 1})
+      .send({ pageNo: 1 })
       .expect(500);
   });
 
   test('Should serve the posts by tag', async () => {
     const res = await request(app)
       .post('/posts/tag/tag-1')
-      .send({pageNo: 1})
+      .send({ pageNo: 1 })
       .expect(200);
     expect(res.body.length).toBe(2);
   });
@@ -61,13 +61,13 @@ describe('serveSelector posts', () => {
   test('Should not serve the posts by tag if not exists', async () => {
     const res = await request(app)
       .post('/posts/tag/notExists')
-      .send({pageNo: 1})
+      .send({ pageNo: 1 })
       .expect(500);
   });
   test('Should serve the posts by category', async () => {
     const res = await request(app)
       .post('/posts/category/category-1')
-      .send({pageNo: 1})
+      .send({ pageNo: 1 })
       .expect(200);
     expect(res.body.length).toBe(2);
   });
@@ -75,7 +75,7 @@ describe('serveSelector posts', () => {
   test('Should not serve the posts by category if not exists', async () => {
     const res = await request(app)
       .post('/posts/category/notExists')
-      .send({pageNo: 1})
+      .send({ pageNo: 1 })
       .expect(500);
   });
 });
@@ -88,7 +88,7 @@ describe('serveSelector pagination', () => {
     const res = await request(app)
       .get('/posts/pagination/author/Shivi')
       .expect(200);
-    expect(res.body).toMatchObject({pages: 1});
+    expect(res.body).toMatchObject({ pages: 1 });
   });
 
   test('Should not serve the pagination by author if not exists', async () => {
@@ -101,7 +101,7 @@ describe('serveSelector pagination', () => {
     const res = await request(app)
       .get('/posts/pagination/tag/tag-1')
       .expect(200);
-    expect(res.body).toMatchObject({pages: 1});
+    expect(res.body).toMatchObject({ pages: 1 });
   });
 
   test('Should not serve the pagination by tag if not exists', async () => {
@@ -113,13 +113,11 @@ describe('serveSelector pagination', () => {
     const res = await request(app)
       .get('/posts/pagination/category/category-1')
       .expect(200);
-    expect(res.body).toMatchObject({pages: 1});
+    expect(res.body).toMatchObject({ pages: 1 });
   });
 
   test('Should not serve the pagination by category if not exists', async () => {
-    const res = await request(app)
-      .get('/posts/pagination/category/notExists')
-      .expect(500);
+    await request(app).get('/posts/pagination/category/notExists').expect(500);
   });
 });
 
@@ -130,7 +128,7 @@ describe('Post content', () => {
   test('Should serve the post content of given url', async () => {
     const res = await request(app)
       .post('/post/content')
-      .send({postUrl: 'post/post-url-1'})
+      .send({ postUrl: 'post/post-url-1' })
       .expect(200);
     expect(res.body.url).toBe('post-url-1');
   });
@@ -138,7 +136,7 @@ describe('Post content', () => {
   test('Should serve 500 error if post not found', async () => {
     await request(app)
       .post('/post/content')
-      .send({postUrl: 'post/not-found'})
+      .send({ postUrl: 'post/not-found' })
       .expect(500);
   });
 });

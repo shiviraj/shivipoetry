@@ -5,5 +5,3 @@ const loadPartialHtml = function () {
     .then((res) => res.text())
     .then((data) => (getElement('.left-sidebar').innerHTML = data));
 };
-
-window.onload = loadPartialHtml;

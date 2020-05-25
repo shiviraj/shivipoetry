@@ -1,18 +1,18 @@
-const {Author} = require('../models/author');
+const { Author } = require('../models/author');
 
 const serveIsAvailableUsername = async function (req, res) {
-  const {username} = req.body;
+  const { username } = req.body;
   try {
-    const result = await Author.findOne({username});
+    const result = await Author.findOne({ username });
     const isAvailable = result === null;
-    res.send({isAvailable});
+    res.send({ isAvailable });
   } catch (e) {
     res.status(500).send();
   }
 };
 
 const registerPoet = async function (req, res) {
-  const {username, name, email, password} = req.body;
+  const { username, name, email, password } = req.body;
   const poet = {
     name,
     username,
@@ -32,7 +32,7 @@ const registerPoet = async function (req, res) {
 };
 
 const serveLoginPoet = async function (req, res) {
-  const {username, password} = req.body;
+  const { username, password } = req.body;
   try {
     const author = await Author.findByCredentials(username, password);
     const token = await author.generateAuthToken();
@@ -42,4 +42,8 @@ const serveLoginPoet = async function (req, res) {
   }
 };
 
-module.exports = {serveIsAvailableUsername, registerPoet, serveLoginPoet};
+module.exports = {
+  serveIsAvailableUsername,
+  registerPoet,
+  serveLoginPoet,
+};

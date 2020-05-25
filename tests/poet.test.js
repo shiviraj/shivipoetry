@@ -1,8 +1,8 @@
 const request = require('supertest');
-const {app} = require('../src/router');
-const {Author} = require('../src/models/author');
+const { app } = require('../src/router');
+const { Author } = require('../src/models/author');
 
-const {authorOne, setupDatabase, cleanupDatabase} = require('./fixtures/db');
+const { authorOne, setupDatabase, cleanupDatabase } = require('./fixtures/db');
 
 describe('Should give static page', () => {
   test('Should serve static page from poet url', async () => {
@@ -20,17 +20,17 @@ describe('Poet signup and login', () => {
   test('Should give result true if username is available', async () => {
     await request(app)
       .post('/poet/username/available')
-      .send({username: 's'})
+      .send({ username: 's' })
       .expect(200)
-      .expect({isAvailable: true});
+      .expect({ isAvailable: true });
   });
 
   test('Should give result false if username is available', async () => {
     await request(app)
       .post('/poet/username/available')
-      .send({username: 'Shivi'})
+      .send({ username: 'Shivi' })
       .expect(200)
-      .expect({isAvailable: false});
+      .expect({ isAvailable: false });
   });
 
   test('Should register new poet', async () => {
@@ -68,7 +68,7 @@ describe('Poet signup and login', () => {
   test('Should successfully login user if credentials are right', async () => {
     const res = await request(app)
       .post('/poet/login')
-      .send({username: 'Shivi', password: 'Shivi@123'})
+      .send({ username: 'Shivi', password: 'Shivi@123' })
       .expect(200);
     const author = await Author.findById(res.body._id);
     expect(author).toBeNull();
@@ -77,14 +77,14 @@ describe('Poet signup and login', () => {
   test('Should not login user if credentials are invalid', async () => {
     const response = await request(app)
       .post('/poet/login')
-      .send({username: 'Shivi', password: 'Shivi@'})
+      .send({ username: 'Shivi', password: 'Shivi@' })
       .expect(400);
   });
 
   test('Should not login if user not exits', async () => {
     const response = await request(app)
       .post('/poet/login')
-      .send({username: 'userNotExists', password: 'Shivi@'})
+      .send({ username: 'userNotExists', password: 'Shivi@' })
       .expect(400);
   });
 });
@@ -96,6 +96,13 @@ describe('Need authentication', () => {
   test('Should serve static page from poet url', async () => {
     await request(app)
       .get('/poet/me/dashboard.html')
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+  });
+
+  test('Should serve static page from poet url of addPost.html', async () => {
+    await request(app)
+      .get('/poet/me/addPost.html')
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(200);
   });

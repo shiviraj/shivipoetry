@@ -1,13 +1,13 @@
-const {Post} = require('../models/post');
-const {serveTemplate, shuffle} = require('./utils');
+const { Post } = require('../models/post');
+const { serveTemplate, shuffle } = require('./utils');
 const LIMIT = 10;
 
 const servePosts = async function (req, res) {
-  const {pageNo} = req.body;
+  const { pageNo } = req.body;
   try {
     const posts = await Post.find()
       .populate('author', ['displayName', 'username'])
-      .sort({date: 1})
+      .sort({ date: 1 })
       .skip(LIMIT * (pageNo - 1))
       .limit(LIMIT);
     res.send(posts);
@@ -19,7 +19,7 @@ const servePosts = async function (req, res) {
 const serveNoOfPages = async function (req, res) {
   try {
     const posts = await Post.find();
-    res.send({pages: Math.ceil(posts.length / LIMIT)});
+    res.send({ pages: Math.ceil(posts.length / LIMIT) });
   } catch (e) {
     res.status(500).send();
   }
@@ -32,7 +32,7 @@ const serveUrl = function (req, res) {
 const servePostContent = async function (req, res) {
   const [, url] = req.body.postUrl.split('/');
   try {
-    const post = await Post.findOne({url});
+    const post = await Post.findOne({ url });
     await post
       .populate('author', ['displayName', 'username'])
       .populate('preLink', ['title', 'url'])

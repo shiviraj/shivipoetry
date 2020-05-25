@@ -19,9 +19,11 @@ input {
   font-size: 28px;
   padding: 5px;
   padding-left: 5%;
+  border: none;
+  border-bottom: 2px solid #555;
 }
 .buttons {
-  width: 25%;
+  width: 35%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -31,6 +33,7 @@ input {
   width: 45%;
   font-size: 18px;
   padding: 4px;
+  height: 6vh;
   background: #0c4da2;
   color: #fff;
   border: #0c4da2 1px solid;
@@ -44,8 +47,60 @@ input {
   box-shadow: none;
 }
 .other-information > div {
-  width: 45%;
+  width: 49%;
   border: 1px solid #999;
   box-shadow: 0 0 8px #888;
   margin: 5px 0;
+}
+#category-list,
+#tag-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 20vh;
+}
+.label {
+  border-bottom: 1px solid #888;
+  font-size: 16px;
+  text-align: center;
+  padding: 4px;
+}
+
+#category-list > div,
+#tag-list > div {
+  margin: 1% 4%;
+}
+label {
+  display: block;
+  position: relative;
+  margin: 1%;
+  padding-left: 5%;
+}
+input[type='checkbox'] {
+  margin-right: 2%;
+  border: 1px solid red;
+}
+
+.category > input,
+.tag > input {
+  outline: none;
+  border: 0;
+  border-bottom: 1px solid #333;
+  margin: 1% 4%;
+  width: 90%;
+  font-size: 18px;
+  padding: 1%;
+  padding-bottom: 0.5%;
+}
+
+.url {
+  display: flex;
+  flex-direction: column;
+}
+
+.url > input {
+  width: 100%;
+  padding: 1%;
+  font-size: 18px;
+  border: none;
+  border-bottom: 2px solid #555;
 }

@@ -1,7 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 
-const {auth} = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 const {
   serveIsAvailableUsername,
   registerPoet,
@@ -16,6 +16,6 @@ poetRouter.post('/poet/username/available', serveIsAvailableUsername);
 poetRouter.post('/poet/register', registerPoet);
 poetRouter.post('/poet/login', serveLoginPoet);
 
-poetRouter.use('/poet/me', auth, express.static('public/author/auth'));
+poetRouter.use('/author/me', auth, express.static('public/author/auth'));
 
-module.exports = {poetRouter};
+module.exports = { poetRouter };

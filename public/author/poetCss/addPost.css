@@ -1,0 +1,51 @@
+form {
+  margin: 2%;
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form > div {
+  width: 100%;
+  box-shadow: 0 0 8px #999;
+  margin: 1vh 0;
+}
+input {
+  outline: none;
+}
+.post-title > input {
+  width: 100%;
+  font-size: 28px;
+  padding: 5px;
+  padding-left: 5%;
+}
+.buttons {
+  width: 25%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: none;
+}
+.buttons > button {
+  width: 45%;
+  font-size: 18px;
+  padding: 4px;
+  background: #0c4da2;
+  color: #fff;
+  border: #0c4da2 1px solid;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.other-information {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  box-shadow: none;
+}
+.other-information > div {
+  width: 45%;
+  border: 1px solid #999;
+  box-shadow: 0 0 8px #888;
+  margin: 5px 0;
+}

@@ -1,0 +1,63 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../poetCss/dashboard.css" />
+    <link rel="stylesheet" href="../poetCss/addPost.css" />
+    <script src="./scripts/leftSidebar.js"></script>
+    <script type="text/javascript" src="./ckeditor/ckeditor.js"></script>
+
+    <title>$hivipoetry | Poet</title>
+    <title>$hivipoetry | Poet</title>
+  </head>
+  <body>
+    <div class="left-sidebar"></div>
+    <div class="main-content">
+      <div class="title header">Add New Post</div>
+      <form>
+        <div class="post-title">
+          <input
+            type="text"
+            id="title"
+            placeholder="Enter title here..."
+            required
+          />
+        </div>
+        <div class="post-content">
+          <textarea
+            id="content"
+            name="content"
+            id=""
+            cols="30"
+            rows="10"
+            placeholder="post content..."
+            required
+          ></textarea>
+          <script type="text/javascript">
+            CKEDITOR.replace('content');
+          </script>
+        </div>
+        <div class="other-information">
+          <div class="category">
+            <div class="category-list"></div>
+            <input type="text" placeholder="Add new category..." />
+          </div>
+          <div class="tag"></div>
+          <div class="url">
+            <input
+              type="text"
+              id="post-url"
+              pattern="[A-Za-z0-9]+"
+              title="No special character or space allowed"
+              required
+            />
+          </div>
+        </div>
+        <div class="buttons">
+          <button id="save-as-draft">Save as Draft</button>
+          <button id="publish">Publish Now</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

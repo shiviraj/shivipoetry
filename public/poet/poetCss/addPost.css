@@ -77,19 +77,30 @@ label {
 }
 input[type='checkbox'] {
   margin-right: 2%;
-  border: 1px solid red;
 }
 
-.category > input,
-.tag > input {
+.category > div {
+  display: flex;
+  justify-content: center;
+}
+
+.category > div > input,
+.tag > div > input {
   outline: none;
   border: 0;
   border-bottom: 1px solid #333;
   margin: 1% 4%;
-  width: 90%;
+  width: 70%;
   font-size: 18px;
   padding: 1%;
   padding-bottom: 0.5%;
+}
+
+.category button,
+.tag button {
+  width: 10%;
+  align-items: center;
+  height: 32px;
 }
 
 .url {

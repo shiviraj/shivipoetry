@@ -4,3 +4,20 @@ node_js:
 
 services:
   - mongodb
+
+notifications:
+  slack:
+    - rooms:
+        - vision-of-shivi:yMjdWIYd8PQQjVNIQ5P4lP2v #failures
+      on_success: never
+      on_failure: always
+      template:
+        - '%{repository_slug} (%{commit}) : %{message}'
+        - 'Build details: %{build_url}'
+    - rooms:
+        - vision-of-shivi:yMjdWIYd8PQQjVNIQ5P4lP2v #successes
+      on_success: always
+      on_failure: never
+      template:
+        - '%{repository_slug} (%{commit}) : %{message}'
+        - 'Build details: %{build_url}

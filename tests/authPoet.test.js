@@ -25,4 +25,46 @@ describe('AuthPoet', () => {
       .expect(200);
     expect(res.body[0]).toMatchObject({ name: 'Tag 1', url: 'tag-1' });
   });
+
+  test('Should add new category', async () => {
+    const res = await request(app)
+      .post('/poet/me/addNew/category')
+      .send({ category: 'Category 3' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body).toMatchObject({ name: 'Category 3', url: 'category-3' });
+  });
+
+  test('Should not  add new category if already exists', async () => {
+    await request(app)
+      .post('/poet/me/addNew/category')
+      .send({ category: 'Category 2' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(404);
+  });
+
+  test('Should give server error if request is invalid', async () => {
+    await request(app)
+      .post('/poet/me/addNew/category')
+      .send({ tag: 'Category 2' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(500);
+  });
+
+  test('Should add new tag', async () => {
+    const res = await request(app)
+      .post('/poet/me/addNew/tag')
+      .send({ tag: 'Tag 3' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body).toMatchObject({ name: 'Tag 3', url: 'tag-3' });
+  });
+
+  test('Should not  add new tag if already exists', async () => {
+    await request(app)
+      .post('/poet/me/addNew/tag')
+      .send({ tag: 'Tag 2' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(404);
+  });
 });

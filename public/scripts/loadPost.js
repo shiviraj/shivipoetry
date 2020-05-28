@@ -1,12 +1,12 @@
 const getOptions = function (body) {
   return {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   };
 };
 
-const showAuthor = function ({username, displayName}) {
+const showAuthor = function ({ username, displayName }) {
   return `<a class="author" href="../author/${username}">${displayName}</a>`;
 };
 
@@ -19,14 +19,14 @@ const showComments = function (count, commentStatus) {
 };
 
 const showCategory = function (categories) {
-  const categoriesHtml = categories.map(({name, url}) => {
+  const categoriesHtml = categories.map(({ name, url }) => {
     return `<a href="../category/${url}" class="category">${name}</a>`;
   });
   return categoriesHtml.join('');
 };
 
 const showTag = function (tags) {
-  const tagsHtml = tags.map(({name, url}) => {
+  const tagsHtml = tags.map(({ name, url }) => {
     return `<a href="../tag/${url}" class="tag-item">${name}</a>`;
   });
   return tagsHtml.join('');
@@ -70,7 +70,7 @@ const showContent = function (post) {
 };
 
 const loadPostContent = function (postUrl) {
-  fetch('/post/content', getOptions({postUrl}))
+  fetch('/post/content', getOptions({ postUrl }))
     .then((res) => res.json())
     .then(showContent);
 };
@@ -87,9 +87,7 @@ const showRelatedPost = function (posts) {
       </span>
     </div>
   </div>
-  <div class="post-divider"></div>
-  
-  `;
+  <div class="post-divider"></div>`;
   });
   getElement('#related-post').innerHTML = htmlData;
 };

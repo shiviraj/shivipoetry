@@ -1,11 +1,28 @@
 const request = require('supertest');
 const { app } = require('../src/router');
 
-const { authorOne, setupDatabase, cleanupDatabase } = require('./fixtures/db');
+const {
+  authorOne,
+  postOne,
+  setupDatabase,
+  cleanupDatabase,
+} = require('./fixtures/db');
 
 describe('AuthPoet', () => {
   beforeEach(setupDatabase);
   afterEach(cleanupDatabase);
+
+  test('Should serve my details', async () => {
+    const res = await request(app)
+      .get('/poet/me/i')
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body).toMatchObject({
+      name: 'Shivam Rajput',
+      email: 'shivi@example.com',
+      displayName: 'Shivam Rajput',
+    });
+  });
 
   test('Should serve all Categories', async () => {
     const res = await request(app)
@@ -124,5 +141,21 @@ describe('AuthPoet', () => {
       .send({ title: 'title', content: 'content' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(500);
+  });
+
+  test('Should serve my all posts', async () => {
+    const res = await request(app)
+      .get('/poet/me/myAllPosts')
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body[0]).toMatchObject({
+      content: 'This is the first post.',
+      title: 'Post 1',
+      status: 'published',
+      url: 'post-1',
+      type: 'post',
+      commentStatus: 'open',
+      commentCount: 0,
+    });
   });
 });

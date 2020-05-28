@@ -39,7 +39,7 @@ const renderPagination = function (currentPage) {
   if (currentPage == lastPage) getElement('#next').classList.add('hidden');
 };
 
-const showPagination = function ({pages}) {
+const showPagination = function ({ pages }) {
   if (pages === 1) return;
   const pagesArray = new Array(pages).fill('');
   const html = pagesArray.map((p, index) => {
@@ -49,7 +49,6 @@ const showPagination = function ({pages}) {
   const $pagination = getElement('.pagination');
   $pagination.innerHTML = html.join('') + '<div id="next">Next</div>';
   renderPagination(1);
-  console.log(pages);
 };
 
 const fetchPagination = function (url) {

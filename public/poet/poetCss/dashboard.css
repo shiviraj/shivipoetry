@@ -17,7 +17,9 @@ body {
   width: 160px;
   margin: 2% auto;
   border-radius: 50%;
-  background-color: #eee;
+  background-image: url('../auth/images/profile.png');
+  background-size: contain;
+  background-color: #aaa;
 }
 .profile > div {
   color: white;
@@ -35,6 +37,7 @@ body {
   color: #0c4da2;
   font-size: 20px;
   padding: 2%;
+  text-decoration: none;
 }
 .side-menu:hover {
   background-color: #aaa;

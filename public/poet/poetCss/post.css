@@ -1,0 +1,47 @@
+a {
+  text-decoration: none;
+}
+
+.post-container {
+  display: flex;
+  flex-direction: column;
+}
+.post-header {
+  display: flex;
+  border-bottom: 2px solid #333;
+}
+.post-header > div {
+  font-size: 18px;
+  padding: 8px 0;
+  text-align: center;
+}
+.title {
+  width: 30%;
+}
+.categories {
+  width: 20%;
+}
+.tags {
+  width: 15%;
+}
+.comment {
+  width: 8%;
+  text-align: center;
+}
+.date {
+  width: 20%;
+  text-align: center;
+}
+.views {
+  width: 5%;
+  text-align: center;
+}
+.post {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #333;
+  padding: 8px;
+}
+.post-details {
+  display: flex;
+}

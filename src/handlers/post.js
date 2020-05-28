@@ -3,7 +3,7 @@ const { serveTemplate, shuffle } = require('./utils');
 const LIMIT = 10;
 
 const servePosts = async function (req, res) {
-  const { pageNo } = req.body;
+  const { pageNo = 1 } = req.body;
   try {
     const posts = await Post.find()
       .populate('author', ['displayName', 'username'])

@@ -111,7 +111,7 @@ const submitPost = function (e, status) {
 
 const listenerOnSubmit = function () {
   const $publish = getElement('#publish');
-  $publish.addEventListener('click', (e) => submitPost(e, 'publish'));
+  $publish.addEventListener('click', (e) => submitPost(e, 'published'));
   const $saveAsDraft = getElement('#save-as-draft');
   $saveAsDraft.addEventListener('click', (e) => submitPost(e, 'draft'));
 };

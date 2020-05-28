@@ -4,7 +4,7 @@ const getAllElement = (selector) => document.querySelectorAll(selector);
 const getOptions = function (body, method) {
   return {
     method,
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   };
 };
@@ -22,7 +22,7 @@ const getFormDetails = function () {
   const name = getElement('#name').value;
   const email = getElement('#email').value;
   const password = getElement('#password').value;
-  return {username, name, email, password};
+  return { username, name, email, password };
 };
 
 const showMessage = function (status) {
@@ -67,7 +67,7 @@ const areInputsNotEmpty = function (formData) {
   return arrayOfInputs.every((dataUnit) => dataUnit);
 };
 
-const isValidPassword = function ({password}) {
+const isValidPassword = function ({ password }) {
   const cnfPassword = getElement('#cnf-password').value;
   return password.length > 5 && password === cnfPassword;
 };
@@ -91,7 +91,7 @@ const usernameAvailability = function () {
   const $username = getElement('#username');
   $username.addEventListener('input', () => {
     const username = $username.value;
-    fetch('/poet/username/available', getOptions({username}, 'POST'))
+    fetch('/poet/username/available', getOptions({ username }, 'POST'))
       .then((res) => res.json())
       .then((data) => {
         showUsernameStatus(data.isAvailable);

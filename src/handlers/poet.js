@@ -12,16 +12,9 @@ const serveIsAvailableUsername = async function (req, res) {
 };
 
 const registerPoet = async function (req, res) {
-  const { username, name, email, password } = req.body;
-  const poet = {
-    name,
-    username,
-    password,
-    email,
-    registeredDate: new Date(),
-    status: 'not approved',
-    displayName: name,
-  };
+  const poet = req.body;
+  poet.registeredDate = new Date();
+  poet.displayName = poet.name;
   try {
     const author = new Author(poet);
     const data = await author.save();

@@ -56,7 +56,7 @@ const postOne = {
   date: new Date('2020-03-25'),
   content: 'This is the first post.',
   title: 'Post 1',
-  status: 'approved',
+  status: 'published',
   url: 'post-1',
   type: 'post',
   commentStatus: 'open',

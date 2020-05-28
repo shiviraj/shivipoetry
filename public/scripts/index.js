@@ -1,4 +1,4 @@
-const showAuthor = function ({username, displayName}) {
+const showAuthor = function ({ username, displayName }) {
   return `<a class="author" href="author/${username}">${displayName}</a>`;
 };
 
@@ -40,8 +40,8 @@ const showPosts = function (postsData) {
 const fetchPosts = function (pageNo) {
   const options = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({pageNo}),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pageNo }),
   };
   fetch('/posts', options)
     .then((res) => res.json())
@@ -49,8 +49,8 @@ const fetchPosts = function (pageNo) {
 };
 
 const main = function () {
-  fetchPosts(1);
   fetchPagination('/posts/pagination');
+  fetchPosts(1);
   setTimeout(addListenerOnPages, 0);
 };
 

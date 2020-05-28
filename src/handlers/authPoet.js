@@ -71,10 +71,24 @@ const addNewPostAndServe = async function (req, res) {
   }
 };
 
+const serveAllPosts = async function (req, res) {
+  try {
+    const result = await Post.find({ author: req.author['_id'] })
+      .populate('author', ['displayName', 'username'])
+      .populate('tags', ['name', 'url'])
+      .populate('categories', ['name', 'url'])
+      .sort({ date: 1 });
+    res.send(result);
+  } catch {
+    res.status(500).send();
+  }
+};
+
 module.exports = {
   serveAllCategories,
   serveAllTags,
   addAndServe,
   serveURLAvailability,
   addNewPostAndServe,
+  serveAllPosts,
 };

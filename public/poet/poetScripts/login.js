@@ -50,7 +50,6 @@ const areInputsNotEmpty = function (formData) {
 const enableBtn = function () {
   getElement('.btn').classList.add('none-pointer');
   const formData = getFormDetails();
-  console.log(areInputsNotEmpty(formData));
   if (areInputsNotEmpty(formData)) {
     getElement('.btn').classList.remove('none-pointer');
   }

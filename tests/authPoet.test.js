@@ -102,6 +102,22 @@ describe('AuthPoet', () => {
     expect(res.body).toMatchObject({ status: true });
   });
 
+  test('Should save new post as draft', async () => {
+    const res = await request(app)
+      .post('/poet/me/addNewPost')
+      .send({
+        title: 'title',
+        content: 'content',
+        categories: ['category-1'],
+        tags: ['tag-1'],
+        status: 'draft',
+        url: 'title',
+      })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body).toMatchObject({ status: true });
+  });
+
   test('Should 500 error if required options are not provided', async () => {
     await request(app)
       .post('/poet/me/addNewPost')

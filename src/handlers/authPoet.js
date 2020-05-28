@@ -1,5 +1,6 @@
 const { Category } = require('../models/category');
 const { Tag } = require('../models/tag');
+const { Post } = require('../models/post');
 
 const serveAllCategories = async function (req, res) {
   try {
@@ -36,4 +37,18 @@ const addAndServe = async function (req, res) {
   }
 };
 
-module.exports = { serveAllCategories, serveAllTags, addAndServe };
+const serveURLAvailability = async function (req, res) {
+  try {
+    const result = await Post.find({ url: req.body.url });
+    res.send({ isAvailable: result.length == 0 });
+  } catch {
+    res.status(500).send();
+  }
+};
+
+module.exports = {
+  serveAllCategories,
+  serveAllTags,
+  addAndServe,
+  serveURLAvailability,
+};

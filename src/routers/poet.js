@@ -11,6 +11,7 @@ const {
   serveAllCategories,
   serveAllTags,
   addAndServe,
+  serveURLAvailability,
 } = require('../handlers/authPoet');
 
 const poetRouter = new express.Router();
@@ -25,5 +26,6 @@ poetRouter.use('/poet/me', auth, express.static('public/poet/auth'));
 poetRouter.get('/poet/me/categories', auth, serveAllCategories);
 poetRouter.get('/poet/me/tags', auth, serveAllTags);
 poetRouter.post('/poet/me/addNew/:itemToAdd', auth, addAndServe);
+poetRouter.post('/poet/me/isURLAvailable', auth, serveURLAvailability);
 
 module.exports = { poetRouter };

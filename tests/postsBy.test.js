@@ -128,9 +128,9 @@ describe('Post content', () => {
   test('Should serve the post content of given url', async () => {
     const res = await request(app)
       .post('/post/content')
-      .send({ postUrl: 'post/post-url-1' })
+      .send({ postUrl: 'post/post-1' })
       .expect(200);
-    expect(res.body.url).toBe('post-url-1');
+    expect(res.body.url).toBe('post-1');
   });
 
   test('Should serve 500 error if post not found', async () => {

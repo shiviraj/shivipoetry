@@ -59,10 +59,33 @@ const listenerOfAddNewCategoryAndTag = function () {
   });
 };
 
+const renderURLAvailability = ({ isAvailable }) => {
+  const $urlAvailability = getElement('.url-availability');
+  $urlAvailability.classList.add('not-available');
+  let result = 'URL is not available';
+  if (isAvailable) {
+    result = 'URL is available';
+    $urlAvailability.classList.remove('not-available');
+  }
+  $urlAvailability.innerText = result;
+};
+
+const listenerOnUrl = function () {
+  const $urlInput = getElement('.url input');
+  $urlInput.addEventListener('input', () => {
+    const url = $urlInput.value;
+    if (!url) return;
+    fetch('/poet/me/isURLAvailable', getOptions({ url }))
+      .then((res) => res.json())
+      .then(renderURLAvailability);
+  });
+};
+
 const main = function () {
   loadPartialHtml();
   fetchCategoryAndTags();
   listenerOfAddNewCategoryAndTag();
+  listenerOnUrl();
 };
 
 window.onload = main;

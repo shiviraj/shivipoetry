@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const {Author} = require('../../src/models/author');
-const {Post} = require('../../src/models/post');
-const {Tag} = require('../../src/models/tag');
-const {Category} = require('../../src/models/category');
+const { Author } = require('../../src/models/author');
+const { Post } = require('../../src/models/post');
+const { Tag } = require('../../src/models/tag');
+const { Category } = require('../../src/models/category');
 
 const authorOneId = new mongoose.Types.ObjectId();
 const authorOne = {
@@ -14,7 +14,7 @@ const authorOne = {
   status: 'approved',
   password: 'Shivi@123',
   displayName: 'Shivam Rajput',
-  tokens: [{token: jwt.sign({_id: authorOneId}, process.env.SECRET_CODE)}],
+  tokens: [{ token: jwt.sign({ _id: authorOneId }, process.env.SECRET_CODE) }],
 };
 
 const authorTwoId = new mongoose.Types.ObjectId();
@@ -25,7 +25,7 @@ const authorTwo = {
   email: 'shiviraj@example.com',
   password: '56what!!',
   displayName: 'Shivam Rajput',
-  tokens: [{token: jwt.sign({_id: authorTwoId}, process.env.SECRET_CODE)}],
+  tokens: [{ token: jwt.sign({ _id: authorTwoId }, process.env.SECRET_CODE) }],
 };
 
 const postOneId = new mongoose.Types.ObjectId();
@@ -36,11 +36,19 @@ const tagTwoId = new mongoose.Types.ObjectId();
 const categoryOneId = new mongoose.Types.ObjectId();
 const categoryTwoId = new mongoose.Types.ObjectId();
 
-const tagOne = {_id: tagOneId, name: 'Tag 1', url: 'tag-1'};
-const tagTwo = {_id: tagTwoId, name: 'Tag 2', url: 'tag-2'};
+const tagOne = { _id: tagOneId, name: 'Tag 1', url: 'tag-1' };
+const tagTwo = { _id: tagTwoId, name: 'Tag 2', url: 'tag-2' };
 
-const categoryOne = {_id: categoryOneId, name: 'Category 1', url: 'category-1'};
-const categoryTwo = {_id: categoryTwoId, name: 'Category 2', url: 'category-2'};
+const categoryOne = {
+  _id: categoryOneId,
+  name: 'Category 1',
+  url: 'category-1',
+};
+const categoryTwo = {
+  _id: categoryTwoId,
+  name: 'Category 2',
+  url: 'category-2',
+};
 
 const postOne = {
   _id: postOneId,
@@ -49,7 +57,7 @@ const postOne = {
   content: 'This is the first post.',
   title: 'Post 1',
   status: 'approved',
-  url: 'post-url-1',
+  url: 'post-1',
   type: 'post',
   commentStatus: 'open',
   commentCount: 0,

@@ -67,4 +67,22 @@ describe('AuthPoet', () => {
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(404);
   });
+
+  test('Should give URL availability true if url is not in database', async () => {
+    const res = await request(app)
+      .post('/poet/me/isURLAvailable')
+      .send({ url: 'new-url' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body).toMatchObject({ isAvailable: true });
+  });
+
+  test('Should give URL availability false if url is in database', async () => {
+    const res = await request(app)
+      .post('/poet/me/isURLAvailable')
+      .send({ url: 'post-1' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body).toMatchObject({ isAvailable: false });
+  });
 });

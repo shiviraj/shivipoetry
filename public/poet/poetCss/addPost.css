@@ -115,3 +115,14 @@ input[type='checkbox'] {
   border: none;
   border-bottom: 2px solid #555;
 }
+
+.url-availability {
+  color: green;
+  font-size: 12px;
+  font-weight: 200;
+  padding: 4px;
+  padding-left: 20px;
+}
+.not-available {
+  color: red;
+}

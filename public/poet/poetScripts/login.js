@@ -4,7 +4,7 @@ const getAllElement = (selector) => document.querySelectorAll(selector);
 const getOptions = function (body, method) {
   return {
     method,
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   };
 };
@@ -17,11 +17,10 @@ const clearInputs = function () {
 const getFormDetails = function () {
   const username = getElement('#username').value;
   const password = getElement('#password').value;
-  return {username, password};
+  return { username, password };
 };
 
 const showMessage = function (status) {
-  console.log(status);
   const $status = getElement('.status');
   const text = 'Credentials not matched';
   if (status) {

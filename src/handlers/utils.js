@@ -16,4 +16,4 @@ const shuffle = function (array) {
   return array;
 };
 
-module.exports = {serveTemplate, shuffle};
+module.exports = { serveTemplate, shuffle };

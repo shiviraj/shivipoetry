@@ -7,11 +7,13 @@ const {
   registerPoet,
   serveLoginPoet,
 } = require('../handlers/poet');
+
 const {
   serveAllCategories,
   serveAllTags,
   addAndServe,
   serveURLAvailability,
+  addNewPostAndServe,
 } = require('../handlers/authPoet');
 
 const poetRouter = new express.Router();
@@ -27,5 +29,6 @@ poetRouter.get('/poet/me/categories', auth, serveAllCategories);
 poetRouter.get('/poet/me/tags', auth, serveAllTags);
 poetRouter.post('/poet/me/addNew/:itemToAdd', auth, addAndServe);
 poetRouter.post('/poet/me/isURLAvailable', auth, serveURLAvailability);
+poetRouter.post('/poet/me/addNewPost', auth, addNewPostAndServe);
 
 module.exports = { poetRouter };

@@ -1,3 +1,4 @@
+const mongodb = require('mongodb');
 const { Category } = require('../models/category');
 const { Tag } = require('../models/tag');
 const { Post } = require('../models/post');
@@ -46,9 +47,34 @@ const serveURLAvailability = async function (req, res) {
   }
 };
 
+const getIds = async (array, Model) => {
+  return await Promise.all(
+    array.map(async (url) => {
+      const result = await Model.findOne({ url });
+      return result['_id'];
+    })
+  );
+};
+
+const addNewPostAndServe = async function (req, res) {
+  try {
+    const postOptions = req.body;
+    postOptions.categories = await getIds(postOptions.categories, Category);
+    postOptions.tags = await getIds(postOptions.tags, Tag);
+    postOptions.author = mongodb.ObjectID(req.author['_id']);
+    postOptions.date = new Date();
+    const post = new Post(postOptions);
+    await post.save();
+    res.send({ status: true });
+  } catch {
+    res.status(500).send();
+  }
+};
+
 module.exports = {
   serveAllCategories,
   serveAllTags,
   addAndServe,
   serveURLAvailability,
+  addNewPostAndServe,
 };

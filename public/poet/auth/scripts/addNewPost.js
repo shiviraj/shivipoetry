@@ -1,13 +1,13 @@
 const renderCategories = (categories) => {
   const categoryCheckbox = categories.map((category) => {
-    return `<label><input type="checkbox" name="${category.url}" value="${category.url}">${category.name}</label>`;
+    return `<label><input type="checkbox" name="category" value="${category.url}">${category.name}</label>`;
   });
   getElement('#category-list').innerHTML = categoryCheckbox.join('');
 };
 
 const renderTags = (tags) => {
   const tagCheckbox = tags.map((tag) => {
-    return `<label><input type="checkbox" name="${tag.url}" value="${tag.url}">${tag.name}</label>`;
+    return `<label><input type="checkbox" name="tag" value="${tag.url}">${tag.name}</label>`;
   });
   getElement('#tag-list').innerHTML = tagCheckbox.join('');
 };
@@ -81,11 +81,47 @@ const listenerOnUrl = function () {
   });
 };
 
+const getAll = function (getItem) {
+  const values = Array.from(
+    getAllElement(`#${getItem}-list input[type="checkbox"]:checked`)
+  );
+  return values.map((checkbox) => checkbox.value);
+};
+
+const renderResponse = function () {
+  const $form = getElement('form');
+  $form.innerHTML = `<div style="margin:0 auto;color: red">Something went wrong</div>${$form.innerHTML}`;
+};
+
+const submitPost = function (e, status) {
+  e.preventDefault();
+  const title = getElement('#title').value;
+  const url = getElement('.url input').value;
+  const content = CKEDITOR.instances['content'].getData();
+  const categories = getAll('category');
+  const tags = getAll('tag');
+  const options = getOptions({ title, content, url, categories, tags, status });
+  fetch('/poet/me/addNewPost', options)
+    .then((res) => res.json())
+    .then(({ status }) => {
+      if (status) location.href = './dashboard.html';
+      renderResponse();
+    });
+};
+
+const listenerOnSubmit = function () {
+  const $publish = getElement('#publish');
+  $publish.addEventListener('click', (e) => submitPost(e, 'publish'));
+  const $saveAsDraft = getElement('#save-as-draft');
+  $saveAsDraft.addEventListener('click', (e) => submitPost(e, 'draft'));
+};
+
 const main = function () {
   loadPartialHtml();
   fetchCategoryAndTags();
   listenerOfAddNewCategoryAndTag();
   listenerOnUrl();
+  listenerOnSubmit();
 };
 
 window.onload = main;

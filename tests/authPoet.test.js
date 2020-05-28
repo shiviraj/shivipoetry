@@ -85,4 +85,28 @@ describe('AuthPoet', () => {
       .expect(200);
     expect(res.body).toMatchObject({ isAvailable: false });
   });
+
+  test('Should add new post', async () => {
+    const res = await request(app)
+      .post('/poet/me/addNewPost')
+      .send({
+        title: 'title',
+        content: 'content',
+        categories: ['category-1'],
+        tags: ['tag-1'],
+        status: 'publish',
+        url: 'title',
+      })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body).toMatchObject({ status: true });
+  });
+
+  test('Should 500 error if required options are not provided', async () => {
+    await request(app)
+      .post('/poet/me/addNewPost')
+      .send({ title: 'title', content: 'content' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(500);
+  });
 });

@@ -5,7 +5,7 @@ const LIMIT = 10;
 const servePosts = async function (req, res) {
   const { pageNo = 1 } = req.body;
   try {
-    const posts = await Post.find()
+    const posts = await Post.find({ status: 'published' })
       .populate('author', ['displayName', 'username'])
       .sort({ date: -1 })
       .skip(LIMIT * (pageNo - 1))
@@ -18,7 +18,7 @@ const servePosts = async function (req, res) {
 
 const serveNoOfPages = async function (req, res) {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find({ status: 'published' });
     res.send({ pages: Math.ceil(posts.length / LIMIT) });
   } catch (e) {
     res.status(500).send();
@@ -49,7 +49,7 @@ const servePostContent = async function (req, res) {
 
 const serveRelatedPosts = async function (req, res) {
   try {
-    const posts = await Post.find().populate('author', [
+    const posts = await Post.find({ status: 'published' }).populate('author', [
       'displayName',
       'username',
     ]);

@@ -1,7 +1,7 @@
-const {Author} = require('../models/author');
-const {Tag} = require('../models/tag');
-const {Category} = require('../models/category');
-const {serveTemplate} = require('./utils');
+const { Author } = require('../models/author');
+const { Tag } = require('../models/tag');
+const { Category } = require('../models/category');
+const { serveTemplate } = require('./utils');
 const LIMIT = 10;
 
 const serveByUrl = function (req, res) {
@@ -10,15 +10,20 @@ const serveByUrl = function (req, res) {
 
 const serveAuthorsPosts = async function (res, username, pageNo) {
   try {
-    const result = await Author.findOne({username});
+    const result = await Author.findOne({ username });
     await result
       .populate({
         path: 'posts',
-        options: {limit: LIMIT, skip: LIMIT * (pageNo - 1), sort: {date: 1}},
+        match: { status: 'published' },
+        options: {
+          limit: LIMIT,
+          skip: LIMIT * (pageNo - 1),
+          sort: { date: 1 },
+        },
       })
       .execPopulate();
     if (!result.posts) return res.status(404).send();
-    res.send({posts: result.posts, author: result});
+    res.send({ posts: result.posts, author: result });
   } catch (e) {
     res.status(500).send();
   }
@@ -26,12 +31,17 @@ const serveAuthorsPosts = async function (res, username, pageNo) {
 
 const serveTagsOrCategoriesPosts = async function (res, Model, url, pageNo) {
   try {
-    const result = await Model.findOne({url});
+    const result = await Model.findOne({ url });
     await result
       .populate({
         path: 'posts',
-        options: {limit: LIMIT, skip: LIMIT * (pageNo - 1), sort: {date: 1}},
-        populate: {path: 'author'},
+        match: { status: 'published' },
+        options: {
+          limit: LIMIT,
+          skip: LIMIT * (pageNo - 1),
+          sort: { date: 1 },
+        },
+        populate: { path: 'author' },
       })
       .execPopulate();
 
@@ -44,33 +54,33 @@ const serveTagsOrCategoriesPosts = async function (res, Model, url, pageNo) {
 };
 
 const serveSelectorPosts = function (req, res) {
-  const {pageNo} = req.body;
-  const {key, value} = req.params;
+  const { pageNo } = req.body;
+  const { key, value } = req.params;
   if (key === 'author') {
     return serveAuthorsPosts(res, value, pageNo);
   }
-  const models = {category: Category, tag: Tag};
+  const models = { category: Category, tag: Tag };
   serveTagsOrCategoriesPosts(res, models[key], value, pageNo);
 };
 
 const serveSelectorPagination = async function (req, res) {
-  const {key, value} = req.params;
+  const { key, value } = req.params;
   const models = {
-    category: {model: Category, findBy: 'url'},
-    tag: {model: Tag, findBy: 'url'},
-    author: {model: Author, findBy: 'username'},
+    category: { model: Category, findBy: 'url' },
+    tag: { model: Tag, findBy: 'url' },
+    author: { model: Author, findBy: 'username' },
   };
   const Model = models[key].model;
   const findBy = {};
   findBy[models[key].findBy] = value;
   try {
     const result = await Model.findOne(findBy);
-    await result.populate({path: 'posts'}).execPopulate();
+    await result.populate({ path: 'posts' }).execPopulate();
     const pages = Math.ceil(result.posts.length / LIMIT);
-    res.send({pages});
+    res.send({ pages });
   } catch (e) {
     res.status(500).send();
   }
 };
 
-module.exports = {serveByUrl, serveSelectorPosts, serveSelectorPagination};
+module.exports = { serveByUrl, serveSelectorPosts, serveSelectorPagination };

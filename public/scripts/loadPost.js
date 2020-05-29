@@ -89,7 +89,7 @@ const showRelatedPost = function (posts) {
   </div>
   <div class="post-divider"></div>`;
   });
-  getElement('#related-post').innerHTML = htmlData;
+  getElement('#related-post').innerHTML = htmlData.join('');
 };
 
 const loadRelatedPost = function () {

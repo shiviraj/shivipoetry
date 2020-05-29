@@ -1,0 +1,77 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../poetCss/dashboard.css" />
+    <link rel="stylesheet" href="../poetCss/addPost.css" />
+    <script src="./scripts/leftSidebar.js"></script>
+    <script src="./scripts/addNewPost.js"></script>
+    <script type="text/javascript" src="./ckeditor/ckeditor.js"></script>
+
+    <title>$hivipoetry | Poet</title>
+    <title>$hivipoetry | Poet</title>
+  </head>
+  <body>
+    <div class="left-sidebar"></div>
+    <div class="main-content">
+      <div class="title header">Edit Post</div>
+      <form>
+        <div class="post-title">
+          <input
+            type="text"
+            id="title"
+            placeholder="Enter title here..."
+            required
+          />
+        </div>
+        <div class="post-content">
+          <textarea
+            id="content"
+            cols="30"
+            rows="10"
+            placeholder="post content..."
+            required
+          ></textarea>
+          <script type="text/javascript">
+            CKEDITOR.replace('content');
+          </script>
+        </div>
+        <div class="other-information">
+          <div class="category">
+            <div class="label">Category</div>
+            <div id="category-list"></div>
+            <div id="add-new-category">
+              <input type="text" placeholder="Add new category..." />
+              <button>Add</button>
+            </div>
+          </div>
+          <div class="tag">
+            <div class="tag">
+              <div class="label">Tags</div>
+              <div id="tag-list"></div>
+              <div id="add-new-tag">
+                <input type="text" placeholder="Add new tag..." />
+                <button>Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="url">
+          <input
+            type="text"
+            id="post-url"
+            pattern="[A-Za-z0-9]+"
+            title="No special character or space allowed"
+            placeholder="Enter post url..."
+            required
+          />
+          <span class="url-availability"></span>
+        </div>
+        <div class="buttons">
+          <button id="save-as-draft">Save as Draft</button>
+          <button id="publish">Update Now</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

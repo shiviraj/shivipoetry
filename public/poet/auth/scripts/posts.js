@@ -11,6 +11,10 @@ const showDate = (published, modified) => {
   return `${title}: <br>${moment(date).format('MMM DD, YYYY  hh:mm:ss a')}`;
 };
 
+const publishNow = (status) => {
+  return status == 'draft' ? '<a class="publish">Publish</a>' : '';
+};
+
 const showPosts = (posts) => {
   const htmlPosts = posts.map((post) => {
     return `<div class="post">
@@ -27,7 +31,8 @@ const showPosts = (posts) => {
       <div class="views">0</div>
     </div>
     <div class="actions">
-    <a class="edit" href="#">edit</a>
+    ${publishNow(post.status)}
+    <a class="edit" href="edit.html">edit</a>
     <a class="delete">delete</a>
     </div>
     </div>`;

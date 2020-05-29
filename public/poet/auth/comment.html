@@ -9,25 +9,13 @@
       type="text/javascript"
     ></script>
     <script src="./scripts/leftSidebar.js"></script>
-    <script src="./scripts/posts.js"></script>
     <title>$hivipoetry | Posts</title>
   </head>
-  <body>
+  <body onload="loadPartialHtml()">
     <div class="left-sidebar"></div>
     <div class="main-content">
-      <div class="header">Posts</div>
-      <div class="post-container">
-        <div class="post-header">
-          <div class="title">Title</div>
-          <div class="categories">Categories</div>
-          <div class="tags">Tags</div>
-          <div class="comment">Comment</div>
-          <div class="date">Date</div>
-          <div class="views">Views</div>
-        </div>
-        <div class="post-body"></div>
-      </div>
+      <div class="header">Comments</div>
+      <div class="comment-container"></div>
     </div>
-    <a class="add-new-post" title="Add new post" href="addPost.html"></a>
   </body>
 </html>

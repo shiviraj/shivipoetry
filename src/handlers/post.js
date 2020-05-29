@@ -7,7 +7,7 @@ const servePosts = async function (req, res) {
   try {
     const posts = await Post.find()
       .populate('author', ['displayName', 'username'])
-      .sort({ date: 1 })
+      .sort({ date: -1 })
       .skip(LIMIT * (pageNo - 1))
       .limit(LIMIT);
     res.send(posts);
@@ -53,7 +53,7 @@ const serveRelatedPosts = async function (req, res) {
       'displayName',
       'username',
     ]);
-    const randomPosts = shuffle(posts).slice(0, 6);
+    const randomPosts = shuffle(posts).slice(0, 4);
     if (!randomPosts) res.status(404).send();
     res.send(randomPosts);
   } catch (e) {

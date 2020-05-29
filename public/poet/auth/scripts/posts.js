@@ -32,7 +32,7 @@ const showPosts = (posts) => {
     </div>
     <div class="actions">
     ${publishNow(post.status)}
-    <a class="edit" href="edit.html">edit</a>
+    <a class="edit" href="edit.html?post=${post.url}">edit</a>
     <a class="delete">delete</a>
     </div>
     </div>`;

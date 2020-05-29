@@ -15,6 +15,8 @@ const {
   serveURLAvailability,
   addNewPostAndServe,
   serveAllPosts,
+  servePost,
+  updatePostAndServe,
 } = require('../handlers/authPoet');
 
 const poetRouter = new express.Router();
@@ -33,5 +35,7 @@ poetRouter.post('/poet/me/addNew/:itemToAdd', auth, addAndServe);
 poetRouter.post('/poet/me/isURLAvailable', auth, serveURLAvailability);
 poetRouter.post('/poet/me/addNewPost', auth, addNewPostAndServe);
 poetRouter.get('/poet/me/myAllPosts', auth, serveAllPosts);
+poetRouter.post('/poet/me/post', auth, servePost);
+poetRouter.post('/poet/me/updatePost', auth, updatePostAndServe);
 
 module.exports = { poetRouter };

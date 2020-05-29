@@ -2,6 +2,7 @@ const mongodb = require('mongodb');
 const { Category } = require('../models/category');
 const { Tag } = require('../models/tag');
 const { Post } = require('../models/post');
+const { serveTemplate } = require('./utils');
 
 const serveAllCategories = async function (req, res) {
   try {
@@ -40,8 +41,9 @@ const addAndServe = async function (req, res) {
 
 const serveURLAvailability = async function (req, res) {
   try {
-    const result = await Post.find({ url: req.body.url });
-    res.send({ isAvailable: result.length == 0 });
+    const result = await Post.findOne({ url: req.body.url });
+    const isAvailable = !result || result.url == req.body.currentUrl;
+    res.send({ isAvailable });
   } catch {
     res.status(500).send();
   }
@@ -84,6 +86,36 @@ const serveAllPosts = async function (req, res) {
   }
 };
 
+const servePost = async function (req, res) {
+  try {
+    const options = { url: req.body.url, author: req.author._id };
+    const result = await Post.findOne(options);
+    await result
+      .populate('tags', ['name', 'url'])
+      .populate('categories', ['name', 'url'])
+      .execPopulate();
+    if (!result) return res.status(404).end();
+    res.send(result);
+  } catch {
+    res.status(500).end();
+  }
+};
+
+const updatePostAndServe = async (req, res) => {
+  try {
+    const _id = req.body._id;
+    delete req.body._id;
+    const postOptions = req.body;
+    postOptions.categories = await getIds(postOptions.categories, Category);
+    postOptions.tags = await getIds(postOptions.tags, Tag);
+    postOptions.modified = new Date();
+    await Post.findByIdAndUpdate(_id, postOptions);
+    res.send({ status: true });
+  } catch {
+    res.status(500).end();
+  }
+};
+
 module.exports = {
   serveAllCategories,
   serveAllTags,
@@ -91,4 +123,6 @@ module.exports = {
   serveURLAvailability,
   addNewPostAndServe,
   serveAllPosts,
+  servePost,
+  updatePostAndServe,
 };

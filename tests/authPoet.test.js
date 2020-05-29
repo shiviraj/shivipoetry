@@ -3,6 +3,7 @@ const { app } = require('../src/router');
 
 const {
   authorOne,
+  postOneId,
   postOne,
   setupDatabase,
   cleanupDatabase,
@@ -157,5 +158,47 @@ describe('AuthPoet', () => {
       commentStatus: 'open',
       commentCount: 0,
     });
+  });
+
+  test('Should serve the details of posts', async () => {
+    const res = await request(app)
+      .post('/poet/me/post')
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .send({ url: 'post-1' })
+      .expect(200);
+    expect(res.body).toMatchObject({
+      content: 'This is the first post.',
+      title: 'Post 1',
+      status: 'published',
+      url: 'post-1',
+      type: 'post',
+      commentStatus: 'open',
+      commentCount: 0,
+    });
+  });
+
+  test('Should give error the post does not belongs to author', async () => {
+    await request(app)
+      .post('/poet/me/post')
+      .send({ url: 'post-2' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(500);
+  });
+
+  test('Should update post by author', async () => {
+    const res = await request(app)
+      .post('/poet/me/updatePost')
+      .send({ _id: postOneId, title: 'new title', categories: [], tags: [] })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body).toMatchObject({ status: true });
+  });
+
+  test('Should give server error if post url is not unique', async () => {
+    await request(app)
+      .post('/poet/me/updatePost')
+      .send({ url: 'post-1', title: 'new title' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(500);
   });
 });

@@ -49,6 +49,8 @@ const fetchPosts = function (pageNo) {
 };
 
 const main = function () {
+  loadNavbar();
+  loadSidebar();
   fetchPagination('/posts/pagination');
   fetchPosts(1);
   setTimeout(addListenerOnPages, 0);

@@ -1,0 +1,44 @@
+<div class="sidebar-container">
+  <div>
+    <div class="title"><span>Recent Posts</span></div>
+    <div class="sidebar-contents" id="sidebar-recent-posts"></div>
+  </div>
+  <div>
+    <div class="title"><span>Categories</span></div>
+    <div class="sidebar-contents" id="sidebar-category"></div>
+  </div>
+  <div>
+    <div class="title"><span>Tags</span></div>
+    <div class="sidebar-contents" id="sidebar-tag"></div>
+  </div>
+</div>
+
+<style>
+  .sidebar-container > div {
+    border: 1px solid #0c4da2;
+    margin-bottom: 10%;
+  }
+  .title {
+    border-bottom: 2px solid #0c4da2;
+    display: flex;
+  }
+  .title > span {
+    background: #0c4da2;
+    color: #fff;
+    padding: 8px 20px;
+    font-size: 18px;
+  }
+  .sidebar-contents {
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-contents > a {
+    margin-left: 10px;
+    text-decoration: none;
+  }
+  .sidebar-contents > a::before {
+    content: '♦';
+    padding-right: 5px;
+    color: #333;
+  }
+</style>

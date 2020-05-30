@@ -17,55 +17,19 @@ body {
   color: #0c4da2;
   padding-left: 2%;
 }
-
-.menu-wrapper {
-  background-color: #0c4da2;
-  display: block;
-  width: 100%;
+.container {
+  display: flex;
+  justify-content: space-around;
 }
 
-.fixed-menu-bar {
-  position: fixed;
-  top: 0;
+.main-content {
+  width: 65%;
+  margin: 2%;
 }
 
-.menu-bar {
-  padding-left: 2%;
-}
-
-@media (min-width: 768px) {
-  .menu-bar a:hover {
-    background-color: #001b70;
-    transition: 1s;
-  }
-}
-
-.home-icon {
-  background-color: #001b70;
-}
-
-.menu-bar ul {
-  list-style: none;
-}
-.menu-bar ul li {
-  display: inline-block;
-  line-height: 48px;
-  margin-right: -3px;
-  position: relative;
-}
-
-.menu-bar a {
-  float: left;
-  font-size: 20px;
-  line-height: 48px;
-  font-weight: 200;
-  text-decoration: none;
-  color: #fff;
-  padding: 0 15px;
-  position: relative;
-  text-transform: uppercase;
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
+.sidebar {
+  width: 25%;
+  margin: 2%;
 }
 
 footer {

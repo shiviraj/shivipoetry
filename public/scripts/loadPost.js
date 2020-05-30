@@ -99,6 +99,8 @@ const loadRelatedPost = function () {
 };
 
 const main = function () {
+  loadNavbar();
+  loadSidebar();
   const [, , , ...url] = window.location.href.split('/');
   const postUrl = url.join('/');
   loadPostContent(postUrl);

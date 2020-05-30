@@ -1,4 +1,4 @@
-const showAuthor = function ({username, displayName}) {
+const showAuthor = function ({ username, displayName }) {
   return `<a class="author" href="../author/${username}">${displayName}</a>`;
 };
 
@@ -45,10 +45,10 @@ const showPosts = function (posts) {
   showAllPost(posts);
 };
 
-const showAuthorsPosts = function ({posts, author}) {
-  const {username, displayName} = author;
+const showAuthorsPosts = function ({ posts, author }) {
+  const { username, displayName } = author;
   const postsWithAuthor = posts.map((post) => {
-    post.author = {displayName, username};
+    post.author = { displayName, username };
     return post;
   });
   showPosts(postsWithAuthor);
@@ -57,8 +57,8 @@ const showAuthorsPosts = function ({posts, author}) {
 const getPosts = function (selector, selectElement, pageNo) {
   const options = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({pageNo}),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pageNo }),
   };
   fetch(`/posts/${selector}/${selectElement}`, options)
     .then((res) => res.json())
@@ -75,6 +75,8 @@ const fetchPosts = function (pageNo) {
 };
 
 const main = function () {
+  loadNavbar();
+  loadSidebar();
   const [, , , selector, selectElement] = window.location.href.split('/');
   getPosts(selector, selectElement, 1);
   fetchPagination(`/posts/pagination/${selector}/${selectElement}`);

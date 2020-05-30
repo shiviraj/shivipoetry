@@ -1,6 +1,12 @@
 const request = require('supertest');
 const { app } = require('../src/router');
-const { postOne, setupDatabase, cleanupDatabase } = require('./fixtures/db');
+const {
+  postOne,
+  categoryOne,
+  categoryTwo,
+  setupDatabase,
+  cleanupDatabase,
+} = require('./fixtures/db');
 
 describe('Post', () => {
   beforeEach(setupDatabase);
@@ -63,12 +69,12 @@ describe('Related posts', () => {
     expect(res.body.length).toBe(3);
   });
 
-  // test('Should serve 500 error if post not found', async () => {
-  //   await request(app)
-  //     .post('/post/content')
-  //     .send({postUrl: 'post/not-found'})
-  //     .expect(500);
-  // });
+  test('Should serve 500 error if post not found', async () => {
+    await request(app)
+      .post('/post/content')
+      .send({ postUrl: 'post/not-found' })
+      .expect(500);
+  });
 });
 
 describe('Post content by url', () => {
@@ -77,5 +83,18 @@ describe('Post content by url', () => {
 
   test('Should serve the post content by given url', async () => {
     await request(app).get('/post/post-1').expect(200);
+  });
+});
+
+describe('Sidebar related things', () => {
+  beforeEach(setupDatabase);
+  afterEach(cleanupDatabase);
+
+  test('Should serve all categories', async () => {
+    await request(app).get('/categories').expect(200);
+  });
+
+  test('Should serve all tags', async () => {
+    await request(app).get('/tags').expect(200);
   });
 });

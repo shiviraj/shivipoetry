@@ -1,4 +1,6 @@
 const { Post } = require('../models/post');
+const { Category } = require('../models/category');
+const { Tag } = require('../models/tag');
 const { serveTemplate, shuffle } = require('./utils');
 const LIMIT = 10;
 
@@ -61,10 +63,30 @@ const serveRelatedPosts = async function (req, res) {
   }
 };
 
+const serveCategories = async function (req, res) {
+  try {
+    const result = await Category.find();
+    res.send(result);
+  } catch {
+    res.status(500).end();
+  }
+};
+
+const serveTags = async function (req, res) {
+  try {
+    const result = await Tag.find();
+    res.send(result);
+  } catch {
+    res.status(500).end();
+  }
+};
+
 module.exports = {
   servePosts,
   serveNoOfPages,
   serveUrl,
   servePostContent,
   serveRelatedPosts,
+  serveCategories,
+  serveTags,
 };

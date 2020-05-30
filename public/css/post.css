@@ -2,10 +2,6 @@ p {
   margin: 2%;
 }
 .post-content {
-  margin: 2%;
-  width: 65%;
-}
-.post-content {
   box-shadow: 0 0 4px gray;
   padding: 2%;
   transition: ease all 0.2s;

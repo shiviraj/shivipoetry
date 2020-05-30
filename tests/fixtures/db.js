@@ -119,6 +119,8 @@ const cleanupDatabase = async function () {
 };
 
 module.exports = {
+  categoryOne,
+  categoryTwo,
   postOneId,
   authorOneId,
   authorOne,

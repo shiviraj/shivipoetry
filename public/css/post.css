@@ -1,10 +1,21 @@
 p {
   margin: 2%;
 }
+@media (max-width: 420px) {
+  p {
+    margin: 2% 0;
+  }
+}
+
 .post-content {
   box-shadow: 0 0 4px gray;
   padding: 2%;
   transition: ease all 0.2s;
+}
+@media (max-width: 420px) {
+  .post-title {
+    font-size: 12px;
+  }
 }
 
 .categories {
@@ -24,6 +35,12 @@ p {
   text-transform: capitalize;
   background-color: #0c4da2;
 }
+@media (max-width: 420px) {
+  .categories a {
+    padding: 2px 6px;
+    margin: 0;
+  }
+}
 .categories a:hover {
   background-color: #001b70;
 }
@@ -34,6 +51,7 @@ p {
   color: #767676;
   margin: 10px 0;
 }
+
 .post-date-and-author > div {
   cursor: pointer;
   font-weight: 300;
@@ -62,6 +80,20 @@ p {
 .author {
   margin: 0 20px;
 }
+@media (max-width: 420px) {
+  .post-date-and-author {
+    margin: 5px 0;
+  }
+  .post-date-and-author > div {
+    font-size: 12px;
+  }
+  .post-date::before,
+  .author::before,
+  .comments::before {
+    margin: 0;
+  }
+}
+
 .post-content a {
   text-decoration: none;
 }
@@ -92,6 +124,22 @@ p {
   color: #0c4da2;
   border-color: #999;
   font-weight: 500;
+}
+@media (max-width: 420px) {
+  .tag-title {
+    font-size: 14px;
+  }
+  .tag-item {
+    padding: 0 5px;
+  }
+  .post-date-and-author > div {
+    font-size: 12px;
+  }
+  .post-date::before,
+  .author::before,
+  .comments::before {
+    margin: 0;
+  }
 }
 
 .nav-links {
@@ -139,6 +187,12 @@ p {
   margin: 2%;
   margin-left: 0;
 }
+@media (max-width: 420px) {
+  .related-post-title {
+    font-size: 18px;
+  }
+}
+
 .comment-item {
   padding: 2%;
   box-shadow: 0 0 4px #e1e1e1;

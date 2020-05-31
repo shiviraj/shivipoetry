@@ -18,6 +18,15 @@
     border: 1px solid #0c4da2;
     margin-bottom: 10%;
   }
+  @media (max-width: 420px) {
+    .sidebar-container {
+      margin-top: -2%;
+    }
+    .sidebar-container > div {
+      margin-bottom: 2%;
+    }
+  }
+
   .title {
     border-bottom: 2px solid #0c4da2;
     display: flex;
@@ -28,10 +37,23 @@
     padding: 8px 20px;
     font-size: 18px;
   }
+  @media (max-width: 420px) {
+    .title > span {
+      font-size: 16px;
+      padding: 4px 10px;
+    }
+  }
+
   .sidebar-contents {
     display: flex;
     flex-direction: column;
   }
+  @media (max-width: 420px) {
+    .sidebar-contents {
+      font-size: 15px;
+    }
+  }
+
   .sidebar-contents > a {
     margin-left: 10px;
     text-decoration: none;
@@ -40,5 +62,13 @@
     content: '♦';
     padding-right: 5px;
     color: #333;
+  }
+  @media (max-width: 420px) {
+    .sidebar-contents > a {
+      margin-left: 5px;
+    }
+    .sidebar-contents > a::before {
+      padding-right: 2px;
+    }
   }
 </style>

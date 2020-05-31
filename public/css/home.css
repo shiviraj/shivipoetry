@@ -5,6 +5,13 @@
   max-height: 160px;
   overflow: hidden;
 }
+@media (max-width: 420px) {
+  .post-card {
+    max-height: 200px;
+    font-size: 16px;
+  }
+}
+
 .post-card:hover {
   box-shadow: 0 0 26px gray;
   transition: ease all 0.2s;
@@ -17,6 +24,13 @@
   font-weight: 800;
   cursor: pointer;
 }
+@media (max-width: 420px) {
+  .post-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
 .post-title:hover {
   color: #0c4da2;
 }

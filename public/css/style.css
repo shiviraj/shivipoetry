@@ -6,9 +6,6 @@ body {
   font-family: sans-serif;
   transition: all 0.5s ease;
 }
-a:visited {
-  color: #0c4da2;
-}
 .site-logo {
   width: auto;
   height: auto;

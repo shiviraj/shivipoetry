@@ -18,7 +18,7 @@ const serveAuthorsPosts = async function (res, username, pageNo) {
         options: {
           limit: LIMIT,
           skip: LIMIT * (pageNo - 1),
-          sort: { date: 1 },
+          sort: { date: -1 },
         },
       })
       .execPopulate();
@@ -39,7 +39,7 @@ const serveTagsOrCategoriesPosts = async function (res, Model, url, pageNo) {
         options: {
           limit: LIMIT,
           skip: LIMIT * (pageNo - 1),
-          sort: { date: 1 },
+          sort: { date: -1 },
         },
         populate: { path: 'author' },
       })

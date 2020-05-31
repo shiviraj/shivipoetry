@@ -6,6 +6,9 @@ body {
   font-family: sans-serif;
   transition: all 0.5s ease;
 }
+a:visited {
+  color: #0c4da2;
+}
 .site-logo {
   width: auto;
   height: auto;
@@ -42,7 +45,6 @@ body {
   width: 25%;
   margin: 2%;
 }
-
 @media (max-width: 420px) {
   .main-content,
   .sidebar {
@@ -59,6 +61,13 @@ footer > a {
   font-weight: 600;
   text-decoration: none;
 }
+@media (max-width: 420px) {
+  footer {
+    padding: 5px;
+    font-size: 12px;
+  }
+}
+
 .top-arrow {
   background-color: #0c4da2;
   width: 40px;

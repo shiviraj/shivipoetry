@@ -37,7 +37,7 @@ const serveAllPosts = async function (req, res) {
       .populate('author', ['displayName', 'username'])
       .populate('tags', ['name', 'url'])
       .populate('categories', ['name', 'url'])
-      .sort({ date: 1 });
+      .sort({ date: -1 });
     res.send(result);
   } catch {
     res.status(500).send();

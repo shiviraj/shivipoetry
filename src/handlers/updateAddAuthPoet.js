@@ -69,9 +69,19 @@ const publishPostAndServe = async (req, res) => {
   }
 };
 
+const deletePostAndServe = async (req, res) => {
+  try {
+    await Post.findOneAndDelete({ url: req.body.url });
+    res.send({ status: true });
+  } catch {
+    res.status(500).end();
+  }
+};
+
 module.exports = {
   addAndServe,
   addNewPostAndServe,
   updatePostAndServe,
   publishPostAndServe,
+  deletePostAndServe,
 };

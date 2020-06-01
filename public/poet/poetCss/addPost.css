@@ -1,7 +1,11 @@
-form {
-  margin: 2%;
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
 }
 form {
+  margin: 2%;
   display: flex;
   flex-direction: column;
 }
@@ -38,7 +42,6 @@ input {
   color: #fff;
   border: #0c4da2 1px solid;
   border-radius: 6px;
-  cursor: pointer;
 }
 .other-information {
   display: flex;

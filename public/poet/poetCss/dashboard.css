@@ -8,6 +8,12 @@ body {
   height: 100vh;
   justify-content: start;
 }
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+}
 .profile {
   height: 240px;
   background-color: #0c4da2;

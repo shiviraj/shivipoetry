@@ -1,7 +1,9 @@
 a {
   text-decoration: none;
 }
-
+.hidden {
+  display: none;
+}
 .post-container {
   display: flex;
   flex-direction: column;
@@ -45,7 +47,26 @@ a {
 .post-details {
   display: flex;
 }
-.publish {
-  cursor: pointer;
+.actions {
+  display: flex;
+}
+.actions > a {
   color: #0000ee;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.actions > a:hover {
+  color: #0000bb;
+}
+.confirmation-title {
+  color: red;
+  text-shadow: 1px 1px 1px gray;
+}
+.buttons {
+  margin: 2% 20% 0 20%;
+  display: flex;
+  justify-content: space-around;
+}
+.buttons button {
+  padding: 2px 8px;
 }

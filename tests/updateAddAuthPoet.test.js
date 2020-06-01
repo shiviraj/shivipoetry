@@ -14,7 +14,7 @@ describe('UpdateAddAuthPoet', () => {
 
   test('Should add new category', async () => {
     const res = await request(app)
-      .post('/poet/me/addNew/category')
+      .put('/poet/me/addNew/category')
       .send({ category: 'Category 3' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(200);
@@ -23,7 +23,7 @@ describe('UpdateAddAuthPoet', () => {
 
   test('Should not add new category if already exists', async () => {
     await request(app)
-      .post('/poet/me/addNew/category')
+      .put('/poet/me/addNew/category')
       .send({ category: 'Category 2' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(404);
@@ -31,7 +31,7 @@ describe('UpdateAddAuthPoet', () => {
 
   test('Should give server error if request is invalid', async () => {
     await request(app)
-      .post('/poet/me/addNew/category')
+      .put('/poet/me/addNew/category')
       .send({ tag: 'Category 2' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(500);
@@ -39,7 +39,7 @@ describe('UpdateAddAuthPoet', () => {
 
   test('Should add new tag', async () => {
     const res = await request(app)
-      .post('/poet/me/addNew/tag')
+      .put('/poet/me/addNew/tag')
       .send({ tag: 'Tag 3' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(200);
@@ -48,7 +48,7 @@ describe('UpdateAddAuthPoet', () => {
 
   test('Should not add new tag if already exists', async () => {
     await request(app)
-      .post('/poet/me/addNew/tag')
+      .put('/poet/me/addNew/tag')
       .send({ tag: 'Tag 2' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(404);
@@ -56,7 +56,7 @@ describe('UpdateAddAuthPoet', () => {
 
   test('Should add new post', async () => {
     const res = await request(app)
-      .post('/poet/me/addNewPost')
+      .put('/poet/me/addNewPost')
       .send({
         title: 'title',
         content: 'content',
@@ -72,7 +72,7 @@ describe('UpdateAddAuthPoet', () => {
 
   test('Should save new post as draft', async () => {
     const res = await request(app)
-      .post('/poet/me/addNewPost')
+      .put('/poet/me/addNewPost')
       .send({
         title: 'title',
         content: 'content',
@@ -88,7 +88,7 @@ describe('UpdateAddAuthPoet', () => {
 
   test('Should 500 error if required options are not provided', async () => {
     await request(app)
-      .post('/poet/me/addNewPost')
+      .put('/poet/me/addNewPost')
       .send({ title: 'title', content: 'content' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(500);
@@ -114,6 +114,15 @@ describe('UpdateAddAuthPoet', () => {
   test('Should publish the post of given url', async () => {
     const res = await request(app)
       .post('/poet/me/publishPost')
+      .send({ url: 'post-1' })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body.status).toBeTruthy();
+  });
+
+  test('Should delete the post of given url', async () => {
+    const res = await request(app)
+      .delete('/poet/me/deletePost')
       .send({ url: 'post-1' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(200);

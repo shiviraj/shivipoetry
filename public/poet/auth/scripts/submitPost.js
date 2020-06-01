@@ -21,9 +21,9 @@ const fetchCategoryAndTags = function () {
     .then((tags) => renderTags(tags));
 };
 
-const getOptions = (body) => {
+const getOptions = (body, method = 'POST') => {
   return {
-    method: 'POST',
+    method,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   };
@@ -44,7 +44,7 @@ const listenerOfAddNewCategoryAndTag = function () {
   $addNewCategory.addEventListener('click', () => {
     const category = getElement('#add-new-category input').value;
     if (!category) return;
-    fetch('/poet/me/addNew/category', getOptions({ category }))
+    fetch('/poet/me/addNew/category', getOptions({ category }, 'PUT'))
       .then((res) => res.json())
       .then((category) => addNewCategory(category));
   });
@@ -53,7 +53,7 @@ const listenerOfAddNewCategoryAndTag = function () {
   $addNewTag.addEventListener('click', () => {
     const tag = getElement('#add-new-tag input').value;
     if (!tag) return;
-    fetch('/poet/me/addNew/tag', getOptions({ tag }))
+    fetch('/poet/me/addNew/tag', getOptions({ tag }, 'PUT'))
       .then((res) => res.json())
       .then((tag) => addNewTag(tag));
   });

@@ -45,3 +45,7 @@ a {
 .post-details {
   display: flex;
 }
+.publish {
+  cursor: pointer;
+  color: #0000ee;
+}

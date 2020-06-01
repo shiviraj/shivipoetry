@@ -9,15 +9,19 @@ const {
 } = require('../handlers/poet');
 
 const {
+  addAndServe,
+  addNewPostAndServe,
+  updatePostAndServe,
+  publishPostAndServe,
+} = require('../handlers/updateAddAuthPoet');
+
+const {
   serveAllCategories,
   serveAllTags,
-  addAndServe,
   serveURLAvailability,
-  addNewPostAndServe,
   serveAllPosts,
   servePost,
-  updatePostAndServe,
-} = require('../handlers/authPoet');
+} = require('../handlers/serveAuthPoet');
 
 const poetRouter = new express.Router();
 
@@ -37,5 +41,6 @@ poetRouter.post('/poet/me/addNewPost', auth, addNewPostAndServe);
 poetRouter.get('/poet/me/myAllPosts', auth, serveAllPosts);
 poetRouter.post('/poet/me/post', auth, servePost);
 poetRouter.post('/poet/me/updatePost', auth, updatePostAndServe);
+poetRouter.post('/poet/me/publishPost', auth, publishPostAndServe);
 
 module.exports = { poetRouter };

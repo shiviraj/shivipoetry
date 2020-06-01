@@ -11,8 +11,8 @@ const showDate = (published, modified) => {
   return `${title}: <br>${moment(date).format('MMM DD, YYYY  hh:mm:ss a')}`;
 };
 
-const publishNow = (status) => {
-  return status == 'draft' ? '<a class="publish">Publish</a>' : '';
+const publishNow = (status, url) => {
+  return status == 'draft' ? `<a class="publish" id="${url}">Publish</a>` : '';
 };
 
 const showPosts = (posts) => {
@@ -31,9 +31,9 @@ const showPosts = (posts) => {
       <div class="views">0</div>
     </div>
     <div class="actions">
-    ${publishNow(post.status)}
-    <a class="edit" href="edit.html?post=${post.url}">edit</a>
-    <a class="delete">delete</a>
+    ${publishNow(post.status, post.url)}
+    <a class="edit" href="edit.html?post=${post.url}">Edit</a>
+    <a class="delete">Delete</a>
     </div>
     </div>`;
   });
@@ -46,9 +46,38 @@ const renderPosts = () => {
     .then(showPosts);
 };
 
+const getOptions = (body) => {
+  return {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  };
+};
+
+const removePublishButton = function ($publish) {
+  return (status) => {
+    if (!status) return;
+    const $parent = $publish.parentNode.parentNode;
+    $publish.remove();
+    $parent.querySelector('.title').lastChild.remove();
+  };
+};
+
+const listenerOnPublish = () => {
+  const $publishes = Array.from(getAllElement('.publish'));
+  $publishes.forEach(($publish) => {
+    $publish.addEventListener('click', (e) => {
+      fetch('/poet/me/publishPost', getOptions({ url: e.target.id }))
+        .then((res) => res.json())
+        .then(removePublishButton($publish));
+    });
+  });
+};
+
 const main = () => {
   loadPartialHtml();
   renderPosts();
+  setTimeout(listenerOnPublish, 1000);
 };
 
 window.onload = main;

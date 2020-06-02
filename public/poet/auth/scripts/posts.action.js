@@ -53,8 +53,10 @@ const listenerOnDelete = () => {
 const main = () => {
   loadPartialHtml();
   renderPosts();
-  setTimeout(listenerOnPublish, 1000);
-  setTimeout(listenerOnDelete, 1000);
+  setTimeout(() => {
+    listenerOnPublish();
+    listenerOnDelete();
+  }, 1000);
 };
 
 window.onload = main;

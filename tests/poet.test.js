@@ -82,10 +82,17 @@ describe('Poet signup and login', () => {
   });
 
   test('Should not login if user not exits', async () => {
-    const response = await request(app)
+    await request(app)
       .post('/poet/login')
       .send({ username: 'userNotExists', password: 'Shivi@' })
       .expect(400);
+  });
+
+  test('Should author logout from account', async () => {
+    await request(app)
+      .get('/poet/me/logout')
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(302);
   });
 });
 

@@ -61,4 +61,16 @@ const updatePostCountAndGetToken = async (req, url, Post) => {
   }
 };
 
-module.exports = { serveTemplate, shuffle, updatePostCountAndGetToken };
+const clearInvalidTokens = async function (id, Author) {
+  const { SECRET_CODE } = process.env;
+  const author = await Author.findById(id);
+  const tokens = author.tokens.filter(filterValidTokens(SECRET_CODE));
+  await Author.findByIdAndUpdate(id, { tokens });
+};
+
+module.exports = {
+  serveTemplate,
+  shuffle,
+  updatePostCountAndGetToken,
+  clearInvalidTokens,
+};

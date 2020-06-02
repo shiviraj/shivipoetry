@@ -16,7 +16,18 @@ const loadAndRenderSidebar = () => {
     .then((data) => (getElement('.left-sidebar').innerHTML = data));
 };
 
+const listenerOnLogout = () => {
+  getElement('#logout').addEventListener('click', () => {
+    fetch('/poet/me/logout').then(({ status }) => {
+      if (status == 200) window.location.href = '../login.html';
+    });
+  });
+};
+
 const loadPartialHtml = function () {
   loadAndRenderSidebar();
-  setTimeout(fetchAndRenderPoet, 1000);
+  setTimeout(() => {
+    fetchAndRenderPoet();
+    listenerOnLogout();
+  }, 1000);
 };

@@ -5,6 +5,7 @@ const {
   serveIsAvailableUsername,
   registerPoet,
   serveLoginPoet,
+  logoutFromAccount,
 } = require('../handlers/poet');
 
 const {
@@ -31,7 +32,8 @@ poetRouter.post('/poet/register', registerPoet);
 poetRouter.post('/poet/login', serveLoginPoet);
 
 poetRouter.use('/poet/me', auth, express.static('public/poet/auth'));
-poetRouter.use('/poet/me/i', auth, (req, res) => res.send(req.author));
+poetRouter.get('/poet/me/i', auth, (req, res) => res.send(req.author));
+poetRouter.get('/poet/me/logout', auth, logoutFromAccount);
 poetRouter.get('/poet/me/categories', auth, serveAllCategories);
 poetRouter.get('/poet/me/tags', auth, serveAllTags);
 poetRouter.put('/poet/me/addNew/:itemToAdd', auth, addAndServe);

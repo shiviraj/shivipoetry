@@ -38,13 +38,15 @@ const listenerOnDelete = () => {
   const $deletes = Array.from(getAllElement('.delete'));
   $deletes.forEach(($delete) => {
     $delete.addEventListener('click', () => {
-      $delete.innerHTML = `<div class="confirmation">
+      setTimeout(() => {
+        $delete.innerHTML = `<div class="confirmation">
         <div class="confirmation-title">Are you sure to delete?</div> 
         <div class="buttons">
           <button onclick="hideConfirmation(this.parentNode.parentNode.parentNode)">No</button>
           <button onclick="deletePost(this.parentNode.parentNode.parentNode)">Yes</button>
         </div>
       </div>`;
+      }, 0);
       setTimeout(hideConfirmation, 3000, $delete);
     });
   });

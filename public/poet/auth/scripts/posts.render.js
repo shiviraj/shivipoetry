@@ -47,6 +47,7 @@ const showPosts = (posts) => {
   </div>`;
   });
   getElement('.post-body').innerHTML = htmlPosts.join('');
+  listenerOnPublish();
 };
 
 const removePost = function ($post) {

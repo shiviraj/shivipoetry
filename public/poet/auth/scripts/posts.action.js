@@ -41,10 +41,9 @@ const showConfirmation = ($delete) => {
   setTimeout(hideConfirmation, 3000, $delete);
 };
 
-const main = () => {
-  loadPartialHtml();
+const main = async () => {
+  await loadPartialHtml();
   renderPosts();
-  setTimeout(listenerOnPublish, 1000);
 };
 
 window.onload = main;

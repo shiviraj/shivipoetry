@@ -33,7 +33,16 @@ const showPosts = (posts) => {
     <div class="actions">
       ${publishNow(post.status, post.url)}
       <a class="edit" href="edit.html?post=${post.url}">Edit</a>
-      <a class="delete" title="${post.url}">Delete</a>
+      <a class="delete" title="${post.url}">
+        <span onclick="showConfirmation(this)">Delete</span>
+        <div class="confirmation hidden">
+          <div class="confirmation-title">Are you sure to delete?</div> 
+          <div class="buttons">
+            <button onclick="hideConfirmation(this.parentNode.parentNode.previousElementSibling)">No</button>
+            <button onclick="deletePost(this.parentNode.parentNode.parentNode)">Yes</button>
+          </div>
+        </div>
+      </a>
     </div>
   </div>`;
   });

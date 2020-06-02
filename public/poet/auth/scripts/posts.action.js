@@ -31,34 +31,20 @@ const deletePost = ($element) => {
 };
 
 const hideConfirmation = ($delete) => {
-  setTimeout(() => ($delete.innerHTML = 'Delete'), 0);
+  $delete.nextElementSibling.classList.add('hidden');
+  $delete.classList.remove('hidden');
 };
 
-const listenerOnDelete = () => {
-  const $deletes = Array.from(getAllElement('.delete'));
-  $deletes.forEach(($delete) => {
-    $delete.addEventListener('click', () => {
-      setTimeout(() => {
-        $delete.innerHTML = `<div class="confirmation">
-        <div class="confirmation-title">Are you sure to delete?</div> 
-        <div class="buttons">
-          <button onclick="hideConfirmation(this.parentNode.parentNode.parentNode)">No</button>
-          <button onclick="deletePost(this.parentNode.parentNode.parentNode)">Yes</button>
-        </div>
-      </div>`;
-      }, 0);
-      setTimeout(hideConfirmation, 3000, $delete);
-    });
-  });
+const showConfirmation = ($delete) => {
+  $delete.nextElementSibling.classList.remove('hidden');
+  $delete.classList.add('hidden');
+  setTimeout(hideConfirmation, 3000, $delete);
 };
 
 const main = () => {
   loadPartialHtml();
   renderPosts();
-  setTimeout(() => {
-    listenerOnPublish();
-    listenerOnDelete();
-  }, 1000);
+  setTimeout(listenerOnPublish, 1000);
 };
 
 window.onload = main;

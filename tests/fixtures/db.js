@@ -61,9 +61,17 @@ const postOne = {
   type: 'post',
   commentStatus: 'open',
   commentCount: 0,
-  nextLink: postTwoId,
   tags: [tagOneId, tagTwoId],
   categories: [categoryOneId, categoryTwoId],
+  tokens: [
+    { token: jwt.sign({ _id: postOneId }, process.env.POST_CODE) },
+    {
+      token: jwt.sign({ _id: postOneId }, process.env.POST_CODE, {
+        expiresIn: 0,
+      }),
+    },
+  ],
+  views: 0,
 };
 
 const postTwo = {
@@ -77,10 +85,10 @@ const postTwo = {
   type: 'post',
   commentStatus: 'open',
   commentCount: 4,
-  preLink: postOneId,
-  nextLink: postThreeId,
   tags: [tagOneId],
   categories: [categoryOneId],
+  tokens: [],
+  views: 0,
 };
 
 const postThree = {
@@ -94,9 +102,10 @@ const postThree = {
   type: 'post',
   commentStatus: 'open',
   commentCount: 5,
-  preLink: postTwoId,
   tags: [tagTwoId],
   categories: [categoryTwoId],
+  tokens: [],
+  views: 0,
 };
 
 const setupDatabase = async function () {

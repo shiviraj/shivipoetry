@@ -28,7 +28,7 @@ const showPosts = (posts) => {
       <div class="comment">
         ${post.commentStatus == 'open' ? post.commentCount : ''}</div>
       <div class="date">${showDate(post.date, post.modified)}</div>
-      <div class="views">0</div>
+      <div class="views">${post.views}</div>
     </div>
     <div class="actions">
       ${publishNow(post.status, post.url)}

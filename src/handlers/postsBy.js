@@ -48,7 +48,6 @@ const serveTagsOrCategoriesPosts = async function (res, Model, url, pageNo) {
     if (!result.posts) return res.status(404).send();
     res.send(result.posts);
   } catch (e) {
-    console.log('error');
     res.status(500).send();
   }
 };

@@ -1,6 +1,7 @@
 const request = require('supertest');
 const { app } = require('../src/router');
 const {
+  authorOne,
   postOne,
   categoryOne,
   categoryTwo,
@@ -58,6 +59,60 @@ describe('Post content', () => {
       .send({ postUrl: 'post/not-found' })
       .expect(500);
   });
+
+  test('Should serve the post content of given url with token', async () => {
+    const res = await request(app)
+      .post('/post/content')
+      .send({ postUrl: 'post/post-1' })
+      .set('Cookie', `postToken=postToken ${postOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body.url).toBe('post-1');
+  });
+
+  test('Should serve the post content of given url with expired token', async () => {
+    const res = await request(app)
+      .post('/post/content')
+      .send({ postUrl: 'post/post-1' })
+      .set('Cookie', `postToken=postToken ${postOne.tokens[1].token}`)
+      .expect(200);
+    expect(res.body.url).toBe('post-1');
+  });
+
+  test('Should serve the post content of given url token is not there', async () => {
+    const res = await request(app)
+      .post('/post/content')
+      .send({ postUrl: 'post/post-1' })
+      .set('Cookie', `postToken=postToken ${authorOne.tokens[0].token}`)
+      .expect(200);
+    expect(res.body.url).toBe('post-1');
+  });
+
+  test('Should serve 500 error if post not found', async () => {
+    await request(app)
+      .post('/post/content')
+      .send({ postUrl: 'post/not-found' })
+      .set('Cookie', `postToken=postToken ${postOne.tokens[0].token}`)
+      .expect(500);
+  });
+});
+
+describe('Post content by url', () => {
+  beforeEach(setupDatabase);
+  afterEach(cleanupDatabase);
+
+  test('Should update post views and serve the post content by given url', async () => {
+    await request(app)
+      .get('/post/post-1')
+      .set('Cookie', `postToken=postToken ${postOne.tokens[0].token}`)
+      .expect(200);
+  });
+
+  test('Should update post views and serve the post content by given url if token in expired', async () => {
+    await request(app)
+      .get('/post/post-1')
+      .set('Cookie', `postToken=postToken ${postOne.tokens[1].token}`)
+      .expect(200);
+  });
 });
 
 describe('Related posts', () => {
@@ -74,15 +129,6 @@ describe('Related posts', () => {
       .post('/post/content')
       .send({ postUrl: 'post/not-found' })
       .expect(500);
-  });
-});
-
-describe('Post content by url', () => {
-  beforeEach(setupDatabase);
-  afterEach(cleanupDatabase);
-
-  test('Should serve the post content by given url', async () => {
-    await request(app).get('/post/post-1').expect(200);
   });
 });
 

@@ -1,7 +1,11 @@
 const { Post } = require('../models/post');
 const { Category } = require('../models/category');
 const { Tag } = require('../models/tag');
-const { serveTemplate, shuffle } = require('./utils');
+const {
+  serveTemplate,
+  shuffle,
+  updatePostCountAndGetToken,
+} = require('./utils');
 const LIMIT = 10;
 
 const servePosts = async function (req, res) {
@@ -20,8 +24,8 @@ const servePosts = async function (req, res) {
 
 const serveNoOfPages = async function (req, res) {
   try {
-    const posts = await Post.find({ status: 'published' });
-    res.send({ pages: Math.ceil(posts.length / LIMIT) });
+    const totalPosts = await Post.countDocuments({ status: 'published' });
+    res.send({ pages: Math.ceil(totalPosts / LIMIT) });
   } catch (e) {
     res.status(500).send();
   }
@@ -34,16 +38,15 @@ const serveUrl = function (req, res) {
 const servePostContent = async function (req, res) {
   const [, url] = req.body.postUrl.split('/');
   try {
+    const token = await updatePostCountAndGetToken(req, url, Post);
     const post = await Post.findOne({ url });
     await post
       .populate('author', ['displayName', 'username'])
-      .populate('preLink', ['title', 'url'])
-      .populate('nextLink', ['title', 'url'])
       .populate('tags', ['name', 'url'])
       .populate('categories', ['name', 'url'])
       .execPopulate();
     if (!post) res.status(404).send();
-    res.send(post);
+    res.cookie('postToken', `postToken ${token}`).send(post);
   } catch (e) {
     res.status(500).send();
   }

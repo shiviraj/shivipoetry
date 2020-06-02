@@ -61,10 +61,10 @@ const showContent = function (post) {
     <div class="categories">${showCategory(post.categories)}</div>
     ${postAndAuthor(post)}
     <div class="content">${post.content}</div>
+    <div class="post-count">Total Views: ${post.views}</div>
     <div class="tags"><span class="tag-title">Tagged</span>
       <span class="tag-items">${showTag(post.tags)}</span>
-    </div>
-    <div class="nav-links">${showNavLinks(post.preLink, post.nextLink)}</div>`;
+    </div>`;
   }
   getElement('#content').innerHTML = htmlData;
 };

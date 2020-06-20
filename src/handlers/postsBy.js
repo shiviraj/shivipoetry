@@ -74,7 +74,9 @@ const serveSelectorPagination = async function (req, res) {
   findBy[models[key].findBy] = value;
   try {
     const result = await Model.findOne(findBy);
-    await result.populate({ path: 'posts' }).execPopulate();
+    await result
+      .populate({ path: 'posts', match: { status: 'published' } })
+      .execPopulate();
     const pages = Math.ceil(result.posts.length / LIMIT);
     res.send({ pages });
   } catch (e) {

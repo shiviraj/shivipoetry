@@ -2,12 +2,10 @@
   box-shadow: 0 0 16px gray;
   padding: 2%;
   transition: ease all 0.2s;
-  max-height: 160px;
   overflow: hidden;
 }
 @media (max-width: 420px) {
   .post-card {
-    max-height: 200px;
     font-size: 16px;
   }
 }

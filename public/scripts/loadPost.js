@@ -67,9 +67,9 @@ const showContent = function (post) {
     </div>`;
   }
   getElement('#content').innerHTML = htmlData;
-  getElement('head').innerHTML += `
-      <meta name="description" content="${post.content.slice(0, 150)}" />
-      <meta name="author" content="${post.author.displayName}" />`;
+  getElement('head').innerHTML += `<meta name="description" 
+    content="${post.content.replace(/<[^>]*>/g, '').slice(0, 150)}" />
+  <meta name="author" content="${post.author.displayName}" />`;
 };
 
 const loadPostContent = function (postUrl) {

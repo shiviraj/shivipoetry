@@ -39,8 +39,8 @@ const updatePost = async function (e) {
 
 const main = async function () {
   await loadPartialHtml();
-  listenerOfAddNewCategoryAndTag();
-  listenerOnUrl();
+  await listenerOfAddNewCategoryAndTag();
+  await listenerOnUrl();
   await fetchCategoryAndTags();
   await fetchPost();
   getElement('#update').addEventListener('click', updatePost);

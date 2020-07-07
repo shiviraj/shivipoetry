@@ -1,20 +1,16 @@
-const submitPost = function (e, status) {
-  e.preventDefault();
-  const title = getElement('#title').value;
-  const url = getElement('.url input').value;
-  const content = CKEDITOR.instances['content'].getData();
-  const categories = getAll('category');
-  const tags = getAll('tag');
-  const options = getOptions(
-    { title, content, url, categories, tags, status },
-    'PUT'
-  );
-  fetch('/poet/me/addNewPost', options)
-    .then((res) => res.json())
-    .then(({ status }) => {
-      if (status) return (location.href = './dashboard.html');
-      renderResponse();
-    });
+const submitPost = async function (e, status) {
+  try {
+    e.preventDefault();
+    const options = getPostOptions();
+    delete options._id;
+    options.status = status;
+    const postOptions = getOptions(options, 'PUT');
+    const res = await fetchData('/poet/me/addNewPost', postOptions);
+    if (res.status) return (location.href = './dashboard.html');
+    renderResponse();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const listenerOnSubmit = function () {
@@ -24,9 +20,9 @@ const listenerOnSubmit = function () {
   $saveAsDraft.addEventListener('click', (e) => submitPost(e, 'draft'));
 };
 
-const main = function () {
-  loadPartialHtml();
-  fetchCategoryAndTags();
+const main = async function () {
+  await loadPartialHtml();
+  await fetchCategoryAndTags();
   listenerOfAddNewCategoryAndTag();
   listenerOnUrl();
   listenerOnSubmit();

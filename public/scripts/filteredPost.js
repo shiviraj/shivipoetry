@@ -54,19 +54,21 @@ const showAuthorsPosts = function ({ posts, author }) {
   showPosts(postsWithAuthor);
 };
 
-const getPosts = function (selector, selectElement, pageNo) {
-  const options = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ pageNo }),
-  };
-  fetch(`/posts/${selector}/${selectElement}`, options)
-    .then((res) => res.json())
-    .then((data) => {
-      if (selector == 'author') return showAuthorsPosts(data);
-      showPosts(data);
-    });
-  getElement('.page-title').innerHTML = `${selector} : ${selectElement}`;
+const getPosts = async function (selector, selectElement, pageNo) {
+  try {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pageNo }),
+    };
+    const url = `/posts/${selector}/${selectElement}`;
+    const data = await fetchData(url, options);
+    if (selector == 'author') return showAuthorsPosts(data);
+    showPosts(data);
+    getElement('.page-title').innerHTML = `${selector} : ${selectElement}`;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const fetchPosts = function (pageNo) {
@@ -74,11 +76,11 @@ const fetchPosts = function (pageNo) {
   getPosts(selector, selectElement, pageNo);
 };
 
-const main = function () {
-  loadNavbar();
-  loadSidebar();
+const main = async function () {
+  await loadNavbar();
+  await loadSidebar();
   const [, , , selector, selectElement] = window.location.href.split('/');
-  getPosts(selector, selectElement, 1);
+  await getPosts(selector, selectElement, 1);
   fetchPagination(`/posts/pagination/${selector}/${selectElement}`);
   setTimeout(addListenerOnPages, 0);
 };

@@ -1,3 +1,13 @@
+const getPostOptions = function () {
+  const title = getElement('#title').value;
+  const url = getElement('.url input').value;
+  const _id = getElement('#post-url').title;
+  const content = CKEDITOR.instances['content'].getData();
+  const categories = getAll('category');
+  const tags = getAll('tag');
+  return { _id, title, content, url, categories, tags };
+};
+
 const renderCategories = (categories) => {
   const categoryCheckbox = categories.map((category) => {
     return `<label><input type="checkbox" name="category" value="${category.url}">${category.name}</label>`;
@@ -12,21 +22,15 @@ const renderTags = (tags) => {
   getElement('#tag-list').innerHTML = tagCheckbox.join('');
 };
 
-const fetchCategoryAndTags = function () {
-  fetch('/poet/me/categories')
-    .then((res) => res.json())
-    .then((categories) => renderCategories(categories));
-  fetch('/poet/me/tags')
-    .then((res) => res.json())
-    .then((tags) => renderTags(tags));
-};
-
-const getOptions = (body, method = 'POST') => {
-  return {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  };
+const fetchCategoryAndTags = async function () {
+  try {
+    const categories = await fetchData('/poet/me/categories');
+    renderCategories(categories);
+    const tags = await fetchData('/poet/me/tags');
+    renderTags(tags);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const addNewCategory = function (category) {
@@ -39,23 +43,30 @@ const addNewTag = function (tag) {
   getElement('#tag-list').innerHTML += htmlTag;
 };
 
+const addNew = async (event, name, callback) => {
+  event.preventDefault();
+  const value = getElement(`#add-new-${name} input`).value;
+  if (!value) return;
+  try {
+    const body = {};
+    body[name] = value;
+    const url = `/poet/me/addNew/${name}`;
+    const res = await fetchData(url, getOptions(body, 'PUT'));
+    callback(res);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const listenerOfAddNewCategoryAndTag = function () {
   const $addNewCategory = getElement('#add-new-category button');
-  $addNewCategory.addEventListener('click', () => {
-    const category = getElement('#add-new-category input').value;
-    if (!category) return;
-    fetch('/poet/me/addNew/category', getOptions({ category }, 'PUT'))
-      .then((res) => res.json())
-      .then((category) => addNewCategory(category));
+  $addNewCategory.addEventListener('click', async (event) => {
+    await addNew(event, 'category', addNewCategory);
   });
 
   const $addNewTag = getElement('#add-new-tag button');
-  $addNewTag.addEventListener('click', () => {
-    const tag = getElement('#add-new-tag input').value;
-    if (!tag) return;
-    fetch('/poet/me/addNew/tag', getOptions({ tag }, 'PUT'))
-      .then((res) => res.json())
-      .then((tag) => addNewTag(tag));
+  $addNewTag.addEventListener('click', async (event) => {
+    await addNew(event, 'tag', addNewTag);
   });
 };
 
@@ -73,12 +84,16 @@ const renderURLAvailability = ({ isAvailable }) => {
 const listenerOnUrl = function () {
   const currentUrl = localStorage.getItem('url') || '';
   const $urlInput = getElement('.url input');
-  $urlInput.addEventListener('input', () => {
+  $urlInput.addEventListener('input', async () => {
     const url = $urlInput.value;
     if (!url) return;
-    fetch('/poet/me/isURLAvailable', getOptions({ url, currentUrl }))
-      .then((res) => res.json())
-      .then(renderURLAvailability);
+    try {
+      const options = getOptions({ url, currentUrl });
+      const res = await fetchData('/poet/me/isURLAvailable', options);
+      renderURLAvailability(res);
+    } catch (error) {
+      console.error(error);
+    }
   });
 };
 

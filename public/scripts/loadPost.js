@@ -73,10 +73,13 @@ const showContent = function (post) {
   <meta name="author" content="${post.author.displayName}">`;
 };
 
-const loadPostContent = function (postUrl) {
-  fetch('/post/content', getOptions({ postUrl }))
-    .then((res) => res.json())
-    .then(showContent);
+const loadPostContent = async function (postUrl) {
+  try {
+    const content = await fetchData('/post/content', getOptions({ postUrl }));
+    showContent(content);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const showRelatedPost = function (posts) {
@@ -96,19 +99,22 @@ const showRelatedPost = function (posts) {
   getElement('#related-post').innerHTML = htmlData.join('');
 };
 
-const loadRelatedPost = function () {
-  fetch('/post/relatedPost')
-    .then((res) => res.json())
-    .then(showRelatedPost);
+const loadRelatedPost = async function () {
+  try {
+    const relatedPosts = await fetchData('/post/relatedPost');
+    showRelatedPost(relatedPosts);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const main = function () {
-  loadNavbar();
-  loadSidebar();
+const main = async function () {
+  await loadNavbar();
+  await loadSidebar();
   const [, , , ...url] = window.location.href.split('/');
   const postUrl = url.join('/');
-  loadPostContent(postUrl);
-  loadRelatedPost(postUrl);
+  await loadPostContent(postUrl);
+  await loadRelatedPost(postUrl);
 };
 
-window.onload = main();
+window.onload = main;

@@ -1,33 +1,37 @@
-const getOptions = (body, method = 'POST') => {
-  return {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  };
-};
-
-const renderPosts = () => {
-  fetch('/poet/me/myAllPosts')
-    .then((res) => res.json())
-    .then(showPosts);
+const renderPosts = async () => {
+  try {
+    const posts = await fetchData('/poet/me/myAllPosts');
+    showPosts(posts);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const listenerOnPublish = () => {
   const $publishes = Array.from(getAllElement('.publish'));
   $publishes.forEach(($publish) => {
-    $publish.addEventListener('click', (e) => {
-      fetch('/poet/me/publishPost', getOptions({ url: e.target.id }))
-        .then((res) => res.json())
-        .then(removePublishButton($publish));
+    $publish.addEventListener('click', async (e) => {
+      try {
+        const removeAction = removePublishButton($publish);
+        const options = getOptions({ url: e.target.id });
+        const data = await fetchData('/poet/me/publishPost', options);
+        removeAction(data);
+      } catch (error) {
+        console.error(error);
+      }
     });
   });
 };
 
-const deletePost = ($element) => {
-  const url = $element.title;
-  fetch('/poet/me/deletePost', getOptions({ url }, 'DELETE'))
-    .then((res) => res.json())
-    .then(removePost($element.parentNode.parentNode));
+const deletePost = async ($element) => {
+  try {
+    const performRemovePost = removePost($element.parentNode.parentNode);
+    const options = getOptions({ url: $element.title }, 'DELETE');
+    const res = await fetchData('/poet/me/deletePost', options);
+    performRemovePost(res);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const hideConfirmation = ($delete) => {
@@ -43,7 +47,7 @@ const showConfirmation = ($delete) => {
 
 const main = async () => {
   await loadPartialHtml();
-  renderPosts();
+  await renderPosts();
 };
 
 window.onload = main;

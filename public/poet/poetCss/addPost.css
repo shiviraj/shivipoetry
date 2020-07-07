@@ -60,6 +60,7 @@ input {
   display: flex;
   flex-direction: column;
   max-height: 20vh;
+  overflow-y: scroll;
 }
 .label {
   border-bottom: 1px solid #888;

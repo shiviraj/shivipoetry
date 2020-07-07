@@ -11,42 +11,38 @@ const renderPostsToEdit = (post) => {
   getElement('#post-url').value = post.url;
   getElement('#post-url').title = post._id;
   localStorage.setItem('url', post.url);
-  setTimeout(() => {
-    fillAll(post.categories, 'category');
-    fillAll(post.tags, 'tag');
-  }, 1000);
+  fillAll(post.categories, 'category');
+  fillAll(post.tags, 'tag');
 };
 
-const fetchPost = function () {
-  const url = window.location.search.split('=')[1];
-  fetch('/poet/me/post', getOptions({ url }))
-    .then((res) => res.json())
-    .then(renderPostsToEdit);
+const fetchPost = async function () {
+  try {
+    const url = window.location.search.split('=')[1];
+    const post = await fetchData('/poet/me/post', getOptions({ url }));
+    renderPostsToEdit(post);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const updatePost = function (e) {
-  e.preventDefault();
-  const title = getElement('#title').value;
-  const url = getElement('.url input').value;
-  const _id = getElement('#post-url').title;
-  const content = CKEDITOR.instances['content'].getData();
-  const categories = getAll('category');
-  const tags = getAll('tag');
-  const options = getOptions({ _id, title, content, url, categories, tags });
-  fetch('/poet/me/updatePost', options)
-    .then((res) => res.json())
-    .then(({ status }) => {
-      if (status) return (location.href = './dashboard.html');
-      renderResponse();
-    });
+const updatePost = async function (e) {
+  try {
+    e.preventDefault();
+    const options = getPostOptions();
+    const res = await fetchData('/poet/me/updatePost', getOptions(options));
+    if (res.status) return (location.href = './dashboard.html');
+    renderResponse();
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const main = function () {
-  loadPartialHtml();
-  fetchCategoryAndTags();
+const main = async function () {
+  await loadPartialHtml();
   listenerOfAddNewCategoryAndTag();
   listenerOnUrl();
-  fetchPost();
+  await fetchPost();
+  await fetchCategoryAndTags();
   getElement('#update').addEventListener('click', updatePost);
 };
 

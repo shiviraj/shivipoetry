@@ -1,39 +1,46 @@
-const fetchAndRenderRecentPosts = (getElement) => {
-  fetch(`/posts`, { method: 'POST' })
-    .then((res) => res.json())
-    .then((posts) => {
-      const postsInHtml = posts.map(
-        (post) => `<a href="/post/${post.url}">${post.title}</a>`
-      );
-      getElement(`#sidebar-recent-posts`).innerHTML = postsInHtml.join('');
+const fetchData = async (url, options) => {
+  const res = await fetch(url, options);
+  return await res.json();
+};
+
+const fetchAndRenderRecentPosts = async (getElement) => {
+  try {
+    const posts = await fetchData('/posts', { method: 'POST' });
+    const postsInHtml = posts.map((post) => {
+      return `<a href="/post/${post.url}">${post.title}</a>`;
     });
+    getElement(`#sidebar-recent-posts`).innerHTML = postsInHtml.join('');
+  } catch (error) {
+    console.error('something went wrong');
+  }
 };
 
-const fetchAndRenderCategoriesOrTags = (getElement, path, className) => {
-  fetch(`/${className}`)
-    .then((res) => res.json())
-    .then((list) => {
-      const listInHtml = list.map(
-        (item) => `<a href="/${path}/${item.url}">${item.name}</a>`
-      );
-      getElement(`#sidebar-${path}`).innerHTML = listInHtml.join('');
-    });
+const fetchAndRenderCategoriesOrTags = async (getElement, path, className) => {
+  try {
+    const list = await fetchData(`/${className}`);
+    const listInHtml = list.map(
+      (item) => `<a href="/${path}/${item.url}">${item.name}</a>`
+    );
+    getElement(`#sidebar-${path}`).innerHTML = listInHtml.join('');
+  } catch (error) {
+    console.error('Unable to load ', className);
+  }
 };
 
-const fetchAndRenderSidebar = function (getElement) {
-  fetch('./includes/sidebar.html')
-    .then((res) => res.text())
-    .then((data) => (getElement('.sidebar').innerHTML = data));
+const fetchAndRenderSidebar = async (getElement) => {
+  try {
+    const res = await fetch('./includes/sidebar.html');
+    const data = await res.text();
+    getElement('.sidebar').innerHTML = data;
+  } catch (error) {
+    console.log('unable to fetch and render sidebar');
+  }
 };
 
-const loadSidebar = function () {
+const loadSidebar = async function () {
   const getElement = (selector) => document.querySelector(selector);
-  fetchAndRenderSidebar(getElement);
-  setTimeout(() => fetchAndRenderRecentPosts(getElement), 100);
-  setTimeout(() => {
-    fetchAndRenderCategoriesOrTags(getElement, 'tag', 'tags');
-  }, 200);
-  setTimeout(() => {
-    fetchAndRenderCategoriesOrTags(getElement, 'category', 'categories');
-  }, 300);
+  await fetchAndRenderSidebar(getElement);
+  await fetchAndRenderRecentPosts(getElement);
+  await fetchAndRenderCategoriesOrTags(getElement, 'tag', 'tags');
+  await fetchAndRenderCategoriesOrTags(getElement, 'category', 'categories');
 };

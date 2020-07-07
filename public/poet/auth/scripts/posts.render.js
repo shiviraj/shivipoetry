@@ -52,8 +52,7 @@ const showPosts = (posts) => {
 
 const removePost = function ($post) {
   return (status) => {
-    if (!status) return;
-    $post.remove();
+    if (status) $post.remove();
   };
 };
 

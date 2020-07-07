@@ -1,6 +1,10 @@
-const loadNavbar = function () {
+const loadNavbar = async function () {
   const getElement = (selector) => document.querySelector(selector);
-  fetch('./includes/navbar.html')
-    .then((res) => res.text())
-    .then((data) => (getElement('.navbar').innerHTML = data));
+  try {
+    const res = await fetch('./includes/navbar.html');
+    const data = await res.text();
+    getElement('.navbar').innerHTML = data;
+  } catch (error) {
+    console.error('Unable to load navbar');
+  }
 };

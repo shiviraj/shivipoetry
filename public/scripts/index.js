@@ -37,22 +37,25 @@ const showPosts = function (postsData) {
   $postContent.innerHTML = htmlPostData.join('');
 };
 
-const fetchPosts = function (pageNo) {
-  const options = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ pageNo }),
-  };
-  fetch('/posts', options)
-    .then((res) => res.json())
-    .then(showPosts);
+const fetchPosts = async function (pageNo) {
+  try {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pageNo }),
+    };
+    const posts = await fetchData('/posts', options);
+    showPosts(posts);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const main = function () {
-  loadNavbar();
-  loadSidebar();
+const main = async function () {
+  await loadNavbar();
+  await loadSidebar();
   fetchPagination('/posts/pagination');
-  fetchPosts(1);
+  await fetchPosts(1);
   setTimeout(addListenerOnPages, 0);
 };
 

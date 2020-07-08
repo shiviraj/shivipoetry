@@ -7,12 +7,12 @@ const fillAll = (list, idName) => {
 
 const renderPostsToEdit = (post) => {
   getElement('#title').value = post.title;
-  getElement('#content').value = post.content;
   getElement('#post-url').value = post.url;
   getElement('#post-url').title = post._id;
   localStorage.setItem('url', post.url);
   fillAll(post.categories, 'category');
   fillAll(post.tags, 'tag');
+  CKEDITOR.instances['content'].setData(post.content);
 };
 
 const fetchPost = async function () {

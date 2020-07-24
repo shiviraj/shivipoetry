@@ -22,8 +22,8 @@
   <script src="./scripts/loadPartialHtml/loadSidebar.js"></script>
   <script src="./scripts/scrollTop.js"></script>
   <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
-  <title>{{post.title}}</title>
-  <meta name="description" content="{{post.content}}">
+  <title>{{title}}</title>
+  <meta name="description" content="{{{content}}}">
 </head>
 
 <body>
@@ -55,7 +55,7 @@
           <div class="content">{{{content}}}</div>
           <div class="post-count">Total Views: {{views}}</div>
           <div class="tags"><span class="tag-title">Tagged</span>
-            <span class="tags-items">
+            <span class="tag-items">
               {{#each tags}}
                 <a href="../tag/{{this.url}}" class="tag-item">{{this.name}}</a>
               {{/each}}

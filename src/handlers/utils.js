@@ -36,7 +36,7 @@ const verifyToken = async function (req, POST_CODE, Post) {
   let token = req.cookies.postToken.replace('postToken ', '');
   const { _id } = jwt.verify(token, POST_CODE);
   const post = await Post.findOne({ _id, 'tokens.token': token });
-  const [, url] = req.body.postUrl.split('/');
+  const [, , url] = req.path.split('/');
   if (post.url != url) throw new Error();
   clearTokens(_id, Post);
   return token;

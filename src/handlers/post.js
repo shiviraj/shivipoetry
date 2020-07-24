@@ -27,44 +27,35 @@ const serveNoOfPages = async function (req, res) {
   }
 };
 
-const serveUrl = async function (req, res) {
+const getPost = async function (url) {
+  const post = await Post.findOne({ url });
+  return await post
+    .populate('author', ['displayName', 'username'])
+    .populate('tags', ['name', 'url'])
+    .populate('categories', ['name', 'url'])
+    .execPopulate();
+};
+
+const getRandomPost = async function (post) {
+  const randomPosts = await Post.find({
+    status: 'published',
+  }).populate('author', ['displayName', 'username']);
+  return shuffle(randomPosts).slice(0, 4);
+};
+
+const servePost = async function (req, res) {
   const [, , url] = req.path.split('/');
   try {
     const token = await updatePostCountAndGetToken(req, url, Post);
-    const post = await Post.findOne({ url });
-    await post
-      .populate('author', ['displayName', 'username'])
-      .populate('tags', ['name', 'url'])
-      .populate('categories', ['name', 'url'])
-      .execPopulate();
+    const post = await getPost(url);
     if (!post) res.status(404).send();
-    const randomPosts = await Post.find({
-      status: 'published',
-    }).populate('author', ['displayName', 'username']);
-    post.relatedPosts = shuffle(randomPosts).slice(0, 4);
+    post.relatedPosts = await getRandomPost();
     res.cookie('postToken', `postToken ${token}`);
     res.render('post', post);
   } catch (e) {
     res.status(500).send();
   }
 };
-
-// const servePostContent = async function (req, res) {
-//   const [, url] = req.body.postUrl.split('/');
-//   try {
-//     const token = await updatePostCountAndGetToken(req, url, Post);
-//     const post = await Post.findOne({ url });
-//     await post
-//       .populate('author', ['displayName', 'username'])
-//       .populate('tags', ['name', 'url'])
-//       .populate('categories', ['name', 'url'])
-//       .execPopulate();
-//     if (!post) res.status(404).send();
-//     res.cookie('postToken', `postToken ${token}`).send(post);
-//   } catch (e) {
-//     res.status(500).send();
-//   }
-// };
 
 const serveCategories = async function (req, res) {
   try {
@@ -87,7 +78,7 @@ const serveTags = async function (req, res) {
 module.exports = {
   servePosts,
   serveNoOfPages,
-  serveUrl,
+  servePost,
   serveCategories,
   serveTags,
 };

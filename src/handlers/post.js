@@ -1,11 +1,7 @@
 const { Post } = require('../models/post');
 const { Category } = require('../models/category');
 const { Tag } = require('../models/tag');
-const {
-  serveTemplate,
-  shuffle,
-  updatePostCountAndGetToken,
-} = require('./utils');
+const { shuffle, updatePostCountAndGetToken } = require('./utils');
 const LIMIT = 10;
 
 const servePosts = async function (req, res) {
@@ -31,12 +27,8 @@ const serveNoOfPages = async function (req, res) {
   }
 };
 
-const serveUrl = function (req, res) {
-  serveTemplate('post.html', res);
-};
-
-const servePostContent = async function (req, res) {
-  const [, url] = req.body.postUrl.split('/');
+const serveUrl = async function (req, res) {
+  const [, , url] = req.path.split('/');
   try {
     const token = await updatePostCountAndGetToken(req, url, Post);
     const post = await Post.findOne({ url });
@@ -46,25 +38,33 @@ const servePostContent = async function (req, res) {
       .populate('categories', ['name', 'url'])
       .execPopulate();
     if (!post) res.status(404).send();
-    res.cookie('postToken', `postToken ${token}`).send(post);
+    const randomPosts = await Post.find({
+      status: 'published',
+    }).populate('author', ['displayName', 'username']);
+    post.relatedPosts = shuffle(randomPosts).slice(0, 4);
+    res.cookie('postToken', `postToken ${token}`);
+    res.render('post', post);
   } catch (e) {
     res.status(500).send();
   }
 };
 
-const serveRelatedPosts = async function (req, res) {
-  try {
-    const posts = await Post.find({ status: 'published' }).populate('author', [
-      'displayName',
-      'username',
-    ]);
-    const randomPosts = shuffle(posts).slice(0, 4);
-    if (!randomPosts) res.status(404).send();
-    res.send(randomPosts);
-  } catch (e) {
-    res.status(500).send();
-  }
-};
+// const servePostContent = async function (req, res) {
+//   const [, url] = req.body.postUrl.split('/');
+//   try {
+//     const token = await updatePostCountAndGetToken(req, url, Post);
+//     const post = await Post.findOne({ url });
+//     await post
+//       .populate('author', ['displayName', 'username'])
+//       .populate('tags', ['name', 'url'])
+//       .populate('categories', ['name', 'url'])
+//       .execPopulate();
+//     if (!post) res.status(404).send();
+//     res.cookie('postToken', `postToken ${token}`).send(post);
+//   } catch (e) {
+//     res.status(500).send();
+//   }
+// };
 
 const serveCategories = async function (req, res) {
   try {
@@ -88,8 +88,6 @@ module.exports = {
   servePosts,
   serveNoOfPages,
   serveUrl,
-  servePostContent,
-  serveRelatedPosts,
   serveCategories,
   serveTags,
 };

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170150580-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-170150580-1');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/post.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script src="./scripts/loadPartialHtml/loadSidebar.js"></script>
+  <script src="./scripts/scrollTop.js"></script>
+  <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+  <title>{{post.title}}</title>
+  <meta name="description" content="{{post.content}}">
+</head>
+
+<body>
+  <div class="site-logo">$hivipoetry</div>
+  <div class="navbar">{{>navbar}}</div>
+
+  <div class="container">
+    <div class="main-content">
+      <div class="post-content">
+        <div id="content">
+          <div class="post-title">
+            <h1>{{title}}</h1>
+          </div>
+          <div class="categories">
+            {{#each categories}}
+              <a href="../category/{{this.url}}" class="category">{{this.name}}</a>
+            {{/each}}
+          </div>
+          <div class="post-date-and-author">
+            <div><a class="post-date"> {{dateFormat date}} </a></div>
+            <div><a class="author" href="../author/{{author.username}}">{{author.displayName}}</a></div>
+            <div>
+              {{#if count}}
+                <a class="comments">{{count}} comments</a>
+              {{/if}}
+            </div>
+          </div>
+
+          <div class="content">{{{content}}}</div>
+          <div class="post-count">Total Views: {{views}}</div>
+          <div class="tags"><span class="tag-title">Tagged</span>
+            <span class="tags-items">
+              {{#each tags}}
+                <a href="../tag/{{this.url}}" class="tag-item">{{this.name}}</a>
+              {{/each}}
+            </span>
+          </div>
+        </div>
+        <div class="divider"></div>
+        {{>relatedPost}}
+
+        <div class="divider"></div>
+
+        <div class="post-comments">
+          <!-- <div class="comment-title">Comments:</div> -->
+          <!-- <div class="comment-item">
+              <div class="commenter-name">Shivi</div>
+              <div class="comment-date">June 21, 2008 at 12:07 am</div>
+              <div class="comment-msg">This is an awesome poem</div>
+            </div>
+            <div class="comment-item">
+              <div class="commenter-name">Shivi</div>
+              <div class="comment-date">June 21, 2008 at 12:07 am</div>
+              <div class="comment-msg">This is an awesome poem</div>
+            </div> -->
+        </div>
+      </div>
+    </div>
+    {{>sidebar}}
+  </div>
+
+  <footer>$hivipoetry | Theme : Developed By <a href="#">Shiviraj</a></footer>
+  <div class="top-arrow hidden">
+    <i class="fa fa-chevron-up"></i>
+  </div>
+  <script>
+    window.onload = loadSidebar;
+  </script>
+</body>
+
+</html>

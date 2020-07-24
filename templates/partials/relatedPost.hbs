@@ -1,0 +1,23 @@
+<div class="related-post">
+  <div class="related-post-title">Related post:</div>
+  <div id="related-post">
+    {{#each relatedPosts}}
+      <div class="post-card">
+        <a class="post-title" href="{{this.url}}">{{this.title}}</a>
+        <div class="post-date-and-author">
+          <div><a class="post-date"> {{dateFormat this.date}} </a></div>
+          <div><a class="author" href="../author/{{this.author.username}}">{{this.author.displayName}}</a></div>
+          {{#if this.count}}
+            <div><a class="comments">{{this.count}} comments</a></div>
+          {{/if}}
+        </div>
+        <div class="related-post-content">
+          <span class="content"> {{{truncate this.content}}} </span>
+          <span class="read-more"> <a href="{{this.url}}">Read More...</a> </span>
+        </div>
+      </div>
+      <div class="post-divider"></div>
+    {{/each}}
+  </div>
+  <div class="post-divider"></div>
+</div>

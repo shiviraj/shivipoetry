@@ -120,23 +120,3 @@ describe('serveSelector pagination', () => {
     await request(app).get('/posts/pagination/category/notExists').expect(500);
   });
 });
-
-describe('Post content', () => {
-  beforeEach(setupDatabase);
-  afterEach(cleanupDatabase);
-
-  test('Should serve the post content of given url', async () => {
-    const res = await request(app)
-      .post('/post/content')
-      .send({ postUrl: 'post/post-1' })
-      .expect(200);
-    expect(res.body.url).toBe('post-1');
-  });
-
-  test('Should serve 500 error if post not found', async () => {
-    await request(app)
-      .post('/post/content')
-      .send({ postUrl: 'post/not-found' })
-      .expect(500);
-  });
-});

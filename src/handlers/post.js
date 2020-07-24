@@ -2,6 +2,7 @@ const { Post } = require('../models/post');
 const { Category } = require('../models/category');
 const { Tag } = require('../models/tag');
 const { shuffle, updatePostCountAndGetToken } = require('./utils');
+const { sidebarContent } = require('./sidebarContent');
 const LIMIT = 10;
 
 const servePosts = async function (req, res) {
@@ -50,6 +51,7 @@ const servePost = async function (req, res) {
     const post = await getPost(url);
     if (!post) res.status(404).send();
     post.relatedPosts = await getRandomPost();
+    post.sidebar = await sidebarContent();
     res.cookie('postToken', `postToken ${token}`);
     res.render('post', post);
   } catch (e) {

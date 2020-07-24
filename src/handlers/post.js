@@ -6,18 +6,32 @@ const { sidebarContent } = require('./sidebarContent');
 const LIMIT = 10;
 
 const servePosts = async function (req, res) {
-  const { pageNo = 1 } = req.body;
   try {
     const posts = await Post.find({ status: 'published' })
       .populate('author', ['displayName', 'username'])
       .sort({ date: -1 })
-      .skip(LIMIT * (pageNo - 1))
+      .skip(0)
       .limit(LIMIT);
-    res.send(posts);
+    const sidebar = await sidebarContent();
+    res.render('index', { posts, sidebar });
   } catch (e) {
     res.status(500).send();
   }
 };
+
+// const servePosts = async function (req, res) {
+//   const { pageNo = 1 } = req.body;
+//   try {
+//     const posts = await Post.find({ status: 'published' })
+//       .populate('author', ['displayName', 'username'])
+//       .sort({ date: -1 })
+//       .skip(LIMIT * (pageNo - 1))
+//       .limit(LIMIT);
+//     res.send(posts);
+//   } catch (e) {
+//     res.status(500).send();
+//   }
+// };
 
 const serveNoOfPages = async function (req, res) {
   try {

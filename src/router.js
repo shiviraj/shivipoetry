@@ -10,10 +10,10 @@ const { postRouter } = require('./routers/post');
 const { postsByRouter } = require('./routers/postsBy');
 const { poetRouter } = require('./routers/poet');
 const { authPoetRouter } = require('./routers/authPoet');
+const { servePosts } = require('./handlers/post.js');
 
 const app = express();
 
-app.use(express.static('public'));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
@@ -28,6 +28,9 @@ hbs.registerHelper({
 app.set('view engine', 'hbs');
 app.set('views', viewsPath);
 
+app.get('/', servePosts);
+
+app.use(express.static('public'));
 app.use(postRouter);
 app.use(postsByRouter);
 app.use('/poet', poetRouter);

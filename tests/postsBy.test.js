@@ -29,54 +29,24 @@ describe('PostBy by url', () => {
   test('Should serve the template postBy category', async () => {
     await request(app).get('/category/category-1').expect(200);
   });
-});
-
-describe('serveSelector posts', () => {
-  beforeEach(setupDatabase);
-  afterEach(cleanupDatabase);
-
-  test('Should serve the posts by author', async () => {
-    const res = await request(app)
-      .post('/posts/author/Shivi')
-      .send({ pageNo: 1 })
-      .expect(200);
-    expect(res.body.posts.length).toBe(2);
-  });
 
   test('Should not serve the posts by author if not exists', async () => {
-    const res = await request(app)
-      .post('/posts/author/notExists')
-      .send({ pageNo: 1 })
-      .expect(500);
+    await request(app).get('/author/notExists').expect(500);
   });
 
   test('Should serve the posts by tag', async () => {
-    const res = await request(app)
-      .post('/posts/tag/tag-1')
-      .send({ pageNo: 1 })
-      .expect(200);
-    expect(res.body.length).toBe(2);
+    await request(app).get('/tag/tag-1').expect(200);
   });
 
   test('Should not serve the posts by tag if not exists', async () => {
-    const res = await request(app)
-      .post('/posts/tag/notExists')
-      .send({ pageNo: 1 })
-      .expect(500);
+    const res = await request(app).get('/tag/notExists').expect(500);
   });
   test('Should serve the posts by category', async () => {
-    const res = await request(app)
-      .post('/posts/category/category-1')
-      .send({ pageNo: 1 })
-      .expect(200);
-    expect(res.body.length).toBe(2);
+    await request(app).get('/category/category-1').expect(200);
   });
 
   test('Should not serve the posts by category if not exists', async () => {
-    const res = await request(app)
-      .post('/posts/category/notExists')
-      .send({ pageNo: 1 })
-      .expect(500);
+    await request(app).get('/category/notExists').expect(500);
   });
 });
 

@@ -1,54 +1,70 @@
 const { Author } = require('../models/author');
 const { Tag } = require('../models/tag');
 const { Category } = require('../models/category');
-const { serveTemplate } = require('./utils');
+const { sidebarContent } = require('./sidebarContent');
 const LIMIT = 10;
 
-const serveByUrl = function (req, res) {
-  serveTemplate('postsBy.html', res);
-};
-
-const serveAuthorsPosts = async function (res, username, pageNo) {
-  try {
-    const result = await Author.findOne({ username });
-    await result
-      .populate({
-        path: 'posts',
-        match: { status: 'published' },
-        options: {
-          limit: LIMIT,
-          skip: LIMIT * (pageNo - 1),
-          sort: { date: -1 },
-        },
-      })
-      .execPopulate();
-    if (!result.posts) return res.status(404).send();
-    res.send({ posts: result.posts, author: result });
-  } catch (e) {
-    res.status(500).send();
+const getAuthorPosts = async (username, pageNo = 1) => {
+  const author = await Author.findOne({ username });
+  if (!author) {
+    throw new Error({ error: 'author not exists' });
   }
+  await author
+    .populate({
+      path: 'posts',
+      match: { status: 'published' },
+      options: { limit: LIMIT, skip: LIMIT * (pageNo - 1), sort: { date: -1 } },
+      populate: { path: 'author' },
+    })
+    .execPopulate();
+  return author.posts;
 };
 
-const serveTagsOrCategoriesPosts = async function (res, Model, url, pageNo) {
-  try {
-    const result = await Model.findOne({ url });
-    await result
-      .populate({
-        path: 'posts',
-        match: { status: 'published' },
-        options: {
-          limit: LIMIT,
-          skip: LIMIT * (pageNo - 1),
-          sort: { date: -1 },
-        },
-        populate: { path: 'author' },
-      })
-      .execPopulate();
+const getTagsPosts = async (url, pageNo = 1) => {
+  const tag = await Tag.findOne({ url });
+  if (!tag) {
+    throw new Error({ error: 'tag not exists' });
+  }
+  await tag
+    .populate({
+      path: 'posts',
+      match: { status: 'published' },
+      options: { limit: LIMIT, skip: LIMIT * (pageNo - 1), sort: { date: -1 } },
+      populate: { path: 'author' },
+    })
+    .execPopulate();
+  return tag.posts;
+};
 
-    if (!result.posts) return res.status(404).send();
-    res.send(result.posts);
-  } catch (e) {
-    res.status(500).send();
+const getCategoriesPosts = async (url, pageNo = 1) => {
+  const category = await Category.findOne({ url });
+  if (!category) {
+    throw new Error({ error: 'category not exists' });
+  }
+  await category
+    .populate({
+      path: 'posts',
+      match: { status: 'published' },
+      options: { limit: LIMIT, skip: LIMIT * (pageNo - 1), sort: { date: -1 } },
+      populate: { path: 'author' },
+    })
+    .execPopulate();
+  return category.posts;
+};
+
+const servePosts = async (req, res) => {
+  try {
+    const [, key, value, pageNo] = req.path.split('/');
+    const postsBy = {
+      author: getAuthorPosts,
+      tag: getTagsPosts,
+      category: getCategoriesPosts,
+    };
+    const posts = await postsBy[key](value, pageNo);
+    const sidebar = await sidebarContent();
+    res.render('postBy', { posts, sidebar, key, value });
+  } catch (error) {
+    res.status(500).end();
   }
 };
 
@@ -84,4 +100,4 @@ const serveSelectorPagination = async function (req, res) {
   }
 };
 
-module.exports = { serveByUrl, serveSelectorPosts, serveSelectorPagination };
+module.exports = { servePosts, serveSelectorPosts, serveSelectorPagination };

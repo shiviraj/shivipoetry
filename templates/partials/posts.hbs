@@ -1,10 +1,10 @@
 {{#each posts}}
   <div class="post">
     <div class="post-card">
-      <a class="post-title" href="post/{{this.url}}">{{this.title}}</a>
+      <a class="post-title" href="/post/{{this.url}}">{{this.title}}</a>
       <div class="post-date-and-author">
         <div><a class="post-date"> {{dateFormat this.date}} </a></div>
-        <div><a class="author" href="../author/{{this.author.username}}">{{this.author.displayName}}</a></div>
+        <div><a class="author" href="/author/{{this.author.username}}">{{this.author.displayName}}</a></div>
         <div>
           {{#if this.count}}
             <a class="comments">{{this.count}} comments</a>
@@ -14,7 +14,7 @@
       <div class="post-content">
         <span class="content"> {{{truncate this.content}}} </span>
         <span class="read-more">
-          <a href="post/{{this.url}}">Read More...</a>
+          <a href="/post/{{this.url}}">Read More...</a>
         </span>
       </div>
     </div>

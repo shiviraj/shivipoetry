@@ -9,7 +9,6 @@ require('./db/connectDB');
 const { postRouter } = require('./routers/post');
 const { postsByRouter } = require('./routers/postsBy');
 const { poetRouter } = require('./routers/poet');
-const { authPoetRouter } = require('./routers/authPoet');
 const { servePosts } = require('./handlers/post.js');
 
 const app = express();
@@ -34,6 +33,5 @@ app.use(express.static('public'));
 app.use(postRouter);
 app.use(postsByRouter);
 app.use('/poet', poetRouter);
-app.use('/poet/me', authPoetRouter);
 
 module.exports = { app };

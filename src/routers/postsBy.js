@@ -1,7 +1,7 @@
 const express = require('express');
 
 const {
-  serveByUrl,
+  servePosts,
   serveSelectorPosts,
   serveSelectorPagination,
 } = require('../handlers/postsBy');
@@ -13,8 +13,8 @@ selectPosts.use(/\/(category|tag|author)/, express.static('public'));
 selectPosts.get('/posts/pagination/:key/:value', serveSelectorPagination);
 selectPosts.post('/posts/:key/:value', serveSelectorPosts);
 
-selectPosts.get('/category/:name', serveByUrl);
-selectPosts.get('/tag/:name', serveByUrl);
-selectPosts.get('/author/:name', serveByUrl);
+selectPosts.get('/category/:name', servePosts);
+selectPosts.get('/tag/:name', servePosts);
+selectPosts.get('/author/:name', servePosts);
 
 module.exports = { postsByRouter: selectPosts };

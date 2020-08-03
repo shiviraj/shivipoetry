@@ -1,0 +1,36 @@
+<div class="related-post">
+  <div class="related-post-title">Related post:</div>
+  <div id="related-post">
+    <% relatedPosts.forEach((relatedPost) => { %>
+    <div class="post-card">
+      <a class="post-title" href="/post/<%= relatedPost.url %>">
+        <%= relatedPost.title %>
+      </a>
+      <div class="post-date-and-author">
+        <div>
+          <a class="post-date">
+            <%= moment(relatedPost).format('MMM DD, YYYY') %>
+          </a>
+        </div>
+        <div>
+          <a class="author" href="../author/<%= relatedPost.author.username %>">
+            <%= relatedPost.author.displayName %>
+          </a>
+        </div>
+        <% if(relatedPost.commentStatus === 'open' && relatedPost.commentCount)
+        { %>
+        <div><a class="comments"><%= relatedPost.count %> comments</a></div>
+        <% } %>
+      </div>
+      <div class="related-post-content">
+        <span class="content"> <%- relatedPost.content.slice(0,150) %> </span>
+        <span class="read-more">
+          <a href="<%= relatedPost.url %>">Read More...</a>
+        </span>
+      </div>
+    </div>
+    <div class="post-divider"></div>
+    <% }); %>
+  </div>
+  <div class="post-divider"></div>
+</div>

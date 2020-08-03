@@ -1,0 +1,28 @@
+<div class="sidebar">
+  <div class="sidebar-container">
+    <div>
+      <div class="title"><span>Recent Posts</span></div>
+      <div class="sidebar-contents" id="sidebar-recent-posts">
+        <% sidebar.recentPosts.forEach((recentPost)=>{ %>
+        <a href="/post/<%= recentPost.url %>"><%= recentPost.title %></a>
+        <% }); %>
+      </div>
+    </div>
+    <div>
+      <div class="title"><span>Categories</span></div>
+      <div class="sidebar-contents" id="sidebar-category">
+        <% sidebar.categories.forEach((category)=>{ %>
+        <a href="/category/<%= category.url %>"><%= category.name %></a>
+        <% }); %>
+      </div>
+    </div>
+    <div>
+      <div class="title"><span>Tags</span></div>
+      <div class="sidebar-contents" id="sidebar-tag">
+        <% sidebar.tags.forEach((tag)=>{ %>
+        <a href="/tag/<%= tag.url %>"><%= tag.name %></a>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+</div>

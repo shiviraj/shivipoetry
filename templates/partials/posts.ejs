@@ -1,0 +1,29 @@
+<% posts.forEach((post)=>{ %>
+<div class="post">
+  <div class="post-card">
+    <a class="post-title" href="/post/<%= post.url %>"><%= post.title %></a>
+    <div class="post-date-and-author">
+      <div>
+        <a class="post-date"><%= moment(post.date).format('MMM DD, YYYY') %></a>
+      </div>
+      <div>
+        <a class="author" href="/author/<%= post.author.username %>">
+          <%= post.author.displayName %>
+        </a>
+      </div>
+      <div>
+        <% if (post.count) {%>
+        <a class="comments"><%= post.count %> comments</a>
+        <% } %>
+      </div>
+    </div>
+    <div class="post-content">
+      <span class="content"> <%- post.content.slice(0, 150) %> </span>
+      <span class="read-more">
+        <a href="/post/<%= post.url %>">Read More...</a>
+      </span>
+    </div>
+  </div>
+  <div class="post-divider"></div>
+</div>
+<% }); %>

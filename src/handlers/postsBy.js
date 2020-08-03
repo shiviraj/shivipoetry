@@ -1,3 +1,4 @@
+const moment = require('moment');
 const { Author } = require('../models/author');
 const { Tag } = require('../models/tag');
 const { Category } = require('../models/category');
@@ -62,7 +63,7 @@ const servePosts = async (req, res) => {
     };
     const posts = await postsBy[key](value, pageNo);
     const sidebar = await sidebarContent();
-    res.render('postBy', { posts, sidebar, key, value });
+    res.render('postBy', { posts, sidebar, key, value, moment });
   } catch (error) {
     res.status(500).end();
   }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-170150580-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-170150580-1');
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/navbar.css" />
+    <link rel="stylesheet" href="./css/sidebar.css" />
+    <link rel="stylesheet" href="./css/post.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="./scripts/scrollTop.js"></script>
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+    <title><%= title %></title>
+    <meta name="description" content="{{ content }}" />
+  </head>
+
+  <body>
+    <div class="site-logo">$hivipoetry</div>
+    <div class="navbar"><%- include('partials/navbar') %></div>
+    <div class="container">
+      <div class="main-content">
+        <div class="post-content">
+          <div id="content">
+            <div class="post-title">
+              <h1><%= title %></h1>
+            </div>
+            <div class="categories">
+              <% categories.forEach((category) => { %>
+              <a href="/category/<%= category.url %>" class="category">
+                <%= category.name %>
+              </a>
+              <% }); %>
+            </div>
+            <div class="post-date-and-author">
+              <div>
+                <a class="post-date">
+                  <%= moment(date).format('MMM DD, YYYY') %>
+                </a>
+              </div>
+              <div>
+                <a class="author" href="../author/<%= author.username %>">
+                  <%= author.displayName %>
+                </a>
+              </div>
+              <div>
+                <% if(commentStatus === 'open' && commentCount) { %>
+                <a class="comments"><%= count %> comments</a>
+                <% } %>
+              </div>
+            </div>
+
+            <div class="content"><%- content %></div>
+            <div class="post-count">Total Views: <%= views %></div>
+            <div class="tags">
+              <span class="tag-title">Tagged</span>
+              <span class="tag-items">
+                <% tags.forEach((tag) => { %>
+                <a href="../tag/<%= tag.url %>" class="tag-item">
+                  <%= tag.name %>
+                </a>
+                <% }) %>
+              </span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <%- include('partials/relatedPost') %>
+
+          <div class="divider"></div>
+
+          <div class="post-comments">
+            <!-- <div class="comment-title">Comments:</div> -->
+            <!-- <div class="comment-item">
+              <div class="commenter-name">Shivi</div>
+              <div class="comment-date">June 21, 2008 at 12:07 am</div>
+              <div class="comment-msg">This is an awesome poem</div>
+            </div>
+            <div class="comment-item">
+              <div class="commenter-name">Shivi</div>
+              <div class="comment-date">June 21, 2008 at 12:07 am</div>
+              <div class="comment-msg">This is an awesome poem</div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <%- include('partials/sidebar') %>
+    </div>
+
+    <footer>$hivipoetry | Theme : Developed By <a href="#">Shiviraj</a></footer>
+    <div class="top-arrow hidden">
+      <i class="fa fa-chevron-up"></i>
+    </div>
+  </body>
+</html>

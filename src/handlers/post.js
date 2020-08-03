@@ -1,3 +1,4 @@
+const moment = require('moment');
 const { Post } = require('../models/post');
 const { Category } = require('../models/category');
 const { Tag } = require('../models/tag');
@@ -13,7 +14,7 @@ const servePosts = async function (req, res) {
       .skip(0)
       .limit(LIMIT);
     const sidebar = await sidebarContent();
-    res.render('index', { posts, sidebar });
+    res.render('index', { posts, sidebar, moment });
   } catch (e) {
     res.status(500).send();
   }
@@ -50,10 +51,10 @@ const servePost = async function (req, res) {
     const token = await updatePostCountAndGetToken(req, url, Post);
     const post = await getPost(url);
     if (!post) res.status(404).send();
-    post.relatedPosts = await getRandomPost();
-    post.sidebar = await sidebarContent();
+    const relatedPosts = await getRandomPost();
+    const sidebar = await sidebarContent();
     res.cookie('postToken', `postToken ${token}`);
-    res.render('post', post);
+    res.render('post', Object.assign(post, { relatedPosts, sidebar, moment }));
   } catch (e) {
     res.status(500).send();
   }

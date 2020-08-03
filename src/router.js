@@ -1,7 +1,6 @@
 const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const hbs = require('hbs');
 const moment = require('moment');
 
 require('./db/connectDB');
@@ -16,16 +15,8 @@ const app = express();
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
-const viewsPath = path.join(__dirname, '../templates/views');
-const partialsPath = path.join(__dirname, '../templates/partials');
-
-hbs.registerPartials(partialsPath);
-hbs.registerHelper({
-  dateFormat: (date) => moment(date).format('MMM DD, YYYY hh:mm:ss A'),
-  truncate: (content) => content.slice(0, 150),
-});
-app.set('view engine', 'hbs');
-app.set('views', viewsPath);
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../templates'));
 
 app.get('/', servePosts);
 

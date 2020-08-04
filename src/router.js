@@ -1,14 +1,12 @@
 const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const moment = require('moment');
 
 require('./db/connectDB');
 
 const { postRouter } = require('./routers/post');
 const { postsByRouter } = require('./routers/postsBy');
 const { poetRouter } = require('./routers/poet');
-const { servePosts } = require('./handlers/post.js');
 
 const app = express();
 
@@ -17,8 +15,6 @@ app.use(cookieParser());
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../templates'));
-
-app.get('/', servePosts);
 
 app.use(express.static('public'));
 app.use(postRouter);

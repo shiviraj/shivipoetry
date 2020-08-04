@@ -1,29 +1,24 @@
 const moment = require('moment');
 const { Post } = require('../models/post');
-const { Category } = require('../models/category');
-const { Tag } = require('../models/tag');
 const { shuffle, updatePostCountAndGetToken } = require('./utils');
 const { sidebarContent } = require('./sidebarContent');
 const LIMIT = 10;
 
 const servePosts = async function (req, res) {
   try {
+    const page = req.params.page || 1;
+    const totalPosts = await Post.countDocuments({ status: 'published' });
+    const pages = Math.ceil(totalPosts / LIMIT);
+    if (page < 1 || page > pages) {
+      throw new Error('post not found');
+    }
     const posts = await Post.find({ status: 'published' })
       .populate('author', ['displayName', 'username'])
       .sort({ date: -1 })
-      .skip(0)
+      .skip((page - 1) * LIMIT)
       .limit(LIMIT);
     const sidebar = await sidebarContent();
-    res.render('index', { posts, sidebar, moment });
-  } catch (e) {
-    res.status(500).send();
-  }
-};
-
-const serveNoOfPages = async function (req, res) {
-  try {
-    const totalPosts = await Post.countDocuments({ status: 'published' });
-    res.send({ pages: Math.ceil(totalPosts / LIMIT) });
+    res.render('index', { posts, sidebar, moment, pages, page });
   } catch (e) {
     res.status(500).send();
   }
@@ -60,28 +55,4 @@ const servePost = async function (req, res) {
   }
 };
 
-const serveCategories = async function (req, res) {
-  try {
-    const result = await Category.find();
-    res.send(result);
-  } catch {
-    res.status(500).end();
-  }
-};
-
-const serveTags = async function (req, res) {
-  try {
-    const result = await Tag.find();
-    res.send(result);
-  } catch {
-    res.status(500).end();
-  }
-};
-
-module.exports = {
-  servePosts,
-  serveNoOfPages,
-  servePost,
-  serveCategories,
-  serveTags,
-};
+module.exports = { servePosts, servePost };

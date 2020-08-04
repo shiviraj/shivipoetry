@@ -1,0 +1,31 @@
+<!--<% 
+const SHOWN_PAGES = 10;
+const getCurrentRange = function (currentPage, totalPages) {
+  let startWith = currentPage - Math.ceil(SHOWN_PAGES / 2);
+  let endWith = currentPage + Math.floor(SHOWN_PAGES / 2);
+  if (startWith < 0) {
+    startWith = 0;
+    endWith = SHOWN_PAGES;
+  }
+  if (endWith > totalPages) {
+    startWith = totalPages - SHOWN_PAGES;
+    endWith = totalPages;
+  }
+  return [startWith, endWith];
+};
+
+const showPagination = function (page, pages, key='posts', value='page') {
+  if (pages === 1) return;
+  const [startsWith, endsWith] = getCurrentRange(page, pages)
+  const pagesArray = new Array(pages).fill('').map((p, index) => {
+    return (index + 1 == page) 
+          ? `<a href="/${key}/${value}/${index + 1}" class="current-page">${index + 1}</a>`
+          : `<a href="/${key}/${value}/${index + 1}">${index + 1}</a>`;
+  });
+  page != 1 && pagesArray.unshift(`<a href="/${key}/${value}/${page-1}">Prev</a>`);
+  page != pages && pagesArray.push(`<a href="/${key}/${value}/${page+1}">Next</a>`);
+  return pagesArray.join('')
+};
+%>-->
+
+<div class="pagination"><%- showPagination(page, pages) %></div>

@@ -30,9 +30,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <!-- <script src="./scripts/scrollTop.js"></script>
-    <script src="./scripts/pagination.js"></script>
-    <script src="./scripts/index.js"></script> -->
+    <script src="./scripts/scrollTop.js"></script>
     <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
     <title>$hivipoetry</title>
   </head>
@@ -43,7 +41,7 @@
     <div class="container">
       <div class="main-content">
         <div id="posts"><%- include('partials/posts', posts) %></div>
-        <div class="pagination"></div>
+        <%- include('partials/pagination') %>
       </div>
       <%- include('partials/sidebar') %>
     </div>

@@ -53,34 +53,7 @@ const getCategoriesPosts = async (url, pageNo = 1) => {
   return category.posts;
 };
 
-const servePosts = async (req, res) => {
-  try {
-    const [, key, value, pageNo] = req.path.split('/');
-    const postsBy = {
-      author: getAuthorPosts,
-      tag: getTagsPosts,
-      category: getCategoriesPosts,
-    };
-    const posts = await postsBy[key](value, pageNo);
-    const sidebar = await sidebarContent();
-    res.render('postBy', { posts, sidebar, key, value, moment });
-  } catch (error) {
-    res.status(500).end();
-  }
-};
-
-const serveSelectorPosts = function (req, res) {
-  const { pageNo } = req.body;
-  const { key, value } = req.params;
-  if (key === 'author') {
-    return serveAuthorsPosts(res, value, pageNo);
-  }
-  const models = { category: Category, tag: Tag };
-  serveTagsOrCategoriesPosts(res, models[key], value, pageNo);
-};
-
-const serveSelectorPagination = async function (req, res) {
-  const { key, value } = req.params;
+const getPages = async (key, value) => {
   const models = {
     category: { model: Category, findBy: 'url' },
     tag: { model: Tag, findBy: 'url' },
@@ -89,16 +62,31 @@ const serveSelectorPagination = async function (req, res) {
   const Model = models[key].model;
   const findBy = {};
   findBy[models[key].findBy] = value;
+  const result = await Model.findOne(findBy);
+  await result
+    .populate({ path: 'posts', match: { status: 'published' } })
+    .execPopulate();
+  return Math.ceil(result.posts.length / LIMIT);
+};
+
+const servePosts = async (req, res) => {
   try {
-    const result = await Model.findOne(findBy);
-    await result
-      .populate({ path: 'posts', match: { status: 'published' } })
-      .execPopulate();
-    const pages = Math.ceil(result.posts.length / LIMIT);
-    res.send({ pages });
-  } catch (e) {
-    res.status(500).send();
+    const [, key, value, page = 1] = req.path.split('/');
+    const pages = await getPages(key, value);
+    if (page < 1 || page > pages) {
+      throw new Error('post not found');
+    }
+    const postsBy = {
+      author: getAuthorPosts,
+      tag: getTagsPosts,
+      category: getCategoriesPosts,
+    };
+    const posts = await postsBy[key](value, page);
+    const sidebar = await sidebarContent();
+    res.render('postBy', { posts, sidebar, key, value, moment, page, pages });
+  } catch (error) {
+    res.status(500).end();
   }
 };
 
-module.exports = { servePosts, serveSelectorPosts, serveSelectorPagination };
+module.exports = { servePosts };

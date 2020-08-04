@@ -77,16 +77,3 @@ describe('Post content by url', () => {
       .expect(200);
   });
 });
-
-describe('Sidebar related things', () => {
-  beforeEach(setupDatabase);
-  afterEach(cleanupDatabase);
-
-  test('Should serve all categories', async () => {
-    await request(app).get('/categories').expect(200);
-  });
-
-  test('Should serve all tags', async () => {
-    await request(app).get('/tags').expect(200);
-  });
-});

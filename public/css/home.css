@@ -47,15 +47,16 @@
   justify-content: center;
   margin: 2%;
 }
-.pagination > div {
+.pagination > a {
   border: 1px solid #ccc;
   padding: 1% 2%;
   cursor: pointer;
   font-size: 16px;
   transition: ease-in all 0.2s;
+  text-decoration: none;
 }
 
-.pagination > div:hover {
+.pagination > a:hover {
   background-color: #ccc;
   border-color: #888;
 }

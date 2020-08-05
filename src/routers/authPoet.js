@@ -12,6 +12,7 @@ const {
 } = require('../handlers/updateAddAuthPoet');
 
 const {
+  serveDashboard,
   serveAllCategories,
   serveAllTags,
   serveURLAvailability,
@@ -21,8 +22,9 @@ const {
 
 const authPoetRouter = new express.Router();
 authPoetRouter.use(auth);
-authPoetRouter.use('/', express.static('public/poet/auth'));
-authPoetRouter.get('/i', (req, res) => res.send(req.author));
+authPoetRouter.use('/', express.static('public/poet'));
+
+authPoetRouter.get('/dashboard', serveDashboard);
 authPoetRouter.get('/logout', logoutFromAccount);
 authPoetRouter.get('/categories', serveAllCategories);
 authPoetRouter.get('/tags', serveAllTags);

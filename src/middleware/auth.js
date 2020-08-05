@@ -6,7 +6,6 @@ const auth = async function (req, res, next) {
     const token = req.cookies.token.replace('token ', '');
     const { _id } = jwt.verify(token, process.env.SECRET_CODE);
     const author = await Author.findOne({ _id, 'tokens.token': token });
-    if (!author) throw new Error();
     req.token = token;
     req.author = author;
     next();

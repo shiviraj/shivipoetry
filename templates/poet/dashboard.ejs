@@ -1,0 +1,18 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/poet/css/dashboard.css" />
+    <link rel="stylesheet" href="/poet/css/post.css" />
+    <script src="./scripts/posts.js"></script>
+    <title>$hivipoetry | Poet</title>
+  </head>
+  <body>
+    <%- include('includes/sidebar') %>
+    <div class="main-content">
+      <div class="header">Shivipoetry</div>
+      <%- include('includes/posts') %>
+      <a class="add-new-post" title="Add new post" href="addPost"></a>
+    </div>
+  </body>
+</html>

@@ -1,10 +1,19 @@
-const renderPosts = async () => {
-  try {
-    const posts = await fetchData('/poet/me/myAllPosts');
-    showPosts(posts);
-  } catch (error) {
-    console.log(error);
-  }
+const getElement = (selector) => document.querySelector(selector);
+const getAllElement = (selector) => document.querySelectorAll(selector);
+
+const removePost = function ($post) {
+  return (status) => {
+    if (status) $post.remove();
+  };
+};
+
+const removePublishButton = function ($publish) {
+  return (status) => {
+    if (!status) return;
+    const $parent = $publish.parentNode.parentNode;
+    $publish.remove();
+    $parent.querySelector('.title').lastChild.remove();
+  };
 };
 
 const listenerOnPublish = () => {
@@ -45,9 +54,8 @@ const showConfirmation = ($delete) => {
   setTimeout(hideConfirmation, 3000, $delete);
 };
 
-const main = async () => {
-  await loadPartialHtml();
-  await renderPosts();
+const main = () => {
+  listenerOnPublish();
 };
 
 window.onload = main;

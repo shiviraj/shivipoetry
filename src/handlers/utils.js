@@ -1,14 +1,4 @@
-const fs = require('fs');
-const path = require('path');
 const jwt = require('jsonwebtoken');
-
-const serveTemplate = function (fileName, res) {
-  const pathUrl = path.join(__dirname, `../../templates/${fileName}`);
-  fs.readFile(pathUrl, 'utf8', (error, data) => {
-    if (error) return res.status(500).send();
-    res.send(data);
-  });
-};
 
 const shuffle = function (array) {
   for (let time = 0; time < 8; time++) {
@@ -68,9 +58,4 @@ const clearInvalidTokens = async function (id, Author) {
   await Author.findByIdAndUpdate(id, { tokens });
 };
 
-module.exports = {
-  serveTemplate,
-  shuffle,
-  updatePostCountAndGetToken,
-  clearInvalidTokens,
-};
+module.exports = { shuffle, updatePostCountAndGetToken, clearInvalidTokens };

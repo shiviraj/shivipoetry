@@ -45,7 +45,6 @@ const servePost = async function (req, res) {
   try {
     const token = await updatePostCountAndGetToken(req, url, Post);
     const post = await getPost(url);
-    if (!post) res.status(404).send();
     const relatedPosts = await getRandomPost();
     const sidebar = await sidebarContent();
     res.cookie('postToken', `postToken ${token}`);

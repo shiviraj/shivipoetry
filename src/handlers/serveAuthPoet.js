@@ -1,7 +1,27 @@
-const mongodb = require('mongodb');
+const moment = require('moment');
 const { Category } = require('../models/category');
 const { Tag } = require('../models/tag');
 const { Post } = require('../models/post');
+
+const getAllPosts = async (author) => {
+  return await Post.find({ author })
+    .populate('author', ['displayName', 'username'])
+    .populate('tags', ['name', 'url'])
+    .populate('categories', ['name', 'url'])
+    .sort({ date: -1 });
+};
+
+const serveDashboard = async function (req, res) {
+  try {
+    const allPosts = await getAllPosts(req.author._id);
+    res.render(
+      'poet/dashboard',
+      Object.assign(req.author, { allPosts, moment })
+    );
+  } catch (err) {
+    res.send(500);
+  }
+};
 
 const serveAllCategories = async function (req, res) {
   try {
@@ -60,6 +80,7 @@ const servePost = async function (req, res) {
 };
 
 module.exports = {
+  serveDashboard,
   serveAllCategories,
   serveAllTags,
   serveURLAvailability,

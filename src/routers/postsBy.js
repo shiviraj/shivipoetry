@@ -6,8 +6,15 @@ const selectPosts = new express.Router();
 
 selectPosts.use(/\/(category|tag|author)/, express.static('public'));
 
-selectPosts.get(['/category/:name', '/category/:name/:page'], servePosts);
-selectPosts.get(['/tag/:name', '/tag/:name/:page'], servePosts);
-selectPosts.get(['/author/:name', '/author/:name/:page'], servePosts);
+const routes = [
+  '/category/:name',
+  '/category/:name/:page',
+  '/tag/:name',
+  '/tag/:name/:page',
+  '/author/:name',
+  '/author/:name/:page',
+];
+
+selectPosts.get(routes, servePosts);
 
 module.exports = { postsByRouter: selectPosts };

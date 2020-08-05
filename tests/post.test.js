@@ -15,9 +15,27 @@ describe('Static page', () => {
   });
 });
 
-describe('Server Post', () => {
+describe('Serve Post', () => {
   beforeEach(setupDatabase);
   afterEach(cleanupDatabase);
+
+  test('Should serve posts for / url', async () => {
+    await request(app)
+      .get('/')
+      .expect(200)
+      .expect(/Post 1/);
+  });
+
+  test('Should serve posts for valid page', async () => {
+    await request(app)
+      .get('/posts/page/1')
+      .expect(200)
+      .expect(/Post 1/);
+  });
+
+  test('Should not server posts for invalid page', async () => {
+    await request(app).get('/posts/page/5').expect(500);
+  });
 
   test('Should serve the post content of given url', async () => {
     await request(app)
@@ -75,5 +93,9 @@ describe('Post content by url', () => {
       .get('/post/post-1')
       .set('Cookie', `postToken=postToken ${postOne.tokens[1].token}`)
       .expect(200);
+  });
+
+  test('Should not serve the post content for invalid url', async () => {
+    await request(app).get('/post/invalidPost').expect(500);
   });
 });

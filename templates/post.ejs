@@ -29,7 +29,10 @@
     <script src="./scripts/scrollTop.js"></script>
     <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
     <title><%= title %></title>
-    <meta name="description" content="<%- content.replace(/\<.*?\>/g, '') %>" />
+    <meta
+      name="description"
+      content="<%- content.replace(/\<.*?\>/g, '').slice(0,200) + '...' %>"
+    />
   </head>
 
   <body>

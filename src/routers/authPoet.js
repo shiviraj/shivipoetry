@@ -38,7 +38,7 @@ authPoetRouter.put('/addNewPost', addNewPostAndServe);
 authPoetRouter.get('/myAllPosts', serveAllPosts);
 authPoetRouter.post('/post', servePost);
 authPoetRouter.post('/updatePost', updatePostAndServe);
-authPoetRouter.post('/publishPost', publishPostAndServe);
-authPoetRouter.delete('/deletePost', deletePostAndServe);
+authPoetRouter.post('/publish/:url', publishPostAndServe);
+authPoetRouter.delete('/deletePost/:url', deletePostAndServe);
 
 module.exports = { authPoetRouter };

@@ -1,6 +1,14 @@
 const getElement = (selector) => document.querySelector(selector);
 const getAllElement = (selector) => document.querySelectorAll(selector);
 
+const fetchData = async (url, options) => {
+  const res = await fetch(url, options);
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
+  return await res.json();
+};
+
 const removePost = function ($post) {
   return (status) => {
     if (status) $post.remove();
@@ -22,8 +30,8 @@ const listenerOnPublish = () => {
     $publish.addEventListener('click', async (e) => {
       try {
         const removeAction = removePublishButton($publish);
-        const options = getOptions({ url: e.target.id });
-        const data = await fetchData('/poet/me/publishPost', options);
+        const url = `/poet/publish/${e.target.id}`;
+        const data = await fetchData(url, { method: 'POST' });
         removeAction(data);
       } catch (error) {
         console.error(error);
@@ -35,8 +43,8 @@ const listenerOnPublish = () => {
 const deletePost = async ($element) => {
   try {
     const performRemovePost = removePost($element.parentNode.parentNode);
-    const options = getOptions({ url: $element.title }, 'DELETE');
-    const res = await fetchData('/poet/me/deletePost', options);
+    const url = `/poet/deletePost/${$element.title}`;
+    const res = await fetchData(url, { method: 'DELETE' });
     performRemovePost(res);
   } catch (error) {
     console.error(error);

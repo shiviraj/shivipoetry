@@ -92,7 +92,8 @@ describe('Poet signup and login', () => {
     await request(app)
       .get('/poet/logout')
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(302);
+      .expect(302)
+      .expect('Location', '/poet/login.html');
   });
 });
 

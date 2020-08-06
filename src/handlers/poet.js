@@ -3,13 +3,8 @@ const { clearInvalidTokens } = require('./utils');
 
 const serveIsAvailableUsername = async function (req, res) {
   const { username } = req.body;
-  try {
-    const result = await Author.findOne({ username });
-    const isAvailable = result === null;
-    res.send({ isAvailable });
-  } catch (e) {
-    res.status(500).send();
-  }
+  const result = await Author.findOne({ username });
+  res.send({ isAvailable: result === null });
 };
 
 const registerPoet = async function (req, res) {
@@ -38,16 +33,12 @@ const serveLoginPoet = async function (req, res) {
 };
 
 const logoutFromAccount = async (req, res) => {
-  try {
-    const tokens = req.author.tokens.filter((token) => {
-      return token.token != req.token;
-    });
-    await Author.findByIdAndUpdate(req.author._id, { tokens });
-    await clearInvalidTokens(req.author._id, Author);
-    res.redirect('../login.html');
-  } catch {
-    res.status(500).end();
-  }
+  const tokens = req.author.tokens.filter((token) => {
+    return token.token != req.token;
+  });
+  await Author.findByIdAndUpdate(req.author._id, { tokens });
+  await clearInvalidTokens(req.author._id, Author);
+  res.redirect('/poet/login.html');
 };
 
 module.exports = {

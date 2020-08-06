@@ -46,36 +46,36 @@ const addNewPostAndServe = async function (req, res) {
 
 const updatePostAndServe = async (req, res) => {
   try {
-    const _id = req.body._id;
-    delete req.body._id;
-    const postOptions = req.body;
+    const { _id, ...postOptions } = req.body;
     postOptions.categories = await getIds(postOptions.categories, Category);
     postOptions.tags = await getIds(postOptions.tags, Tag);
     postOptions.modified = new Date();
-    await Post.findByIdAndUpdate(_id, postOptions);
-    res.send({ status: true });
+    const post = await Post.findByIdAndUpdate(_id, postOptions);
+    if (post) {
+      return res.send({ status: true });
+    }
+    res.status(422).send({ status: false });
   } catch {
     res.status(500).end();
   }
 };
 
 const publishPostAndServe = async (req, res) => {
-  try {
-    const valuesToUpdate = { status: 'published', date: new Date() };
-    await Post.findOneAndUpdate({ url: req.body.url }, valuesToUpdate);
-    res.send({ status: true });
-  } catch {
-    res.status(500).end();
+  const valuesToUpdate = { status: 'published', date: new Date() };
+  const findOption = { url: req.params.url };
+  const post = await Post.findOneAndUpdate(findOption, valuesToUpdate);
+  if (post) {
+    return res.send({ status: true });
   }
+  res.status(422).send({ status: false });
 };
 
 const deletePostAndServe = async (req, res) => {
-  try {
-    await Post.findOneAndDelete({ url: req.body.url });
-    res.send({ status: true });
-  } catch {
-    res.status(500).end();
+  const post = await Post.findOneAndDelete({ url: req.params.url });
+  if (post) {
+    return res.send({ status: true });
   }
+  res.status(422).send({ status: false });
 };
 
 module.exports = {

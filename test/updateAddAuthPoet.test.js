@@ -3,12 +3,13 @@ const { app } = require('../src/router');
 
 const {
   authorOne,
+  authorOneId,
   postOneId,
   setupDatabase,
   cleanupDatabase,
 } = require('./fixtures/db');
 
-describe('UpdateAddAuthPoet', () => {
+describe('UpdateAddAuthPoet', function () {
   beforeEach(setupDatabase);
   afterEach(cleanupDatabase);
 
@@ -55,7 +56,7 @@ describe('UpdateAddAuthPoet', () => {
   });
 
   test('Should add new post', async () => {
-    const res = await request(app)
+    await request(app)
       .put('/poet/addNewPost')
       .send({
         title: 'title',
@@ -66,12 +67,12 @@ describe('UpdateAddAuthPoet', () => {
         url: 'title',
       })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(200);
-    expect(res.body).toMatchObject({ status: true });
+      .expect(200)
+      .expect({ status: true });
   });
 
   test('Should save new post as draft', async () => {
-    const res = await request(app)
+    await request(app)
       .put('/poet/addNewPost')
       .send({
         title: 'title',
@@ -82,8 +83,8 @@ describe('UpdateAddAuthPoet', () => {
         url: 'title',
       })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(200);
-    expect(res.body).toMatchObject({ status: true });
+      .expect(200)
+      .expect({ status: true });
   });
 
   test('Should 500 error if required options are not provided', async () => {
@@ -95,12 +96,21 @@ describe('UpdateAddAuthPoet', () => {
   });
 
   test('Should update post by author', async () => {
-    const res = await request(app)
+    await request(app)
       .post('/poet/updatePost')
       .send({ _id: postOneId, title: 'new title', categories: [], tags: [] })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(200);
-    expect(res.body).toMatchObject({ status: true });
+      .expect(200)
+      .expect({ status: true });
+  });
+
+  test('Should not update post with invalid id', async () => {
+    await request(app)
+      .post('/poet/updatePost')
+      .send({ _id: authorOneId, title: 'new title', categories: [], tags: [] })
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(422)
+      .expect({ status: false });
   });
 
   test('Should give server error if post url is not unique', async () => {
@@ -112,20 +122,34 @@ describe('UpdateAddAuthPoet', () => {
   });
 
   test('Should publish the post of given url', async () => {
-    const res = await request(app)
-      .post('/poet/publishPost')
-      .send({ url: 'post-1' })
+    await request(app)
+      .post('/poet/publish/post-1')
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(200);
-    expect(res.body.status).toBeTruthy();
+      .expect(200)
+      .expect({ status: true });
+  });
+
+  test('Should not publish the post of invalid url', async () => {
+    await request(app)
+      .post('/poet/publish/invalid-post')
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(422)
+      .expect({ status: false });
   });
 
   test('Should delete the post of given url', async () => {
-    const res = await request(app)
-      .delete('/poet/deletePost')
-      .send({ url: 'post-1' })
+    await request(app)
+      .delete('/poet/deletePost/post-1')
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(200);
-    expect(res.body.status).toBeTruthy();
+      .expect(200)
+      .expect({ status: true });
+  });
+
+  test('Should not delete the post of invalid url', async () => {
+    await request(app)
+      .delete('/poet/deletePost/invalid-post')
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(422)
+      .expect({ status: false });
   });
 });

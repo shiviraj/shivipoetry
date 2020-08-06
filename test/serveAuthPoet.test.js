@@ -80,7 +80,7 @@ describe('ServeAuthPoet', () => {
       .post('/poet/post')
       .send({ url: 'post-2' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(500);
+      .expect(404);
   });
 
   test('Should give editor to edit a post', async () => {

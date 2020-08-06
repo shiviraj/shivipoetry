@@ -34,6 +34,14 @@ describe('PostBy by url', () => {
     await request(app).get('/author/notExists').expect(500);
   });
 
+  test('Should serve the template with valid page', async () => {
+    await request(app).get('/author/Shivi/1').expect(200);
+  });
+
+  test('Should not serve the template if page is not exists', async () => {
+    await request(app).get('/author/Shivi/5').expect(500);
+  });
+
   test('Should serve the posts by tag', async () => {
     await request(app).get('/tag/tag-1').expect(200);
   });
@@ -41,11 +49,28 @@ describe('PostBy by url', () => {
   test('Should not serve the posts by tag if not exists', async () => {
     const res = await request(app).get('/tag/notExists').expect(500);
   });
+
+  test('Should serve the template with valid page', async () => {
+    await request(app).get('/tag/tag-1/1').expect(200);
+  });
+
+  test('Should not serve the template if page is not exists', async () => {
+    await request(app).get('/tag/tag-1/5').expect(500);
+  });
+
   test('Should serve the posts by category', async () => {
     await request(app).get('/category/category-1').expect(200);
   });
 
   test('Should not serve the posts by category if not exists', async () => {
     await request(app).get('/category/notExists').expect(500);
+  });
+
+  test('Should serve the template with valid page', async () => {
+    await request(app).get('/category/category-1/1').expect(200);
+  });
+
+  test('Should not serve the template if page is not exists', async () => {
+    await request(app).get('/category/category-1/5').expect(500);
   });
 });

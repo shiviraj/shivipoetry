@@ -7,9 +7,6 @@ const LIMIT = 10;
 
 const getAuthorPosts = async (username, pageNo = 1) => {
   const author = await Author.findOne({ username });
-  if (!author) {
-    throw new Error({ error: 'author not exists' });
-  }
   await author
     .populate({
       path: 'posts',
@@ -23,9 +20,6 @@ const getAuthorPosts = async (username, pageNo = 1) => {
 
 const getTagsPosts = async (url, pageNo = 1) => {
   const tag = await Tag.findOne({ url });
-  if (!tag) {
-    throw new Error({ error: 'tag not exists' });
-  }
   await tag
     .populate({
       path: 'posts',
@@ -39,9 +33,6 @@ const getTagsPosts = async (url, pageNo = 1) => {
 
 const getCategoriesPosts = async (url, pageNo = 1) => {
   const category = await Category.findOne({ url });
-  if (!category) {
-    throw new Error({ error: 'category not exists' });
-  }
   await category
     .populate({
       path: 'posts',

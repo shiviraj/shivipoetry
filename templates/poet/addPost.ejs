@@ -2,16 +2,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../poetCss/dashboard.css" />
-    <link rel="stylesheet" href="../poetCss/addPost.css" />
-    <script src="./scripts/leftSidebar.js"></script>
-    <script src="./scripts/submitPost.js"></script>
-    <script src="./scripts/addNewPost.js"></script>
-    <script type="text/javascript" src="./ckeditor/ckeditor.js"></script>
+    <link rel="stylesheet" href="/poet/css/dashboard.css" />
+    <link rel="stylesheet" href="/poet/css/addPost.css" />
+    <script src="/poet/scripts/submitPost.js"></script>
+    <script src="/poet/scripts/addNewPost.js"></script>
+    <script type="text/javascript" src="/poet/ckeditor/ckeditor.js"></script>
     <title>$hivipoetry | Poet</title>
   </head>
   <body>
-    <div class="left-sidebar"></div>
+    <div class="left-sidebar"><%- include('includes/sidebar') %></div>
     <div class="main-content">
       <div class="title header">Add New Post</div>
       <form>

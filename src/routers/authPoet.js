@@ -13,6 +13,8 @@ const {
 
 const {
   serveDashboard,
+  serveEditor,
+  serveEditorWithPost,
   serveAllCategories,
   serveAllTags,
   serveURLAvailability,
@@ -25,6 +27,8 @@ authPoetRouter.use(auth);
 authPoetRouter.use('/', express.static('public/poet'));
 
 authPoetRouter.get('/dashboard', serveDashboard);
+authPoetRouter.get('/addPost', serveEditor);
+authPoetRouter.get('/edit/:url', serveEditorWithPost);
 authPoetRouter.get('/logout', logoutFromAccount);
 authPoetRouter.get('/categories', serveAllCategories);
 authPoetRouter.get('/tags', serveAllTags);

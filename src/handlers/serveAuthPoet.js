@@ -23,6 +23,23 @@ const serveDashboard = async function (req, res) {
   }
 };
 
+const serveEditor = async function (req, res) {
+  try {
+    res.render('poet/addPost', req.author);
+  } catch (error) {
+    res.status(500).send();
+  }
+};
+
+const serveEditorWithPost = async function (req, res) {
+  try {
+    const post = await Post.findOne({ url: req.params.url });
+    res.render('poet/editor', Object.assign(req.author, post));
+  } catch (error) {
+    res.status(500).send();
+  }
+};
+
 const serveAllCategories = async function (req, res) {
   try {
     const categories = await Category.find();
@@ -81,6 +98,8 @@ const servePost = async function (req, res) {
 
 module.exports = {
   serveDashboard,
+  serveEditor,
+  serveEditorWithPost,
   serveAllCategories,
   serveAllTags,
   serveURLAvailability,

@@ -107,7 +107,7 @@ describe('Need authentication', () => {
       .expect(200);
   });
 
-  test.skip('Should serve static page from poet url of addPost', async () => {
+  test('Should serve static page from poet url of addPost', async () => {
     await request(app)
       .get('/poet/addPost')
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
@@ -123,7 +123,7 @@ describe('Need authentication', () => {
 
   test('Should redirect to login page if poet not authenticate', async () => {
     const res = await request(app).get('/poet/dashboard').expect(302);
-    expect(res.headers.location).toBe('../login.html');
+    expect(res.headers.location).toBe('/poet/login.html');
   });
 
   test('Should not serve static page if token is invalid', async () => {
@@ -131,6 +131,6 @@ describe('Need authentication', () => {
       .get('/poet/dashboard')
       .set('Cookie', `token=token something`)
       .expect(302);
-    expect(res.headers.location).toBe('../login.html');
+    expect(res.headers.location).toBe('/poet/login.html');
   });
 });

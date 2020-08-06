@@ -38,7 +38,6 @@ const updatePost = async function (e) {
 };
 
 const main = async function () {
-  await loadPartialHtml();
   await listenerOfAddNewCategoryAndTag();
   await listenerOnUrl();
   await fetchCategoryAndTags();

@@ -82,4 +82,12 @@ describe('ServeAuthPoet', () => {
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(500);
   });
+
+  test('Should give editor to edit a post', async () => {
+    await request(app)
+      .get('/poet/edit/post-1')
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200)
+      .expect(/Edit Post/);
+  });
 });

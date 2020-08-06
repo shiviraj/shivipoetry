@@ -1,3 +1,22 @@
+const getElement = (selector) => document.querySelector(selector);
+const getAllElement = (selector) => document.querySelectorAll(selector);
+
+const getOptions = (body, method = 'POST') => {
+  return {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  };
+};
+
+const fetchData = async function (url, options) {
+  const res = await fetch(url, options);
+  if (!res.ok) {
+    throw new Error('fetch error');
+  }
+  return await res.json();
+};
+
 const getPostOptions = function () {
   const title = getElement('#title').value;
   const url = getElement('.url input').value;
@@ -24,9 +43,9 @@ const renderTags = (tags) => {
 
 const fetchCategoryAndTags = async function () {
   try {
-    const categories = await fetchData('/poet/me/categories');
+    const categories = await fetchData('/poet/categories');
     renderCategories(categories);
-    const tags = await fetchData('/poet/me/tags');
+    const tags = await fetchData('/poet/tags');
     renderTags(tags);
   } catch (error) {
     console.log(error);
@@ -50,7 +69,7 @@ const addNew = async (event, name, callback) => {
   try {
     const body = {};
     body[name] = value;
-    const url = `/poet/me/addNew/${name}`;
+    const url = `/poet/addNew/${name}`;
     const res = await fetchData(url, getOptions(body, 'PUT'));
     callback(res);
   } catch (error) {
@@ -89,7 +108,7 @@ const listenerOnUrl = function () {
     if (!url) return;
     try {
       const options = getOptions({ url, currentUrl });
-      const res = await fetchData('/poet/me/isURLAvailable', options);
+      const res = await fetchData('/poet/isURLAvailable', options);
       renderURLAvailability(res);
     } catch (error) {
       console.error(error);

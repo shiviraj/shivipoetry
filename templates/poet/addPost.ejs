@@ -35,9 +35,19 @@
           </script>
         </div>
         <div class="other-information">
+          <!-- <% 
+          const fillAll = (list, idName) => {
+            const html = list.map((item) => {
+              return `<label><input type="checkbox" name="${idName}" value="${item.url}">${item.name}</label>`;
+            });
+            return html.join('');
+          };
+            %> -->
           <div class="category">
             <div class="label">Category</div>
-            <div id="category-list"></div>
+            <div id="category-list">
+              <%- fillAll(categories, 'category') %>
+            </div>
             <div id="add-new-category">
               <input type="text" placeholder="Add new category..." />
               <button>Add</button>
@@ -46,7 +56,9 @@
           <div class="tag">
             <div class="tag">
               <div class="label">Tags</div>
-              <div id="tag-list"></div>
+              <div id="tag-list">
+                <%- fillAll(tags, 'tag') %>
+              </div>
               <div id="add-new-tag">
                 <input type="text" placeholder="Add new tag..." />
                 <button>Add</button>

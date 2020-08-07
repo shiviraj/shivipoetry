@@ -13,11 +13,12 @@
     <div class="left-sidebar"><%- include('includes/sidebar') %></div>
     <div class="main-content">
       <div class="title header">Edit Post</div>
-      <form>
+      <form id="<%- post._id %>">
         <div class="post-title">
           <input
             type="text"
             id="title"
+            value="<%- post.title %>"
             placeholder="Enter title here..."
             required
           />
@@ -25,19 +26,40 @@
         <div class="post-content">
           <textarea
             id="content"
+            value=""
             cols="30"
             rows="10"
             placeholder="post content..."
             required
           ></textarea>
-          <script type="text/javascript">
+          <script
+            type="text/javascript"
+            id="postContent"
+            content="<%- post.content %>"
+          >
             CKEDITOR.replace('content');
+            const content = postContent.getAttribute('content');
+            CKEDITOR.instances['content'].setData(content);
           </script>
         </div>
         <div class="other-information">
+          <!-- <% 
+          const fillAll = (list, usedItems, idName) => {
+            const html = list.map((item) => {
+              if(usedItems.find((usedItem) => usedItem.url === item.url)){
+                return `<label><input type="checkbox" name="${idName}" value="${item.url}" checked>${item.name}</label>`;
+              }
+              return `<label><input type="checkbox" name="${idName}" value="${item.url}">${item.name}</label>`;
+            });
+            return html.join('');
+          };
+            %> -->
+
           <div class="category">
             <div class="label">Category</div>
-            <div id="category-list"></div>
+            <div id="category-list">
+              <%- fillAll(categories, post.categories, 'category') %>
+            </div>
             <div id="add-new-category">
               <input type="text" placeholder="Add new category..." />
               <button>Add</button>
@@ -46,7 +68,9 @@
           <div class="tag">
             <div class="tag">
               <div class="label">Tags</div>
-              <div id="tag-list"></div>
+              <div id="tag-list">
+                <%- fillAll(tags, post.tags, 'tag') %>
+              </div>
               <div id="add-new-tag">
                 <input type="text" placeholder="Add new tag..." />
                 <button>Add</button>
@@ -58,6 +82,7 @@
           <input
             type="text"
             id="post-url"
+            value="<%- post.url %>"
             pattern="[A-Za-z0-9]+"
             title="No special character or space allowed"
             placeholder="Enter post url..."

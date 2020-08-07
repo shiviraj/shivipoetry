@@ -18,12 +18,24 @@ const serveDashboard = async function (req, res) {
 };
 
 const serveEditor = async function (req, res) {
-  res.render('poet/addPost', req.author);
+  const categories = await Category.find({});
+  const tags = await Tag.find({});
+  res.render('poet/addPost', Object.assign(req.author, { categories, tags }));
 };
 
 const serveEditorWithPost = async function (req, res) {
-  const post = await Post.findOne({ url: req.params.url });
-  res.render('poet/editor', Object.assign(req.author, post));
+  const options = { url: req.params.url, author: req.author._id };
+  const post = await Post.findOne(options);
+  await post
+    .populate('tags', ['name', 'url'])
+    .populate('categories', ['name', 'url'])
+    .execPopulate();
+  const categories = await Category.find({});
+  const tags = await Tag.find({});
+  res.render(
+    'poet/editor',
+    Object.assign(req.author, { post, categories, tags })
+  );
 };
 
 const getAllComments = async function (author) {
@@ -51,16 +63,6 @@ const updateComment = async function (req, res) {
   const { status, id } = req.params;
   await Comment.findByIdAndUpdate(id, { status });
   res.redirect('/poet/comment');
-};
-
-const serveAllCategories = async function (req, res) {
-  const categories = await Category.find();
-  res.send(categories);
-};
-
-const serveAllTags = async function (req, res) {
-  const tags = await Tag.find();
-  res.send(tags);
 };
 
 const serveURLAvailability = async function (req, res) {
@@ -96,8 +98,6 @@ module.exports = {
   serveComments,
   deleteComment,
   updateComment,
-  serveAllCategories,
-  serveAllTags,
   serveURLAvailability,
   serveAllPosts,
   servePost,

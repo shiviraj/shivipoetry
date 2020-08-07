@@ -20,36 +20,11 @@ const fetchData = async function (url, options) {
 const getPostOptions = function () {
   const title = getElement('#title').value;
   const url = getElement('.url input').value;
-  const _id = getElement('#post-url').title;
+  const _id = getElement('form').id;
   const content = CKEDITOR.instances['content'].getData();
   const categories = getAll('category');
   const tags = getAll('tag');
   return { _id, title, content, url, categories, tags };
-};
-
-const renderCategories = (categories) => {
-  const categoryCheckbox = categories.map((category) => {
-    return `<label><input type="checkbox" name="category" value="${category.url}">${category.name}</label>`;
-  });
-  getElement('#category-list').innerHTML = categoryCheckbox.join('');
-};
-
-const renderTags = (tags) => {
-  const tagCheckbox = tags.map((tag) => {
-    return `<label><input type="checkbox" name="tag" value="${tag.url}">${tag.name}</label>`;
-  });
-  getElement('#tag-list').innerHTML = tagCheckbox.join('');
-};
-
-const fetchCategoryAndTags = async function () {
-  try {
-    const categories = await fetchData('/poet/categories');
-    renderCategories(categories);
-    const tags = await fetchData('/poet/tags');
-    renderTags(tags);
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 const addNewCategory = function (category) {

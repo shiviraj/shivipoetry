@@ -15,25 +15,6 @@ describe('ServeAuthPoet', () => {
   beforeEach(setupDatabase);
   afterEach(cleanupDatabase);
 
-  test('Should serve all Categories', async () => {
-    const res = await request(app)
-      .get('/poet/categories')
-      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(200);
-    expect(res.body[0]).toMatchObject({
-      name: 'Category 1',
-      url: 'category-1',
-    });
-  });
-
-  test('Should serve all tags', async () => {
-    const res = await request(app)
-      .get('/poet/tags')
-      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(200);
-    expect(res.body[0]).toMatchObject({ name: 'Tag 1', url: 'tag-1' });
-  });
-
   test('Should give URL availability true if url is not in database', async () => {
     const res = await request(app)
       .post('/poet/isURLAvailable')

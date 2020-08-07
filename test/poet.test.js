@@ -2,7 +2,12 @@ const request = require('supertest');
 const { app } = require('../src/router');
 const { Author } = require('../src/models/author');
 
-const { authorOne, setupDatabase, cleanupDatabase } = require('./fixtures/db');
+const {
+  authorOne,
+  postOne,
+  setupDatabase,
+  cleanupDatabase,
+} = require('./fixtures/db');
 
 describe('Should give static page', () => {
   test('Should serve static page from poet url', async () => {
@@ -103,7 +108,7 @@ describe('Need authentication', () => {
 
   test('Should serve static page from poet url', async () => {
     await request(app)
-      .get('/poet/dashboard')
+      .get('/poet')
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(200);
   });
@@ -123,15 +128,22 @@ describe('Need authentication', () => {
   });
 
   test('Should redirect to login page if poet not authenticate', async () => {
-    const res = await request(app).get('/poet/dashboard').expect(302);
+    const res = await request(app).get('/poet').expect(302);
     expect(res.headers.location).toBe('/poet/login.html');
   });
 
   test('Should not serve static page if token is invalid', async () => {
-    const res = await request(app)
-      .get('/poet/dashboard')
+    await request(app)
+      .get('/poet')
       .set('Cookie', `token=token something`)
-      .expect(302);
-    expect(res.headers.location).toBe('/poet/login.html');
+      .expect(302)
+      .expect('Location', '/poet/login.html');
+  });
+
+  test('Should serve the editor with post to edit', async () => {
+    const res = await request(app)
+      .get(`/poet/edit/${postOne.url}`)
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200);
   });
 });

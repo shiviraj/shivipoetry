@@ -1,12 +1,11 @@
 const submitPost = async function (e, status) {
   try {
     e.preventDefault();
-    const options = getPostOptions();
-    delete options._id;
+    const { _id, ...options } = getPostOptions();
     options.status = status;
     const postOptions = getOptions(options, 'PUT');
     const res = await fetchData('/poet/addNewPost', postOptions);
-    if (res.status) return (location.href = '/poet/dashboard');
+    if (res.status) return (location.href = '/poet');
     renderResponse();
   } catch (error) {
     console.error(error);
@@ -21,7 +20,6 @@ const listenerOnSubmit = function () {
 };
 
 const main = async function () {
-  await fetchCategoryAndTags();
   listenerOfAddNewCategoryAndTag();
   listenerOnUrl();
   listenerOnSubmit();

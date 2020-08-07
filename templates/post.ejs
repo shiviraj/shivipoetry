@@ -43,7 +43,7 @@
       <div class="main-content">
         <div class="post-content">
           <div id="content">
-            <div class="post-title" title="<%- url %>">
+            <div class="post-title" title="<%- _id %>">
               <h1><%= title %></h1>
             </div>
             <div class="categories">
@@ -88,34 +88,35 @@
           <%- include('partials/relatedPost') %>
 
           <div class="divider"></div>
-
+          <% if(commentStatus === 'open') { %>
           <div class="post-comments">
             <div class="comment-title">Feedbacks:</div>
             <form class="comment">
               <div class="form-title">Give your feedback</div>
+              <div class="status"></div>
               <div class="form-input">
                 <label for="name">Name</label>
-                <input type="text" id="name" />
+                <input type="text" id="name" required />
               </div>
               <div class="form-input">
                 <label for="comment">Message </label>
-                <textarea id="comment" cols="30" rows="5"></textarea>
+                <textarea id="comment" cols="30" rows="5" required></textarea>
               </div>
               <div class="submit">
                 <button>Submit Feedback</button>
               </div>
             </form>
+            <% comments.forEach((comment) => { %>
             <div class="comment-item">
-              <div class="commenter-name">Shivi</div>
-              <div class="comment-date">June 21, 2008 at 12:07 am</div>
-              <div class="comment-msg">This is an awesome poem</div>
+              <div class="commenter-name"><%- comment.name %></div>
+              <div class="comment-date">
+                <%- moment(comment.time).format('MMM DD, YYYY at hh:mm A') %>
+              </div>
+              <div class="comment-msg"><%- comment.msg %></div>
             </div>
-            <div class="comment-item">
-              <div class="commenter-name">Shivi</div>
-              <div class="comment-date">June 21, 2008 at 12:07 am</div>
-              <div class="comment-msg">This is an awesome poem</div>
-            </div>
+            <% }) %>
           </div>
+          <% } %>
         </div>
       </div>
       <%- include('partials/sidebar') %>

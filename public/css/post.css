@@ -273,4 +273,13 @@ form.comment {
   color: #fff;
   font-size: 16px;
   border-radius: 4px;
+  cursor: pointer;
+}
+
+.status {
+  color: green;
+  margin: 20px;
+}
+.error {
+  color: red;
 }

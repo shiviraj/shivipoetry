@@ -1,5 +1,6 @@
 const moment = require('moment');
 const { Post } = require('../models/post');
+const { Comment } = require('../models/comment');
 const { shuffle, updatePostCountAndGetToken } = require('./utils');
 const { sidebarContent } = require('./sidebarContent');
 const LIMIT = 10;
@@ -26,11 +27,13 @@ const servePosts = async function (req, res) {
 
 const getPost = async function (url) {
   const post = await Post.findOne({ url });
-  return await post
+  await post
     .populate('author', ['displayName', 'username'])
     .populate('tags', ['name', 'url'])
     .populate('categories', ['name', 'url'])
     .execPopulate();
+  const comments = await Comment.find({ post: post._id, status: 'approved' });
+  return Object.assign(post, { comments });
 };
 
 const getRandomPost = async function (post) {
@@ -54,4 +57,14 @@ const servePost = async function (req, res) {
   }
 };
 
-module.exports = { servePosts, servePost };
+const addCommentAndServe = async function (req, res) {
+  try {
+    const comment = new Comment(req.body);
+    await comment.save();
+    res.send();
+  } catch (e) {
+    res.status(422).end();
+  }
+};
+
+module.exports = { servePosts, servePost, addCommentAndServe };

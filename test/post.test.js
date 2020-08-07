@@ -3,6 +3,7 @@ const { app } = require('../src/router');
 const {
   authorOne,
   postOne,
+  postOneId,
   categoryOne,
   categoryTwo,
   setupDatabase,
@@ -74,6 +75,20 @@ describe('Serve Post', () => {
       .get('/post/not-found')
       .set('Cookie', `postToken=postToken ${postOne.tokens[0].token}`)
       .expect(500);
+  });
+
+  test('Should comment on a given post', async () => {
+    await request(app)
+      .post('/comment')
+      .send({ name: 'Shiviraj', msg: 'Awesome post', post: postOneId })
+      .expect(200);
+  });
+
+  test('Should not comment on a given post without required field', async () => {
+    await request(app)
+      .post('/comment')
+      .send({ msg: 'Awesome post', post: postOneId })
+      .expect(422);
   });
 });
 

@@ -21,5 +21,11 @@ const PostSchema = new mongoose.Schema({
   tokens: [{ token: { type: String } }],
 });
 
+PostSchema.virtual('comments', {
+  ref: 'Comment',
+  localField: '_id',
+  foreignField: 'post',
+});
+
 const Post = mongoose.model('Post', PostSchema);
 module.exports = { Post };

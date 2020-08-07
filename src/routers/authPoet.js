@@ -19,8 +19,6 @@ const {
   deleteComment,
   updateComment,
   serveURLAvailability,
-  serveAllPosts,
-  servePost,
 } = require('../handlers/serveAuthPoet');
 
 const authPoetRouter = new express.Router();
@@ -37,8 +35,6 @@ authPoetRouter.get('/logout', logoutFromAccount);
 authPoetRouter.put('/addNew/:itemToAdd', addAndServe);
 authPoetRouter.post('/isURLAvailable', serveURLAvailability);
 authPoetRouter.put('/addNewPost', addNewPostAndServe);
-authPoetRouter.get('/myAllPosts', serveAllPosts);
-authPoetRouter.post('/post', servePost);
 authPoetRouter.post('/updatePost', updatePostAndServe);
 authPoetRouter.post('/publish/:url', publishPostAndServe);
 authPoetRouter.delete('/deletePost/:url', deletePostAndServe);

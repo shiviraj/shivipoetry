@@ -33,31 +33,6 @@ describe('ServeAuthPoet', () => {
     expect(res.body).toMatchObject({ isAvailable: false });
   });
 
-  test('Should serve my all posts', async () => {
-    const res = await request(app)
-      .get('/poet/myAllPosts')
-      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(200);
-    expect(res.body.length).toBe(2);
-  });
-
-  test('Should serve the details of posts', async () => {
-    const res = await request(app)
-      .post('/poet/post')
-      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .send({ url: 'post-1' })
-      .expect(200);
-    expect(res.body).toMatchObject({
-      content: 'This is the first post.',
-      title: 'Post 1',
-      status: 'published',
-      url: 'post-1',
-      type: 'post',
-      commentStatus: 'open',
-      commentCount: 0,
-    });
-  });
-
   test('Should give error the post does not belongs to author', async () => {
     await request(app)
       .post('/poet/post')

@@ -71,26 +71,6 @@ const serveURLAvailability = async function (req, res) {
   res.send({ isAvailable });
 };
 
-const serveAllPosts = async function (req, res) {
-  const result = await Post.find({ author: req.author['_id'] })
-    .populate('author', ['displayName', 'username'])
-    .populate('tags', ['name', 'url'])
-    .populate('categories', ['name', 'url'])
-    .sort({ date: -1 });
-  res.send(result);
-};
-
-const servePost = async function (req, res) {
-  const options = { url: req.body.url, author: req.author._id };
-  const result = await Post.findOne(options);
-  if (!result) return res.status(404).end();
-  await result
-    .populate('tags', ['name', 'url'])
-    .populate('categories', ['name', 'url'])
-    .execPopulate();
-  res.send(result);
-};
-
 module.exports = {
   serveDashboard,
   serveEditor,
@@ -99,6 +79,4 @@ module.exports = {
   deleteComment,
   updateComment,
   serveURLAvailability,
-  serveAllPosts,
-  servePost,
 };

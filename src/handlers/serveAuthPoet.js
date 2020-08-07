@@ -1,5 +1,6 @@
 const moment = require('moment');
 const { Category } = require('../models/category');
+const { Comment } = require('../models/comment');
 const { Tag } = require('../models/tag');
 const { Post } = require('../models/post');
 
@@ -23,6 +24,33 @@ const serveEditor = async function (req, res) {
 const serveEditorWithPost = async function (req, res) {
   const post = await Post.findOne({ url: req.params.url });
   res.render('poet/editor', Object.assign(req.author, post));
+};
+
+const getAllComments = async function (author) {
+  const fields = ['_id', 'title', 'url'];
+  const posts = await Post.find({ author: author._id }).select(fields);
+  await Promise.all(
+    posts.map(async (post) => {
+      post.comments = await Comment.find({ post: post._id });
+    })
+  );
+  return posts;
+};
+
+const serveComments = async (req, res) => {
+  const posts = await getAllComments(req.author);
+  res.render('poet/comment', Object.assign(req.author, { posts, moment }));
+};
+
+const deleteComment = async function (req, res) {
+  await Comment.findByIdAndDelete(req.params.id);
+  res.redirect('/poet/comment');
+};
+
+const updateComment = async function (req, res) {
+  const { status, id } = req.params;
+  await Comment.findByIdAndUpdate(id, { status });
+  res.redirect('/poet/comment');
 };
 
 const serveAllCategories = async function (req, res) {
@@ -65,6 +93,9 @@ module.exports = {
   serveDashboard,
   serveEditor,
   serveEditorWithPost,
+  serveComments,
+  deleteComment,
+  updateComment,
   serveAllCategories,
   serveAllTags,
   serveURLAvailability,

@@ -1,0 +1,61 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/poet/css/dashboard.css" />
+    <link rel="stylesheet" href="/poet/css/comment.css" />
+    <script src="./scripts/posts.js"></script>
+    <title>$hivipoetry | Poet</title>
+  </head>
+  <body>
+    <%- include('includes/sidebar') %>
+    <div class="main-content">
+      <div class="header">Comments</div>
+      <div class="comments-container">
+        <div class="comment-title">
+          <div class="serial">S.No.</div>
+          <div class="name">Comment By</div>
+          <div class="msg">Message</div>
+          <div class="time">Time</div>
+          <div class="post">Commented On</div>
+          <div class="status">Status</div>
+          <div class="action">Action</div>
+        </div>
+
+        <!--<%
+    let i = 0;
+    posts.forEach((post)=>{ 
+      if(post.comments.length > 0) {
+        post.comments.forEach((comment)=> { %>-->
+
+        <div class="comment">
+          <div class="serial"><%- ++i %></div>
+          <div class="name"><%- comment.name %></div>
+          <div class="msg"><%- comment.msg %></div>
+          <div class="time">
+            <%- moment(comment.time).format('MMM DD, YYYY') %>
+          </div>
+          <div class="post">
+            <a href="/post/<%- post.url %>"><%- post.title %></a>
+          </div>
+          <div class="status"><%- comment.status %></div>
+          <div class="action">
+            <% if(comment.status === 'approved') {%>
+            <a href="/poet/comment/unapproved/<%- comment._id %>">
+              Unapprove
+            </a>
+            <% } else { %>
+            <a href="/poet/comment/approved/<%- comment._id %>"> Approve </a>
+            <% } %>
+            <a href="/poet/comment/delete/<%- comment._id %>">Delete</a>
+          </div>
+        </div>
+        <!--<%
+        });
+      }
+    }); %>-->
+      </div>
+      <a class="add-new-post" title="Add new post" href="addPost"></a>
+    </div>
+  </body>
+</html>

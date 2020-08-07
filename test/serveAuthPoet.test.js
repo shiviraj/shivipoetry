@@ -5,6 +5,8 @@ const {
   postOne,
   postThree,
   authorOne,
+  commentOneId,
+  commentTwoId,
   setupDatabase,
   cleanupDatabase,
 } = require('./fixtures/db');
@@ -89,5 +91,37 @@ describe('ServeAuthPoet', () => {
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
       .expect(200)
       .expect(/Edit Post/);
+  });
+
+  test('Should serve the comment with all comments', async () => {
+    await request(app)
+      .get('/poet/comment')
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(200)
+      .expect(/Comment/);
+  });
+
+  test('Should approve comment', async () => {
+    await request(app)
+      .get(`/poet/comment/approved/${commentOneId}`)
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(302)
+      .expect('Location', '/poet/comment');
+  });
+
+  test('Should unapproved comment', async () => {
+    await request(app)
+      .get(`/poet/comment/unapproved/${commentTwoId}`)
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(302)
+      .expect('Location', '/poet/comment');
+  });
+
+  test('Should delete comment', async () => {
+    await request(app)
+      .get(`/poet/comment/delete/${commentTwoId}`)
+      .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
+      .expect(302)
+      .expect('Location', '/poet/comment');
   });
 });

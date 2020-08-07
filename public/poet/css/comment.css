@@ -1,0 +1,55 @@
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.comments-container {
+  display: flex;
+  flex-direction: column;
+  margin: 12px;
+  border: 1px solid black;
+  box-shadow: 0 0 8px #888;
+}
+
+.comment-title {
+  font-size: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid black;
+}
+
+.comment,
+.comment-title {
+  display: flex;
+}
+.comment {
+  margin-top: 4px;
+}
+.serial {
+  width: 6%;
+  text-align: center;
+}
+
+.status,
+.action {
+  width: 8%;
+  text-align: center;
+}
+.action {
+  width: 13%;
+}
+.post {
+  width: 15%;
+  text-align: center;
+}
+.name {
+  text-align: center;
+  width: 14%;
+}
+.time {
+  text-align: center;
+  width: 10%;
+}
+.msg {
+  width: 34%;
+}

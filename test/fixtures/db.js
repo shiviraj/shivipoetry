@@ -4,6 +4,7 @@ const { Author } = require('../../src/models/author');
 const { Post } = require('../../src/models/post');
 const { Tag } = require('../../src/models/tag');
 const { Category } = require('../../src/models/category');
+const { Comment } = require('../../src/models/comment');
 
 const authorOneId = new mongoose.Types.ObjectId();
 const authorOne = {
@@ -18,6 +19,7 @@ const authorOne = {
 };
 
 const authorTwoId = new mongoose.Types.ObjectId();
+
 const authorTwo = {
   _id: authorTwoId,
   name: 'Shivam Rajput',
@@ -108,6 +110,28 @@ const postThree = {
   views: 0,
 };
 
+const commentOneId = new mongoose.Types.ObjectId();
+
+const commentOne = {
+  _id: commentOneId,
+  post: postOneId,
+  time: new Date('2020-03-30'),
+  name: 'Shivi',
+  status: 'unapproved',
+  msg: 'This is awesome',
+};
+
+const commentTwoId = new mongoose.Types.ObjectId();
+
+const commentTwo = {
+  _id: commentTwoId,
+  post: postTwoId,
+  time: new Date('2020-03-30'),
+  name: 'Shivi',
+  status: 'unapproved',
+  msg: 'This is awesome',
+};
+
 const setupDatabase = async function () {
   await new Author(authorOne).save();
   await new Author(authorTwo).save();
@@ -118,6 +142,8 @@ const setupDatabase = async function () {
   await new Tag(tagTwo).save();
   await new Category(categoryOne).save();
   await new Category(categoryTwo).save();
+  await new Comment(commentOne).save();
+  await new Comment(commentTwo).save();
 };
 
 const cleanupDatabase = async function () {
@@ -125,6 +151,7 @@ const cleanupDatabase = async function () {
   await Post.deleteMany();
   await Tag.deleteMany();
   await Category.deleteMany();
+  await Comment.deleteMany();
 };
 
 module.exports = {
@@ -138,6 +165,8 @@ module.exports = {
   postOne,
   postTwo,
   postThree,
+  commentOneId,
+  commentTwoId,
   setupDatabase,
   cleanupDatabase,
 };

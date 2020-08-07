@@ -1,6 +1,6 @@
-<div class="related-post">
+<div class="related-post-container">
   <div class="related-post-title">Related post:</div>
-  <div id="related-post">
+  <div class="related-post">
     <% relatedPosts.forEach((relatedPost) => { %>
     <div class="post-card">
       <a class="post-title" href="/post/<%= relatedPost.url %>">
@@ -17,13 +17,11 @@
             <%= relatedPost.author.displayName %>
           </a>
         </div>
-        <% if(relatedPost.commentStatus === 'open' && relatedPost.commentCount)
-        { %>
-        <div><a class="comments"><%= relatedPost.count %> comments</a></div>
-        <% } %>
       </div>
       <div class="related-post-content">
-        <span class="content"> <%- relatedPost.content.slice(0,150) %> </span>
+        <span class="content">
+          <%- relatedPost.content.replace(/<.*?>/g,'').slice(0,50) %>
+        </span>
         <span class="read-more">
           <a href="<%= relatedPost.url %>">Read More...</a>
         </span>

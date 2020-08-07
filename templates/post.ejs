@@ -26,7 +26,8 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <script src="./scripts/scrollTop.js"></script>
+    <script src="/scripts/scrollTop.js"></script>
+    <script src="/scripts/comment.js"></script>
     <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
     <title><%= title %></title>
     <meta
@@ -42,7 +43,7 @@
       <div class="main-content">
         <div class="post-content">
           <div id="content">
-            <div class="post-title">
+            <div class="post-title" title="<%- url %>">
               <h1><%= title %></h1>
             </div>
             <div class="categories">
@@ -89,8 +90,22 @@
           <div class="divider"></div>
 
           <div class="post-comments">
-            <!-- <div class="comment-title">Comments:</div> -->
-            <!-- <div class="comment-item">
+            <div class="comment-title">Feedbacks:</div>
+            <form class="comment">
+              <div class="form-title">Give your feedback</div>
+              <div class="form-input">
+                <label for="name">Name</label>
+                <input type="text" id="name" />
+              </div>
+              <div class="form-input">
+                <label for="comment">Message </label>
+                <textarea id="comment" cols="30" rows="5"></textarea>
+              </div>
+              <div class="submit">
+                <button>Submit Feedback</button>
+              </div>
+            </form>
+            <div class="comment-item">
               <div class="commenter-name">Shivi</div>
               <div class="comment-date">June 21, 2008 at 12:07 am</div>
               <div class="comment-msg">This is an awesome poem</div>
@@ -99,7 +114,7 @@
               <div class="commenter-name">Shivi</div>
               <div class="comment-date">June 21, 2008 at 12:07 am</div>
               <div class="comment-msg">This is an awesome poem</div>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>

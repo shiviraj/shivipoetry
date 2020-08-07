@@ -154,25 +154,7 @@ p {
   font-size: 16px;
   transition: ease all 0.5s;
 }
-.nav-links a:hover {
-  transition: ease all 0.5s;
-  background-color: #001b70;
-}
-.nav-pre::before {
-  content: '\f0d9';
-  font-family: FontAwesome;
-  font-style: normal;
-  margin-right: 5px;
-}
-.nav-next {
-  text-align: right;
-}
-.nav-next::after {
-  content: '\f0da';
-  font-family: FontAwesome;
-  font-style: normal;
-  margin-left: 5px;
-}
+
 .divider {
   margin: 2% 0;
   border-bottom: 2px dashed gray;
@@ -218,8 +200,15 @@ p {
   color: #555;
 }
 
+.related-post {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .post-card {
-  margin: 2% 0;
+  width: 44%;
+  margin: 1.5% 0;
   padding: 2%;
   box-shadow: 0 0 8px #e1e1e1;
 }
@@ -244,4 +233,44 @@ p {
 
 .post-date-and-author {
   font-size: 14px;
+}
+
+form.comment {
+  border: 1px solid #eee;
+  padding: 2%;
+  box-shadow: 0 0 4px #e1e1e1;
+}
+.form-title {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: -20px;
+}
+.form-input,
+.submit {
+  margin: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input input,
+.form-input textarea {
+  padding: 4px 12px;
+  font-size: 16px;
+  outline: none;
+  margin-top: 4px;
+  border: 1px solid #aaa;
+}
+.form-input textarea {
+  padding: 16px;
+  font-family: sans-serif;
+}
+
+.submit button {
+  margin: 0 auto;
+  padding: 8px 32px;
+  border: 2px solid #0c4da2;
+  background-color: #0c4da2;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 4px;
 }

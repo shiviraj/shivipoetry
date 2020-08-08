@@ -27,7 +27,7 @@ describe('UpdateAddAuthPoet', function () {
       .put('/poet/addNew/category')
       .send({ category: 'Category 2' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(404);
+      .expect(500);
   });
 
   test('Should give server error if request is invalid', async () => {
@@ -52,7 +52,7 @@ describe('UpdateAddAuthPoet', function () {
       .put('/poet/addNew/tag')
       .send({ tag: 'Tag 2' })
       .set('Cookie', `token=token ${authorOne.tokens[0].token}`)
-      .expect(404);
+      .expect(500);
   });
 
   test('Should add new post', async () => {

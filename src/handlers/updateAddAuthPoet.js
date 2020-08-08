@@ -1,39 +1,27 @@
 const mongodb = require('mongodb');
-const { Category } = require('../models/category');
-const { Tag } = require('../models/tag');
+const { Categories, Tags } = require('./tagsAndCategories');
 const { Posts } = require('./posts');
 
 const addAndServe = async function (req, res) {
-  const models = { category: Category, tag: Tag };
-  const itemToAdd = req.params.itemToAdd;
   try {
-    const name = req.body[itemToAdd];
-    const Model = models[itemToAdd];
+    const name = req.body[req.params.item];
     const url = name.toLowerCase().split(' ').join('-');
-    const items = await Model.find({ url });
-    if (items.length) res.status(404).end();
-    const model = new Model({ name, url });
-    const result = await model.save();
-    res.send(result);
+    if (req.params.item === 'category') {
+      const category = await Categories.add(name, url);
+      return res.send(category);
+    }
+    const tag = await Tags.add(name, url);
+    res.send(tag);
   } catch {
     res.status(500).end();
   }
 };
 
-const getIds = async (array, Model) => {
-  return await Promise.all(
-    array.map(async (url) => {
-      const result = await Model.findOne({ url });
-      return result['_id'];
-    })
-  );
-};
-
 const addNewPostAndServe = async function (req, res) {
   try {
     const postOptions = req.body;
-    postOptions.categories = await getIds(postOptions.categories, Category);
-    postOptions.tags = await getIds(postOptions.tags, Tag);
+    postOptions.categories = await Categories.getIds(postOptions.categories);
+    postOptions.tags = await Tags.getIds(postOptions.tags);
     postOptions.author = mongodb.ObjectID(req.author['_id']);
     postOptions.date = new Date();
     await Posts.add(postOptions);
@@ -46,8 +34,8 @@ const addNewPostAndServe = async function (req, res) {
 const updatePostAndServe = async (req, res) => {
   try {
     const { _id, ...postOptions } = req.body;
-    postOptions.categories = await getIds(postOptions.categories, Category);
-    postOptions.tags = await getIds(postOptions.tags, Tag);
+    postOptions.categories = await Categories.getIds(postOptions.categories);
+    postOptions.tags = await Tags.getIds(postOptions.tags);
     postOptions.modified = new Date();
     const post = await Posts.update({ _id }, postOptions);
     if (post) {

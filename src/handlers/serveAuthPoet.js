@@ -1,8 +1,7 @@
 const moment = require('moment');
-const { Category } = require('../models/category');
 const { Comments } = require('./comments');
-const { Tag } = require('../models/tag');
 const { Posts } = require('./posts');
+const { getTagsAndCategories } = require('./tagsAndCategories');
 
 const serveDashboard = async function (req, res) {
   const allPosts = await Posts.getPostsByAuthor(req.author._id);
@@ -10,17 +9,15 @@ const serveDashboard = async function (req, res) {
 };
 
 const serveEditor = async function (req, res) {
-  const categories = await Category.find({});
-  const tags = await Tag.find({});
-  res.render('poet/addPost', Object.assign(req.author, { categories, tags }));
+  const tagsAndCategories = await getTagsAndCategories();
+  res.render('poet/addPost', Object.assign(req.author, tagsAndCategories));
 };
 
 const serveEditorWithPost = async function (req, res) {
   const author = req.author;
   const post = await Posts.getPostByUrlAndAuthor(req.params.url, author._id);
-  const categories = await Category.find({});
-  const tags = await Tag.find({});
-  res.render('poet/editor', Object.assign(author, { post, categories, tags }));
+  const tagsAndCategories = await getTagsAndCategories();
+  res.render('poet/editor', Object.assign(author, { post }, tagsAndCategories));
 };
 
 const serveComments = async (req, res) => {

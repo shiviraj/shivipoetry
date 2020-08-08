@@ -32,7 +32,7 @@ authPoetRouter.get('/comment', serveComments);
 authPoetRouter.get('/comment/delete/:id', deleteComment);
 authPoetRouter.get('/comment/:status/:id', updateComment);
 authPoetRouter.get('/logout', logoutFromAccount);
-authPoetRouter.put('/addNew/:itemToAdd', addAndServe);
+authPoetRouter.put('/addNew/:item', addAndServe);
 authPoetRouter.post('/isURLAvailable', serveURLAvailability);
 authPoetRouter.put('/addNewPost', addNewPostAndServe);
 authPoetRouter.post('/updatePost', updatePostAndServe);

@@ -1,7 +1,7 @@
 const mongodb = require('mongodb');
 const { Category } = require('../models/category');
 const { Tag } = require('../models/tag');
-const { Post } = require('../models/post');
+const { Posts } = require('./posts');
 
 const addAndServe = async function (req, res) {
   const models = { category: Category, tag: Tag };
@@ -36,8 +36,7 @@ const addNewPostAndServe = async function (req, res) {
     postOptions.tags = await getIds(postOptions.tags, Tag);
     postOptions.author = mongodb.ObjectID(req.author['_id']);
     postOptions.date = new Date();
-    const post = new Post(postOptions);
-    await post.save();
+    await Posts.add(postOptions);
     res.send({ status: true });
   } catch {
     res.status(500).send();
@@ -50,7 +49,7 @@ const updatePostAndServe = async (req, res) => {
     postOptions.categories = await getIds(postOptions.categories, Category);
     postOptions.tags = await getIds(postOptions.tags, Tag);
     postOptions.modified = new Date();
-    const post = await Post.findByIdAndUpdate(_id, postOptions);
+    const post = await Posts.update({ _id }, postOptions);
     if (post) {
       return res.send({ status: true });
     }
@@ -63,7 +62,7 @@ const updatePostAndServe = async (req, res) => {
 const publishPostAndServe = async (req, res) => {
   const valuesToUpdate = { status: 'published', date: new Date() };
   const findOption = { url: req.params.url };
-  const post = await Post.findOneAndUpdate(findOption, valuesToUpdate);
+  const post = await Posts.update(findOption, valuesToUpdate);
   if (post) {
     return res.send({ status: true });
   }
@@ -71,7 +70,7 @@ const publishPostAndServe = async (req, res) => {
 };
 
 const deletePostAndServe = async (req, res) => {
-  const post = await Post.findOneAndDelete({ url: req.params.url });
+  const post = await Posts.delete(req.params.url);
   if (post) {
     return res.send({ status: true });
   }

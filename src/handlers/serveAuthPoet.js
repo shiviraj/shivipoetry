@@ -2,18 +2,10 @@ const moment = require('moment');
 const { Category } = require('../models/category');
 const { Comments } = require('./comments');
 const { Tag } = require('../models/tag');
-const { Post } = require('../models/post');
-
-const getAllPosts = async (author) => {
-  return await Post.find({ author })
-    .populate('author', ['displayName', 'username'])
-    .populate('tags', ['name', 'url'])
-    .populate('categories', ['name', 'url'])
-    .sort({ date: -1 });
-};
+const { Posts } = require('./posts');
 
 const serveDashboard = async function (req, res) {
-  const allPosts = await getAllPosts(req.author._id);
+  const allPosts = await Posts.getPostsByAuthor(req.author._id);
   res.render('poet/dashboard', Object.assign(req.author, { allPosts, moment }));
 };
 
@@ -24,18 +16,11 @@ const serveEditor = async function (req, res) {
 };
 
 const serveEditorWithPost = async function (req, res) {
-  const options = { url: req.params.url, author: req.author._id };
-  const post = await Post.findOne(options);
-  await post
-    .populate('tags', ['name', 'url'])
-    .populate('categories', ['name', 'url'])
-    .execPopulate();
+  const author = req.author;
+  const post = await Posts.getPostByUrlAndAuthor(req.params.url, author._id);
   const categories = await Category.find({});
   const tags = await Tag.find({});
-  res.render(
-    'poet/editor',
-    Object.assign(req.author, { post, categories, tags })
-  );
+  res.render('poet/editor', Object.assign(author, { post, categories, tags }));
 };
 
 const serveComments = async (req, res) => {
@@ -54,8 +39,8 @@ const updateComment = async function (req, res) {
 };
 
 const serveURLAvailability = async function (req, res) {
-  const result = await Post.findOne({ url: req.body.url });
-  const isAvailable = !result || result.url == req.body.currentUrl;
+  const { url, currentUrl } = req.body;
+  const isAvailable = await Posts.isUrlAvailable(url, currentUrl);
   res.send({ isAvailable });
 };
 

@@ -47,6 +47,37 @@ class Posts {
     }).populate('author', ['displayName', 'username']);
     return shuffle(posts).slice(0, 4);
   }
+
+  async getPostsByAuthor(authorId) {
+    return await Post.find({ author: authorId })
+      .populate('author', ['displayName', 'username'])
+      .populate('tags', ['name', 'url'])
+      .populate('categories', ['name', 'url'])
+      .sort({ date: -1 });
+  }
+
+  async getPostByUrlAndAuthor(url, authorId) {
+    const post = await Post.findOne({ url, author: authorId });
+    return await post
+      .populate('tags', ['name', 'url'])
+      .populate('categories', ['name', 'url'])
+      .execPopulate();
+  }
+  async isUrlAvailable(url, currentUrl) {
+    const post = await Post.findOne({ url });
+    return !post || post.url == currentUrl;
+  }
+
+  async add(details) {
+    const post = new Post(details);
+    await post.save();
+  }
+  async update(findBy, options) {
+    return await Post.findOneAndUpdate(findBy, options);
+  }
+  async delete(url) {
+    return await Post.findOneAndDelete({ url });
+  }
 }
 
 module.exports = { Posts: new Posts() };

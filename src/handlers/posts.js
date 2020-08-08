@@ -1,5 +1,7 @@
+const mongodb = require('mongodb');
 const { Comment } = require('../models/comment');
 const { Post } = require('../models/post');
+const { Categories, Tags } = require('./tagsAndCategories');
 
 const shuffle = function (array) {
   for (let time = 0; time < 8; time++) {
@@ -68,13 +70,27 @@ class Posts {
     return !post || post.url == currentUrl;
   }
 
-  async add(details) {
+  async add(details, authorId) {
+    details.categories = await Categories.getIds(details.categories);
+    details.tags = await Tags.getIds(details.tags);
+    details.author = mongodb.ObjectID(authorId);
+    details.date = new Date();
     const post = new Post(details);
     await post.save();
   }
-  async update(findBy, options) {
-    return await Post.findOneAndUpdate(findBy, options);
+
+  async update(id, details) {
+    details.categories = await Categories.getIds(details.categories);
+    details.tags = await Tags.getIds(details.tags);
+    details.modified = new Date();
+    return await Post.findByIdAndUpdate(id, details);
   }
+
+  async publish(url) {
+    const valuesToUpdate = { status: 'published', date: new Date() };
+    return await Post.findOneAndUpdate({ url }, valuesToUpdate);
+  }
+
   async delete(url) {
     return await Post.findOneAndDelete({ url });
   }

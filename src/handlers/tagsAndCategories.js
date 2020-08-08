@@ -9,7 +9,8 @@ class Tags {
     return await Tag.find({});
   }
 
-  async add(name, url) {
+  async add(name) {
+    const url = name.toLowerCase().split(' ').join('-');
     const isAlreadyPresent = await Tag.findOne({ url });
     if (isAlreadyPresent) {
       throw new Error('already present');
@@ -34,7 +35,8 @@ class Categories {
     return await Category.find({});
   }
 
-  async add(name, url) {
+  async add(name) {
+    const url = name.toLowerCase().split(' ').join('-');
     const isAlreadyPresent = await Category.findOne({ url });
     if (isAlreadyPresent) {
       throw new Error('already present');

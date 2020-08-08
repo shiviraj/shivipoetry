@@ -1,5 +1,6 @@
 const moment = require('moment');
 const { Post } = require('../models/post');
+const { Comments } = require('./comments');
 const { Comment } = require('../models/comment');
 const { shuffle, updatePostCountAndGetToken } = require('./utils');
 const { sidebarContent } = require('./sidebarContent');
@@ -59,8 +60,7 @@ const servePost = async function (req, res) {
 
 const addCommentAndServe = async function (req, res) {
   try {
-    const comment = new Comment(req.body);
-    await comment.save();
+    await Comments.add(req.body);
     res.send();
   } catch (e) {
     res.status(422).end();

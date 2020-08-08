@@ -1,6 +1,6 @@
 const moment = require('moment');
 const { Category } = require('../models/category');
-const { Comment } = require('../models/comment');
+const { Comments } = require('./comments');
 const { Tag } = require('../models/tag');
 const { Post } = require('../models/post');
 
@@ -38,30 +38,18 @@ const serveEditorWithPost = async function (req, res) {
   );
 };
 
-const getAllComments = async function (author) {
-  const fields = ['_id', 'title', 'url'];
-  const posts = await Post.find({ author: author._id }).select(fields);
-  await Promise.all(
-    posts.map(async (post) => {
-      post.comments = await Comment.find({ post: post._id });
-    })
-  );
-  return posts;
-};
-
 const serveComments = async (req, res) => {
-  const posts = await getAllComments(req.author);
+  const posts = await Comments.getAllWithPost(req.author._id);
   res.render('poet/comment', Object.assign(req.author, { posts, moment }));
 };
 
 const deleteComment = async function (req, res) {
-  await Comment.findByIdAndDelete(req.params.id);
+  await Comments.delete(req.params.id);
   res.redirect('/poet/comment');
 };
 
 const updateComment = async function (req, res) {
-  const { status, id } = req.params;
-  await Comment.findByIdAndUpdate(id, { status });
+  await Comments.update(req.params.id, req.params.status);
   res.redirect('/poet/comment');
 };
 

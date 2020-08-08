@@ -1,11 +1,5 @@
 const jwt = require('jsonwebtoken');
-
-const shuffle = function (array) {
-  for (let time = 0; time < 8; time++) {
-    array.sort(() => Math.random() - 0.5);
-  }
-  return array;
-};
+const { Post } = require('../models/post');
 
 const filterValidTokens = (secretCode) => {
   return (token) => {
@@ -22,17 +16,16 @@ const clearTokens = async (id, Post) => {
   await Post.findByIdAndUpdate(id, { tokens });
 };
 
-const verifyToken = async function (req, POST_CODE, Post) {
+const verifyToken = async function (req, POST_CODE, url) {
   let token = req.cookies.postToken.replace('postToken ', '');
   const { _id } = jwt.verify(token, POST_CODE);
   const post = await Post.findOne({ _id, 'tokens.token': token });
-  const [, , url] = req.path.split('/');
   if (post.url != url) throw new Error();
   clearTokens(_id, Post);
   return token;
 };
 
-const updatePostCount = async function (Post, url, POST_CODE) {
+const updatePostCount = async function (url, POST_CODE) {
   const post = await Post.findOne({ url });
   const token = jwt.sign({ _id: post._id }, POST_CODE, { expiresIn: 600 });
   const views = post.views + 1;
@@ -42,12 +35,12 @@ const updatePostCount = async function (Post, url, POST_CODE) {
   return token;
 };
 
-const updatePostCountAndGetToken = async (req, url, Post) => {
+const updatePostCountAndGetToken = async (req, url) => {
   const { POST_CODE } = process.env;
   try {
-    return await verifyToken(req, POST_CODE, Post);
+    return await verifyToken(req, POST_CODE, url);
   } catch {
-    return await updatePostCount(Post, url, POST_CODE);
+    return await updatePostCount(url, POST_CODE);
   }
 };
 
@@ -58,4 +51,4 @@ const clearInvalidTokens = async function (id, Author) {
   await Author.findByIdAndUpdate(id, { tokens });
 };
 
-module.exports = { shuffle, updatePostCountAndGetToken, clearInvalidTokens };
+module.exports = { updatePostCountAndGetToken, clearInvalidTokens };

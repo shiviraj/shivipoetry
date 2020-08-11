@@ -13,7 +13,7 @@
       <div class="comments-container">
         <div class="comment-title">
           <div class="serial">S.No.</div>
-          <div class="name">Comment By</div>
+          <div class="comment-by">Comment By</div>
           <div class="msg">Message</div>
           <div class="time">Time</div>
           <div class="post">Commented On</div>
@@ -29,7 +29,7 @@
 
         <div class="comment">
           <div class="serial"><%- ++i %></div>
-          <div class="name"><%- comment.name %></div>
+          <div class="comment-by"><%- comment.name %></div>
           <div class="msg"><%- comment.msg %></div>
           <div class="time">
             <%- moment(comment.time).format('MMM DD, YYYY') %>

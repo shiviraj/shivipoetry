@@ -1,6 +1,5 @@
-const { Tag } = require('../models/tag');
-const { Category } = require('../models/category');
-const { Post } = require('../models/post');
+const { Tag } = require('../../models/tag');
+const { Category } = require('../../models/category');
 
 class Tags {
   constructor() {}

@@ -1,5 +1,5 @@
-const { Categories, Tags } = require('./tagsAndCategories');
-const { Posts } = require('./posts');
+const { Categories, Tags } = require('./wrapper/tagsAndCategories');
+const { Posts } = require('./wrapper/posts');
 
 const addAndServe = async function (req, res) {
   try {

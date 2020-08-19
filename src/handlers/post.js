@@ -1,6 +1,6 @@
 const moment = require('moment');
-const { Comments } = require('./comments');
-const { Posts } = require('./posts');
+const { Comments } = require('./wrapper/comments');
+const { Posts } = require('./wrapper/posts');
 const { updatePostCountAndGetToken } = require('./utils');
 const { sidebarContent } = require('./sidebarContent');
 

@@ -1,7 +1,7 @@
 const moment = require('moment');
-const { Comments } = require('./comments');
-const { Posts } = require('./posts');
-const { getTagsAndCategories } = require('./tagsAndCategories');
+const { Comments } = require('./wrapper/comments');
+const { Posts } = require('./wrapper/posts');
+const { getTagsAndCategories } = require('./wrapper/tagsAndCategories');
 
 const serveDashboard = async function (req, res) {
   const allPosts = await Posts.getPostsByAuthor(req.author._id);

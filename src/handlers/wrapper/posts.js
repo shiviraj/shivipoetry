@@ -1,6 +1,6 @@
 const mongodb = require('mongodb');
-const { Comment } = require('../models/comment');
-const { Post } = require('../models/post');
+const { Comment } = require('../../models/comment');
+const { Post } = require('../../models/post');
 const { Categories, Tags } = require('./tagsAndCategories');
 
 const shuffle = function (array) {

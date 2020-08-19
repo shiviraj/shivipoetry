@@ -1,5 +1,5 @@
-const { Comment } = require('../models/comment');
-const { Post } = require('../models/post');
+const { Comment } = require('../../models/comment');
+const { Posts } = require('./posts');
 
 class Comments {
   constructor() {}
@@ -10,8 +10,7 @@ class Comments {
   }
 
   async getAllWithPost(authorId) {
-    const fields = ['_id', 'title', 'url'];
-    const posts = await Post.find({ author: authorId }).select(fields);
+    const posts = await Posts.getPostsByAuthor(authorId);
     return await Promise.all(
       posts.map(async (post) => {
         post.comments = await Comment.find({ post: post._id });

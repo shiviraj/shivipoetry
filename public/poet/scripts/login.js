@@ -24,7 +24,7 @@ const showMessage = function (status) {
   const $status = getElement('.status');
   const text = 'Credentials not matched';
   if (status) {
-    window.location.href = '/poet/dashboard';
+    window.location.href = '/poet';
     return;
   }
   $status.innerText = text;
